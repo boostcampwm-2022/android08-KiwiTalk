@@ -29,46 +29,47 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val googleSignOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(SERVER_CLIENT_KEY)
-            .requestEmail()
-            .build()
-        googleApiClient = GoogleSignIn.getClient(this, googleSignOptions)
+//        val googleSignOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(SERVER_CLIENT_KEY)
+//            .requestEmail()
+//            .build()
+//        googleApiClient = GoogleSignIn.getClient(this, googleSignOptions)
+//
+//        auth = FirebaseAuth.getInstance()
+//        activityResultLauncher =
+//            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//                if (it.resultCode == RESULT_OK) {
+//                    val result = Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
+//                    result ?: return@registerForActivityResult
+//                    if (result.isSuccess) {
+//                        val account = result.signInAccount
+//                        resultLogin(account)
+//                    }
+//                }
+//            }
 
-        auth = FirebaseAuth.getInstance()
-        activityResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == RESULT_OK) {
-                    val result = Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
-                    result ?: return@registerForActivityResult
-                    if (result.isSuccess) {
-                        val account = result.signInAccount
-                        resultLogin(account)
-                    }
-                }
-            }
-
-        binding.btnGoogleSignup.setOnClickListener {
-            val intent = googleApiClient.signInIntent
-            activityResultLauncher.launch(intent)
-        }
+//        binding.btnGoogleSignup.setOnClickListener {
+//            val intent = googleApiClient.signInIntent
+//            activityResultLauncher.launch(intent)
+//        }
     }
 
-    private fun resultLogin(account: GoogleSignInAccount?) {
-        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) {
-                if (it.isSuccessful) {
-                    Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
+//    private fun resultLogin(account: GoogleSignInAccount?) {
+//        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+//        auth.signInWithCredential(credential)
+//            .addOnCompleteListener(this) {
+//                if (it.isSuccessful) {
+//                    Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+//                    val intent = Intent(this, HomeActivity::class.java)
+//                    startActivity(intent)
+//                } else {
+//                    Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//    }
 
     companion object {
         const val SERVER_CLIENT_KEY = BuildConfig.SERVER_CLIENT_ID
     }
 }
+

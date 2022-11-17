@@ -1,5 +1,6 @@
 package com.kiwi.kiwitalk.ui.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,14 +20,17 @@ class LoginViewModel @Inject constructor(
     val idToken: LiveData<String> = _idToken
 
     init {
+        Log.d("k001", "viewmodel 초기화")
         viewModelScope.launch {
             loadLoginHistory()
             isReady = true
         }
+        Log.d("k001", "viewmodel 초기화 끝")
     }
 
     fun signIn(token: String) {
         /* pref에는 token만 넣기 */
+        Log.d("k001", "viewmodel.signIn($token) 저장")
         pref.setString(Const.LOGIN_HISTORY_KEY, token)
         _idToken.value = token
     }
@@ -38,7 +42,12 @@ class LoginViewModel @Inject constructor(
         if (savedToken != Const.EMPTY_STRING) {
             _idToken.value = savedToken
         }
+        Log.d("k001", "저장된 토큰 값 : $savedToken")
         /* 기타 토큰 유효성 검사 추가 */
+    }
+
+    fun signOut(){
+
     }
 
     private fun checkNetworkState() {
