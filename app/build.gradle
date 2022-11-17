@@ -55,7 +55,15 @@ dependencies {
 
     // by viewmodel
     implementation 'androidx.fragment:fragment-ktx:1.5.4'
+
+    //FireBase
+    implementation 'com.google.firebase:firebase-analytics:21.2.0'// 파이어베이스 앱 분석
+    implementation 'com.google.firebase:firebase-core:21.1.1' //파이어베이스 코어
+    implementation 'com.google.firebase:firebase-auth:21.1.0' //파이어베이스 인증
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0' //파이어베이스 인증 2
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 kapt {
     correctErrorTypes true
