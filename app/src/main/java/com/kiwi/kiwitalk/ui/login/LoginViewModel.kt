@@ -20,17 +20,14 @@ class LoginViewModel @Inject constructor(
     val idToken: LiveData<String> = _idToken
 
     init {
-        Log.d("k001", "viewmodel 초기화")
         viewModelScope.launch {
             loadLoginHistory()
             isReady = true
         }
-        Log.d("k001", "viewmodel 초기화 끝")
     }
 
     fun signIn(token: String) {
         /* pref에는 token만 넣기 */
-        Log.d("k001", "viewmodel.signIn($token) 저장")
         pref.setString(Const.LOGIN_HISTORY_KEY, token)
         _idToken.value = token
     }

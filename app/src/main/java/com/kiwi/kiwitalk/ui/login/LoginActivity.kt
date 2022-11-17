@@ -16,13 +16,10 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.kiwi.kiwitalk.BuildConfig
 import com.kiwi.kiwitalk.Const
 import com.kiwi.kiwitalk.databinding.ActivityLoginBinding
-import com.kiwi.kiwitalk.databinding.ActivityMainBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
             }
         )
 
-        Log.d("k001", "리스너 이런거 초기화")
         val googleSignOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(SERVER_CLIENT_KEY)
             .requestEmail()
@@ -63,23 +59,19 @@ class LoginActivity : AppCompatActivity() {
 
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == RESULT_OK) {
-                    Log.d("k001", "activityResultLauncher에서 RESULT_OK")
+                try {
                     val result = Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
                     result ?: return@registerForActivityResult
                     if (result.isSuccess) {
-                        Log.d("k001", "result 성공")
                         val account = result.signInAccount
                         viewModel.signIn(account?.idToken?: Const.EMPTY_STRING)
                     }
-                } else {
-                    Log.d("k001", "activityResultLauncher에서 RESULT_OK가 아님")
-                    Log.d("k001", it.resultCode.toString())
+                } catch (e: Exception) {
+                    Log.d("LoginResultFail", e.toString())
                 }
             }
 
         binding.btnGoogleSignup.setOnClickListener {
-            Log.d("k001", "버튼 클릭")
             val intent = googleApiClient.signInIntent
             activityResultLauncher.launch(intent)
         }
@@ -87,29 +79,25 @@ class LoginActivity : AppCompatActivity() {
         viewModel.idToken.observe(this) {
             doOnLoginInfoExist(it)
         }
-        Log.d("k001", "초기화 끝남")
     }
 
     private fun doOnLoginInfoExist(token: String) {
-        Log.d("k001", "옵저빙된 토큰 값 : $token")
-        
         val credential = GoogleAuthProvider.getCredential(token, null)
         auth = FirebaseAuth.getInstance()
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
-                    Log.d("k001", "로그인 성공")
                     Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this, HomeActivity::class.java)
-//                    startActivity(intent)
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
                 } else {
-                    Log.d("k001", "로그인 실패")
                     Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
     companion object {
-        const val SERVER_CLIENT_KEY = BuildConfig.SERVER_CLIENT_ID
+        //const val SERVER_CLIENT_KEY = BuildConfig.SERVER_CLIENT_ID
+        const val SERVER_CLIENT_KEY = "611516619499-v3b7482t6qbldpn0ens6rgp45i6fo577.apps.googleusercontent.com"
     }
 }
