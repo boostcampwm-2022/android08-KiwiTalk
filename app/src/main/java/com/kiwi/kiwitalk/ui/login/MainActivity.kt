@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.kiwi.kiwitalk.databinding.ActivityMainBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
+import com.kiwi.kiwitalk.BuildConfig
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val googleSignOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(SERVER_CLIENT_ID)
+            .requestIdToken(SERVER_CLIENT_KEY)
             .requestEmail()
             .build()
         googleApiClient = GoogleSignIn.getClient(this, googleSignOptions)
@@ -53,11 +54,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        const val SERVER_CLIENT_ID =
-            "611516619499-v3b7482t6qbldpn0ens6rgp45i6fo577.apps.googleusercontent.com"
-    }
-
     private fun resultLogin(account: GoogleSignInAccount?) {
         val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         auth.signInWithCredential(credential)
@@ -70,5 +66,9 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    companion object {
+        const val SERVER_CLIENT_KEY = BuildConfig.SERVER_CLIENT_ID
     }
 }

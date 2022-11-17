@@ -5,6 +5,9 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdk 33
 
@@ -15,6 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField 'String', 'SERVER_CLIENT_ID', properties["server_client.id"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
