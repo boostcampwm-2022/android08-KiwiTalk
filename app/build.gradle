@@ -5,6 +5,9 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdk 33
 
@@ -16,6 +19,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "STREAM_API_KEY", properties['stream_api_key']
     }
 
     buildTypes {
@@ -31,6 +36,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -44,6 +53,13 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+
+    implementation "androidx.activity:activity-ktx:1.6.1"
+    implementation 'androidx.fragment:fragment-ktx:1.5.4'
+
+    // stream chat
+    def stream_version = "5.11.6"
+    implementation "io.getstream:stream-chat-android-ui-components:$stream_version"
 
     // Hilt
     implementation "com.google.dagger:hilt-android:2.44"
