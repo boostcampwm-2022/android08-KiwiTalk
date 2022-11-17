@@ -16,6 +16,5 @@
         <item name="colorOnSurface">@color/black</item>
         <item name="colorOnSurfaceLight">@color/grey5</item>
 
-
     </style>
 </resources>
