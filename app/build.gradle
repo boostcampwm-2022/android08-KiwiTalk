@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'com.google.gms.google-services'
 }
 
 Properties properties = new Properties()
@@ -18,9 +19,11 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
+        buildConfigField 'String', 'TEXT', '"text"'
+        buildConfigField 'String', 'SERVER_CLIENT_ID', properties["server_client.id"]
         buildConfigField "String", "STREAM_API_KEY", properties['stream_api_key']
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -64,6 +67,12 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
+
+    //FireBase
+    implementation 'com.google.firebase:firebase-analytics:21.2.0'// 파이어베이스 앱 분석
+    implementation 'com.google.firebase:firebase-core:21.1.1' //파이어베이스 코어
+    implementation 'com.google.firebase:firebase-auth:21.1.0' //파이어베이스 인증
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0' //파이어베이스 인증 2
 }
 
 kapt {

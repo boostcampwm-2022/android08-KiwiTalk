@@ -1,5 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
     <style name="Theme.KiwiTalk" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/green</item>
@@ -10,11 +11,14 @@
         <item name="colorSecondaryVariant">@color/brown_deep</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- custom color-->
         <item name="colorSurfaceDark">@color/grey1</item>
         <item name="colorOnSurface">@color/black</item>
         <item name="colorOnSurfaceLight">@color/grey5</item>
+        <!-- Splash screen-->
+        <item name="android:windowSplashScreenBackground">@color/white</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo_splash_light</item>
 
     </style>
 </resources>
