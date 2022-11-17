@@ -1,5 +1,6 @@
 package com.kiwi.kiwitalk
 
 object Const {
-    const val SPLASH_DURATION = 5000L
+    const val LOGIN_HISTORY_KEY = "login_history_key"
+    const val EMPTY_STRING = ""
 }
