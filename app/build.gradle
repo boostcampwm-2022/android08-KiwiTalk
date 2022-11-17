@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'com.google.gms.google-services'
 }
 
 Properties properties = new Properties()
@@ -20,6 +21,8 @@ android {
 
         buildConfigField 'String', 'TEXT', '"text"'
         buildConfigField 'String', 'SERVER_CLIENT_ID', properties["server_client.id"]
+        buildConfigField "String", "STREAM_API_KEY", properties['stream_api_key']
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,8 +40,8 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        viewBinding true
         dataBinding true
+        viewBinding true
     }
 }
 
@@ -54,12 +57,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
+    implementation "androidx.activity:activity-ktx:1.6.1"
+    implementation 'androidx.fragment:fragment-ktx:1.5.4'
+
+    // stream chat
+    def stream_version = "5.11.6"
+    implementation "io.getstream:stream-chat-android-ui-components:$stream_version"
+
     // Hilt
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
-
-    // by viewmodel
-    implementation 'androidx.fragment:fragment-ktx:1.5.4'
 
     //FireBase
     implementation 'com.google.firebase:firebase-analytics:21.2.0'// 파이어베이스 앱 분석
@@ -67,8 +74,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:21.1.0' //파이어베이스 인증
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0' //파이어베이스 인증 2
 }
-
-apply plugin: 'com.google.gms.google-services'
 
 kapt {
     correctErrorTypes true
