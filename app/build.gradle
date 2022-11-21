@@ -76,6 +76,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0' //파이어스토어
 
 
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0'
+
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
