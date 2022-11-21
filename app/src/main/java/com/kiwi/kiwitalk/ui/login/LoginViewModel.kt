@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.kiwi.kiwitalk.AppPreference
 import com.kiwi.kiwitalk.Const
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +15,10 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val pref: AppPreference,
+    val googleApiClient: GoogleSignInClient,
 ) : ViewModel() {
     var isReady: Boolean = false
+
     private val _idToken = MutableLiveData<String>()
     val idToken: LiveData<String> = _idToken
 
@@ -28,6 +31,7 @@ class LoginViewModel @Inject constructor(
 
     fun signIn(token: String) {
         /* pref에는 token만 넣기 */
+        Log.d(LOCATION, "로그인 정보 저장 - token size : ${token.length}")
         pref.setString(Const.LOGIN_HISTORY_KEY, token)
         _idToken.value = token
     }
@@ -43,11 +47,11 @@ class LoginViewModel @Inject constructor(
         /* 기타 토큰 유효성 검사 추가 */
     }
 
-    fun signOut(){
-
-    }
-
     private fun checkNetworkState() {
         // 구현 예정
+    }
+
+    companion object{
+        private const val LOCATION = "LoginViewModel"
     }
 }
