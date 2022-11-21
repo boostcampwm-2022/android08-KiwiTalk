@@ -33,4 +33,9 @@ class ChatModule {
             config = Config(),
             appContext = context,
         )
+
+    @Provides
+    @Singleton
+    fun provideFirestoreClient(): FirebaseFirestore =
+        Firebase.firestore
 }
