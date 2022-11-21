@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.kiwi.kiwitalk.Const" />
+
         <variable
             name="chatList"
             type="io.getstream.chat.android.client.models.Channel" />
@@ -45,14 +47,14 @@
                 android:id="@+id/tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chatList.extraData.toString()}"
+                android:text="@{chatList.extraData.getOrDefault(Const.MAP_KEY_COUNTRY, `지역`).toString()}"
                 tools:text="서울특별시 강남구" />
 
             <TextView
                 android:id="@+id/tv_tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chatList.extraData.toString()}"
+                android:text="@{chatList.extraData.getOrDefault(Const.MAP_KEY_KEYWORD, `키워드`).toString()}"
                 tools:text="축구, 농구, 운동" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
