@@ -1,6 +1,10 @@
 package com.kiwi.kiwitalk.di
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -20,16 +24,23 @@ import javax.inject.Singleton
 object ApplicationModule {
     @Singleton
     @Provides
-    fun providePreference(@ApplicationContext context: Context): AppPreference
-            = AppPreference(context.getSharedPreferences(Const.LOGIN_HISTORY_KEY, Context.MODE_PRIVATE))
+    fun providePreference(@ApplicationContext context: Context): AppPreference =
+        AppPreference(context.getSharedPreferences(Const.LOGIN_HISTORY_KEY, Context.MODE_PRIVATE))
 
     @Singleton
     @Provides
     fun provideGoogleApiClient(@ApplicationContext context: Context): GoogleSignInClient {
-        val googleSignOptions: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(BuildConfig.SERVER_CLIENT_ID)
-            .requestEmail()
-            .build()
+        val googleSignOptions: GoogleSignInOptions =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(BuildConfig.SERVER_CLIENT_ID)
+                .requestEmail()
+                .build()
         return GoogleSignIn.getClient(context, googleSignOptions)
     }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    @Singleton
+    @Provides
+    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
+        context.getSystemService(ConnectivityManager::class.java)
 }

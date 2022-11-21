@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -20,6 +21,7 @@ import com.kiwi.kiwitalk.Const
 import com.kiwi.kiwitalk.databinding.ActivityLoginBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -38,6 +40,9 @@ class LoginActivity : AppCompatActivity() {
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     return if (viewModel.isReady) {
+                        if(!viewModel.isNetworkConnect){
+                            showPopUpMessage(NO_NETWORK)
+                        }
                         splashScreen.viewTreeObserver.removeOnPreDrawListener(this)
                         true
                     } else {
@@ -60,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
                     when(result.status.statusCode){
                         GoogleSignInStatusCodes.SUCCESS -> viewModel.signIn(result.signInAccount?.idToken ?: Const.EMPTY_STRING)
                         GoogleSignInStatusCodes.DEVELOPER_ERROR -> throw Exception("SHA키 등록 여부 확인")
+                        GoogleSignInStatusCodes.NETWORK_ERROR -> showPopUpMessage(NO_NETWORK)
                         12501 -> throw Exception("디바이스가 Google Play 서비스를 포함하는지 확인")
                     }
                 } catch (e: Exception) {
@@ -79,23 +85,28 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
-                    Snackbar.make(binding.root, LOGIN_SUCCESS, Snackbar.LENGTH_SHORT).show()
+                    showPopUpMessage(LOGIN_SUCCESS)
                     val intent = Intent(this, HomeActivity::class.java)
                     finishAffinity()
                     startActivity(intent)
                 } else {
-                    Snackbar.make(binding.root, LOGIN_FAIL, Snackbar.LENGTH_SHORT).show()
+                    showPopUpMessage(LOGIN_FAIL)
                 }
             }
             .addOnCanceledListener(this) {
-                Snackbar.make(binding.root, LOGIN_SERVER_ERROR, Snackbar.LENGTH_SHORT).show()
+                showPopUpMessage(LOGIN_SERVER_ERROR)
             }
     }
 
+    private fun showPopUpMessage(text: String){
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
+
     companion object {
-        const val TAG = "k001"
-        const val LOGIN_SUCCESS = "로그인 성공"
-        const val LOGIN_FAIL = "로그인 실패"
-        const val LOGIN_SERVER_ERROR = "서버와의 연결이 불안정합니다"
+        private const val TAG = "k001"
+        private const val LOGIN_SUCCESS = "로그인 성공"
+        private const val LOGIN_FAIL = "로그인 실패"
+        private const val LOGIN_SERVER_ERROR = "서버와의 연결이 불안정합니다"
+        private const val NO_NETWORK = "인터넷 연결을 확인해주세요"
     }
 }
