@@ -14,4 +14,11 @@
         app:spanCount="2"
         tools:listitem="@layout/chat_list_item" />
 
+    <TextView
+        android:id="@+id/tv_chatList_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/tv_chatList_empty"
+        android:textSize="20sp" />
 </FrameLayout>

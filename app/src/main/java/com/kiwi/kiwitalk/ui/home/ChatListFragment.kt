@@ -51,7 +51,14 @@ class ChatListFragment : Fragment() {
         }
 
         chatListViewModel.state.observe(viewLifecycleOwner) {
-            adapter.submitList(it.channels)
+            if (it.channels.isEmpty()) {
+                binding.tvChatListEmpty.visibility = View.VISIBLE
+                binding.rvChatList.visibility = View.INVISIBLE
+            } else{
+                binding.tvChatListEmpty.visibility = View.INVISIBLE
+                binding.rvChatList.visibility = View.VISIBLE
+                adapter.submitList(it.channels)
+            }
         }
         binding.rvChatList.apply {
             this.adapter = adapter
