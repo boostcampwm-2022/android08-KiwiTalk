@@ -15,43 +15,42 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="5dp">
+        android:layout_margin="5dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/img_chatList_profile"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:layout_marginStart="4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="6dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/img_chatList_profile_des"
-                app:image="@{chatList.image}"
+                app:loadImageByUri="@{chatList.image}"
                 tools:src="@drawable/ic_launcher_background" />
 
             <TextView
                 android:id="@+id/tv_chat_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:ellipsize="end"
                 android:text="@{chatList.name}"
                 tools:text="방 제목" />
 
             <TextView
-                android:id="@+id/tv_location"
+                android:id="@+id/tv_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{chatList.extraData.getOrDefault(Const.MAP_KEY_COUNTRY, `지역`).toString()}"
                 tools:text="서울특별시 강남구" />
 
             <TextView
-                android:id="@+id/tv_tags"
+                android:id="@+id/tv_keyword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{chatList.extraData.getOrDefault(Const.MAP_KEY_KEYWORD, `키워드`).toString()}"
