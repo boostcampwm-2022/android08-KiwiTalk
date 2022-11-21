@@ -1,7 +1,9 @@
 package com.kiwi.kiwitalk.di
 
 import com.kiwi.data.repository.SearchChatRepositoryImpl
+import com.kiwi.data.repository.SearchKeywordRepositoryImpl
 import com.kiwi.domain.repository.SearchChatRepository
+import com.kiwi.domain.repository.SearchKeywordRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,4 +17,8 @@ abstract class RepositoryModule {
     @Singleton
     @Binds //Interface 주입, abstract 사용
     abstract fun bindsSearchChatRepository(repository: SearchChatRepositoryImpl): SearchChatRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsSearchKeywordRepository(searchKeywordRepositoryImpl: SearchKeywordRepositoryImpl): SearchKeywordRepository
 }
