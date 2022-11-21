@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.ChatListFragment">
 
-    <io.getstream.chat.android.ui.channel.list.ChannelListView
-        android:id="@+id/channel_list_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_chatList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+        app:spanCount="2"
+        tools:listitem="@layout/chat_list_item" />
 
+    <TextView
+        android:id="@+id/tv_chatList_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/tv_chatList_empty"
+        android:textSize="20sp" />
 </FrameLayout>

@@ -73,6 +73,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:21.1.1' //파이어베이스 코어
     implementation 'com.google.firebase:firebase-auth:21.1.0' //파이어베이스 인증
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0' //파이어베이스 인증 2
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 }
 
 kapt {
