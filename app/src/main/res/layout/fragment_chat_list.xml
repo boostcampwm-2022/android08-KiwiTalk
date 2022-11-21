@@ -5,10 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.ChatListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <io.getstream.chat.android.ui.channel.list.ChannelListView
+        android:id="@+id/channel_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
