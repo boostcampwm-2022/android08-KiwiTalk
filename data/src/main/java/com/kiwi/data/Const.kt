@@ -1,5 +1,5 @@
 package com.kiwi.data
 
 object Const {
-    const val CHAT_LIST_COLLECTION = "ChatList"
+    const val CHAT_COLLECTION = "Chat"
 }

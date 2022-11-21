@@ -19,7 +19,8 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
         x: Double,
         y: Double
     ): Flow<MarkerRemote> = callbackFlow {
-        firestore.collection(Const.CHAT_LIST_COLLECTION).get()
+        //TODO: Chat 컬렉션의 모든 데이터를 가져오지 않고, 쿼리를 사용하도록 변경
+        firestore.collection(Const.CHAT_COLLECTION).get()
             .addOnSuccessListener {
                 Log.d("SearchChatRemoteImpl", "getMarkerList: ${it.documents}")
                 it.toObjects<MarkerRemote>().forEach { markerRemote ->
