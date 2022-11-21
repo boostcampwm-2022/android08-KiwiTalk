@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -28,6 +29,7 @@
                 android:layout_marginStart="4dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/img_chatList_profile_des"
+                app:image="@{chatList.image}"
                 tools:src="@drawable/ic_launcher_background" />
 
             <TextView
