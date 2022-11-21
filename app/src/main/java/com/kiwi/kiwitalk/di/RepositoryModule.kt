@@ -15,7 +15,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-
     @Singleton
     @Binds //Interface 주입, abstract 사용
     abstract fun bindsSearchChatRepository(repository: SearchChatRepositoryImpl): SearchChatRepository

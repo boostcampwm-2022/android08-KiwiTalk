@@ -1,8 +1,7 @@
 package com.kiwi.kiwitalk.ui.login
 
-import android.os.Build
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
                     result ?: return@registerForActivityResult
                     if (result.isSuccess) {
                         val account = result.signInAccount
-                        viewModel.signIn(account?.idToken?: Const.EMPTY_STRING)
+                        viewModel.signIn(account?.idToken ?: Const.EMPTY_STRING)
                     }
                 } catch (e: Exception) {
                     Log.d("LoginResultFail", e.toString())
@@ -98,6 +98,7 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         //const val SERVER_CLIENT_KEY = BuildConfig.SERVER_CLIENT_ID
-        const val SERVER_CLIENT_KEY = "611516619499-v3b7482t6qbldpn0ens6rgp45i6fo577.apps.googleusercontent.com"
+        const val SERVER_CLIENT_KEY =
+            "611516619499-v3b7482t6qbldpn0ens6rgp45i6fo577.apps.googleusercontent.com"
     }
 }

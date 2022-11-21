@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="colorPrimaryLight" format="color"/>
-    <attr name="colorSurfaceDark" format="color"/>
-    <attr name="colorOnSurfaceLight" format="color"/>
+    <attr name="colorPrimaryLight" format="color" />
+    <attr name="colorSurfaceDark" format="color" />
+    <attr name="colorOnSurfaceLight" format="color" />
 </resources>

@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
         /* 기타 토큰 유효성 검사 추가 */
     }
 
-    fun signOut(){
+    fun signOut() {
 
     }
 
