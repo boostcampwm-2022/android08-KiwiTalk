@@ -1,6 +1,9 @@
 package com.kiwi.kiwitalk.di
 
 import android.content.Context
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.kiwi.kiwitalk.BuildConfig.STREAM_API_KEY
 import dagger.Module
 import dagger.Provides
