@@ -8,7 +8,7 @@
         <import type="com.kiwi.kiwitalk.Const" />
 
         <variable
-            name="chatList"
+            name="chat"
             type="io.getstream.chat.android.client.models.Channel" />
     </data>
 
@@ -31,7 +31,7 @@
                 android:layout_marginBottom="6dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/img_chatList_profile_des"
-                app:loadImageByUri="@{chatList.image}"
+                app:loadImageByUri="@{chat.image}"
                 tools:src="@drawable/ic_launcher_background" />
 
             <TextView
@@ -39,21 +39,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:text="@{chatList.name}"
+                android:text="@{chat.name}"
                 tools:text="방 제목" />
 
             <TextView
                 android:id="@+id/tv_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chatList.extraData.getOrDefault(Const.MAP_KEY_COUNTRY, `지역`).toString()}"
+                android:text="@{chat.extraData.getOrDefault(Const.MAP_KEY_COUNTRY, `지역`).toString()}"
                 tools:text="서울특별시 강남구" />
 
             <TextView
                 android:id="@+id/tv_keyword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chatList.extraData.getOrDefault(Const.MAP_KEY_KEYWORD, `키워드`).toString()}"
+                android:text="@{chat.extraData.getOrDefault(Const.MAP_KEY_KEYWORD, `키워드`).toString()}"
                 tools:text="축구, 농구, 운동" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
