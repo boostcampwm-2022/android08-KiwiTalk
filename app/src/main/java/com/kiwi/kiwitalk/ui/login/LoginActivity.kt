@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +21,6 @@ import com.kiwi.kiwitalk.Const
 import com.kiwi.kiwitalk.databinding.ActivityLoginBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -40,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     return if (viewModel.isReady) {
-                        if(!viewModel.isNetworkConnect){
+                        if (!viewModel.isNetworkConnect) {
                             showPopUpMessage(NO_NETWORK)
                         }
                         splashScreen.viewTreeObserver.removeOnPreDrawListener(this)
@@ -52,34 +51,48 @@ class LoginActivity : AppCompatActivity() {
             }
         )
 
-        viewModel.idToken.observe(this) {
-            doOnLoginInfoExist(it)
+        if (!viewModel.idToken.value.isNullOrEmpty()) {
+            val intent = Intent(this, HomeActivity::class.java)
+            finishAffinity()
+            startActivity(intent)
         }
-
-        activityResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                try {
-                    val result = Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
-                    result ?: return@registerForActivityResult
-                    Log.d(TAG, result.status.toString())
-                    when(result.status.statusCode){
-                        GoogleSignInStatusCodes.SUCCESS -> viewModel.signIn(result.signInAccount?.idToken ?: Const.EMPTY_STRING)
-                        GoogleSignInStatusCodes.DEVELOPER_ERROR -> throw Exception("SHA키 등록 여부 확인")
-                        GoogleSignInStatusCodes.NETWORK_ERROR -> showPopUpMessage(NO_NETWORK)
-                        12501 -> throw Exception("디바이스가 Google Play 서비스를 포함하는지 확인")
-                    }
-                } catch (e: Exception) {
-                    Log.d(TAG, e.toString())
-                }
-            }
 
         binding.btnGoogleSignup.setOnClickListener {
             val intent = viewModel.googleApiClient.signInIntent
             activityResultLauncher.launch(intent)
         }
+
+        activityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                loginWithGoogleCredential(
+                    Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
+                )
+            }
     }
 
-    private fun doOnLoginInfoExist(token: String) {
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun loginWithGoogleCredential(result: GoogleSignInResult?) {
+        try {
+            result ?: return
+            Log.d(TAG, result.status.toString())
+            when (result.status.statusCode) {
+                GoogleSignInStatusCodes.SUCCESS -> viewModel.signIn(
+                    result.signInAccount?.idToken ?: Const.EMPTY_STRING
+                )
+                GoogleSignInStatusCodes.DEVELOPER_ERROR -> throw Exception("SHA키 등록 여부 확인")
+                GoogleSignInStatusCodes.NETWORK_ERROR -> showPopUpMessage(NO_NETWORK)
+                12501 -> throw Exception("디바이스가 Google Play 서비스를 포함하는지 확인")
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, e.toString())
+        }
+
+        if (!viewModel.idToken.value.isNullOrEmpty()) {
+            loginOnFireAuth(viewModel.idToken.value!!)
+        }
+    }
+
+    private fun loginOnFireAuth(token: String) {
         val credential = GoogleAuthProvider.getCredential(token, null)
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         auth.signInWithCredential(credential)
@@ -98,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun showPopUpMessage(text: String){
+    private fun showPopUpMessage(text: String) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
