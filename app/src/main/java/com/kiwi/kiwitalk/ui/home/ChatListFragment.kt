@@ -80,4 +80,9 @@ class ChatListFragment : Fragment() {
             Log.d(TAG, "user: ${client.getCurrentUser()}")
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
