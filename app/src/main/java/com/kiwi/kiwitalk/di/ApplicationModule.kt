@@ -15,7 +15,6 @@ import javax.inject.Singleton
 class ApplicationModule {
     @Singleton
     @Provides
-    fun providePreference(@ApplicationContext context: Context): AppPreference
-        = AppPreference(context.getSharedPreferences(Const.LOGIN_HISTORY_KEY, Context.MODE_PRIVATE))
-
+    fun providePreference(@ApplicationContext context: Context): AppPreference =
+        AppPreference(context.getSharedPreferences(Const.LOGIN_HISTORY_KEY, Context.MODE_PRIVATE))
 }

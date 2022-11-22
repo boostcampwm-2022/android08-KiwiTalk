@@ -1,5 +1,7 @@
 package com.kiwi.kiwitalk.di
 
+import com.kiwi.data.datasource.remote.SearchChatRemoteDataSource
+import com.kiwi.data.datasource.remote.SearchChatRemoteDataSourceImpl
 import com.kiwi.data.repository.SearchChatRepositoryImpl
 import com.kiwi.data.repository.SearchKeywordRepositoryImpl
 import com.kiwi.domain.repository.SearchChatRepository
@@ -13,10 +15,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-
     @Singleton
     @Binds //Interface 주입, abstract 사용
     abstract fun bindsSearchChatRepository(repository: SearchChatRepositoryImpl): SearchChatRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindsSearchChatRemoteDataSource(dataSource: SearchChatRemoteDataSourceImpl): SearchChatRemoteDataSource
 
     @Binds
     @Singleton
