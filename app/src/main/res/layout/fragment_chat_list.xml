@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         app:spanCount="2"
-        tools:listitem="@layout/chat_list_item" />
+        tools:listitem="@layout/chat_item" />
 
     <TextView
         android:id="@+id/tv_chatList_empty"

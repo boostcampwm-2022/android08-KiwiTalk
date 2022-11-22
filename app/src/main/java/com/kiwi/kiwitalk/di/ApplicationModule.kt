@@ -43,4 +43,5 @@ object ApplicationModule {
     @Provides
     fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
         context.getSystemService(ConnectivityManager::class.java)
+
 }

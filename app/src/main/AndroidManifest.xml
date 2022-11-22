@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kiwi.kiwitalk">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -17,6 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KiwiTalk"
         tools:targetApi="31">
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC3aOchpyF4miz3c7pqx79QWi0V5WObLxg" />
+
         <activity
             android:name=".ui.newchat.NewChatActivity"
             android:exported="false">
