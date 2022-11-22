@@ -44,8 +44,8 @@ class ChatListFragment : Fragment() {
 
     private fun initRecyclerView() {
         val adapter = ChatListViewAdapter()
-        adapter.onClickListener = object : ChatListViewAdapter.OnChatListClickListener {
-            override fun onChatListClick(channel: Channel) {
+        adapter.onClickListener = object : ChatListViewAdapter.OnChatClickListener {
+            override fun onChatClick(channel: Channel) {
                 startActivity(MessageListActivity.createIntent(requireContext(), channel.cid))
             }
         }
@@ -54,7 +54,7 @@ class ChatListFragment : Fragment() {
             if (it.channels.isEmpty()) {
                 binding.tvChatListEmpty.visibility = View.VISIBLE
                 binding.rvChatList.visibility = View.INVISIBLE
-            } else{
+            } else {
                 binding.tvChatListEmpty.visibility = View.INVISIBLE
                 binding.rvChatList.visibility = View.VISIBLE
                 adapter.submitList(it.channels)
