@@ -46,5 +46,5 @@ dependencies {
 
     // Inject(For Hilt)
     implementation "javax.inject:javax.inject:1"
-    
+
 }
