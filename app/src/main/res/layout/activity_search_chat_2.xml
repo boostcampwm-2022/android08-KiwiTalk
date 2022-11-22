@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.search.SearchChatActivity2">
@@ -18,15 +20,15 @@
         android:contentDescription="@string/new_chat_description"
         />
 
-    <FrameLayout
-        android:id="@+id/standard_bottom_sheet"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/info_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         style="@style/Widget.Material3.BottomSheet"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="120dp"
+        app:behavior_peekHeight="@dimen/bottomSheet_collapse_size"
         android:elevation="7dp"
         >
 
@@ -34,18 +36,28 @@
         <com.google.android.material.bottomsheet.BottomSheetDragHandleView
             android:id="@+id/drag_handle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:text="@string/app_name"
+            android:id="@+id/tmp_preview"
+            android:text="프리뷰 컨테이너는 무조건 고정높이 사용"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="@dimen/bottomSheet_collapse_size"
+            android:background="@color/brown"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/drag_handle"
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
         <TextView
-            android:text="sdfsfwererdg"
+            android:text="세부정보"
+            android:background="@color/green_deep"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tmp_preview"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

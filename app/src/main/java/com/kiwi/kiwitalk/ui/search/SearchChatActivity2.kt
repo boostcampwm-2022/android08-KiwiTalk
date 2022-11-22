@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kiwi.kiwitalk.databinding.ActivitySearchChat2Binding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchChatActivity2 : AppCompatActivity() {
     private lateinit var binding: ActivitySearchChat2Binding
+    private val viewModel: SearchChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,24 +24,36 @@ class SearchChatActivity2 : AppCompatActivity() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 Log.d(TAG, newState.toString())
 
-                // 4 -> 1일때: 시트 확장중. 모든 채팅방 정보 로딩
+                when(newState){
+                    // 1일때: 확장 모드로 가거나, 접히는 중임. 전체 채팅방 정보 없으면 로딩하고 있으면 유지.
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                        binding.tmpPreview.visibility = View.GONE
+                    }
 
-                // 4 되었을 때: 시트 접힘. 대표 채팅방 정보, 채팅방 수만 표시
+                    // 4 되었을 때: 시트 접힘. 대표 채팅방 정보, 채팅방 수만 표시
+                    BottomSheetBehavior.STATE_COLLAPSED-> {
+                        binding.tmpPreview.visibility = View.VISIBLE
+                    }
+                }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 // slideOffset : top = 1, bottom = 0이다. 위치에 따른 동작을 설정할 수 있다.
-                Log.d(TAG, "onSlide. offset : $slideOffset")
             }
         }
 
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.standardBottomSheet)
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.infoBottomSheet)
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         /* 마커 클릭시 이처럼 STATE 변경 코드 넣어줘야함 */
         binding.fabCreateChat.setOnClickListener{
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+        
+        /* 지도 누르면 바텀시트 사라져야함 */
+        binding.rootLayout.setOnClickListener{
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
     }
