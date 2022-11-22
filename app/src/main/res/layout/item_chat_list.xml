@@ -46,14 +46,14 @@
                 android:id="@+id/tv_rvChatList_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chat.extraData.getOrDefault(Const.MAP_KEY_COUNTRY, `지역`).toString()}"
+                android:text="@{chat.extraData.getOrDefault(Const.MAP_KEY_COUNTRY, @string/tv_itemChatList_country_default).toString()}"
                 tools:text="서울특별시 강남구" />
 
             <TextView
                 android:id="@+id/tv_rvChatList_keyword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chat.extraData.getOrDefault(Const.MAP_KEY_KEYWORD, `키워드`).toString()}"
+                android:text="@{chat.extraData.getOrDefault(Const.MAP_KEY_KEYWORD, @string/tv_itemChatList_keyword_default).toString()}"
                 tools:text="축구, 농구, 운동" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

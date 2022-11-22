@@ -17,4 +17,6 @@
     <string name="img_chatList_profile_des">채팅방 이미지</string>
     <string name="tv_chatList_empty">참여한 채팅방이 없습니다.</string>
 
+    <string name="tv_itemChatList_country_default">지역</string>
+    <string name="tv_itemChatList_keyword_default">키워드</string>
 </resources>
