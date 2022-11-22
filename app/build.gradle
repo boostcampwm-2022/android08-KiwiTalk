@@ -84,6 +84,12 @@ dependencies {
     // 디바이스 위치
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+    
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0' //파이어스토어
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 }
 
 kapt {

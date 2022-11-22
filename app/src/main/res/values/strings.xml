@@ -2,6 +2,7 @@
     <string name="app_name">KiwiTalk</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="text_chat_name">채팅방 이름</string>
     <string name="et_chat_name_hint">채팅방 이름을 입력하세요.</string>
     <string name="text_chat_description">채팅방 설명</string>
@@ -12,4 +13,8 @@
     <string name="et_chat_keyword_hint">키워드를 등록해 주세요.</string>
     <string name="text_chat_place">장소 등록</string>
     <string name="btn_chat_place">장소를 등록해 주세요.</string>
+
+    <string name="img_chatList_profile_des">채팅방 이미지</string>
+    <string name="tv_chatList_empty">참여한 채팅방이 없습니다.</string>
+
 </resources>
