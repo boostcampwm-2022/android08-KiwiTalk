@@ -41,4 +41,7 @@ dependencies {
 
     // Inject(For Hilt)
     implementation "javax.inject:javax.inject:1"
+
+    //firebase
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0' //파이어스토어
 }
