@@ -39,6 +39,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".ui.search.SearchChatActivity2"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false">
             <meta-data
