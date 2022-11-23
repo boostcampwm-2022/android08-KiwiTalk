@@ -46,4 +46,9 @@ dependencies {
 
     // Inject(For Hilt)
     implementation "javax.inject:javax.inject:1"
+
+    // stream chat : Client only
+    def stream_version = "5.11.6"
+    implementation "io.getstream:stream-chat-android-client:$stream_version"
+
 }

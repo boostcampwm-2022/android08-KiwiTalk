@@ -4,15 +4,21 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.kiwi.data.Const
-import com.kiwi.data.model.remote.ChatInfoRemote
 import com.kiwi.data.model.remote.MarkerRemote
+import com.kiwi.domain.model.ChatInfo
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.client.api.models.QueryChannelsRequest
+import io.getstream.chat.android.client.api.models.querysort.QuerySortByField
+import com.kiwi.data.mapper.Mapper.toChatInfo
+import io.getstream.chat.android.client.models.Filters
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class SearchChatRemoteDataSourceImpl @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val chatClient: ChatClient,
 ) : SearchChatRemoteDataSource {
     override suspend fun getMarkerList(
         keyword: List<String>,
@@ -32,7 +38,30 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun getChat(cid: String): ChatInfoRemote {
-        TODO("Not yet implemented")
+    override suspend fun getChat(cid: String): ChatInfo? {
+        val request = QueryChannelsRequest(
+            filter = Filters.and(
+                //Filters.eq("cid", cid),
+                Filters.`in`("name", "naver")
+            ),
+            offset = 0,
+            limit = 10,
+            querySort = QuerySortByField.descByName("member_count")
+        ).apply {
+            watch = true // if true returns the Channel state
+            state = true // if true listen to changes to this Channel in real time.
+            limit = ONE  // The number of channels to return (max is 30)
+        }
+
+        val result = chatClient.queryChannels(request).await()
+        return if(result.isSuccess){
+            result.data().first().toChatInfo()
+        } else {
+            null
+        }
+    }
+
+    companion object{
+        private const val ONE = 1
     }
 }

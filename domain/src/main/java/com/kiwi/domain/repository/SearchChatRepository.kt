@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface SearchChatRepository {
     suspend fun getMarkerList(keywords: List<String>, x: Double, y: Double): Flow<Marker>
 
-    suspend fun getChat(cid: String): ChatInfo
+    suspend fun getChat(cid: String): ChatInfo?
 }
