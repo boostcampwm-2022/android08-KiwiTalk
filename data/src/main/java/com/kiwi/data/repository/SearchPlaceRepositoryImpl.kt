@@ -1,10 +1,13 @@
 package com.kiwi.data.repository
 
+import android.util.Log
 import com.kiwi.data.datasource.remote.SearchPlaceRemoteDataSource
-import com.kiwi.domain.ApiResult
-import com.kiwi.domain.ResultSearchPlace
+import com.kiwi.data.mapper.Mapper.toPlaceList
+import com.kiwi.domain.model.PlaceList
 import com.kiwi.domain.repository.SearchPlaceRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+
 import javax.inject.Inject
 
 class SearchPlaceRepositoryImpl @Inject constructor(
@@ -15,7 +18,11 @@ class SearchPlaceRepositoryImpl @Inject constructor(
         lng: String,
         lat: String,
         place: String
-    ): ApiResult<ResultSearchPlace> {
-        return dataSource.getSearchKeyword(lng,lat,place)
+    ): Flow<PlaceList> = flow {
+        dataSource.getSearchKeyword(lng, lat, place)?.collect {
+            Log.d("SearchPlaceRepositoryImpl", "${it.documents[0]}")
+            emit(it.toPlaceList())
+        }
     }
+
 }

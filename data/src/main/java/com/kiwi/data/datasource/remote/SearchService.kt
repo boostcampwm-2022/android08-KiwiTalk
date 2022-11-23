@@ -1,7 +1,7 @@
 package com.kiwi.data.datasource.remote
 
-
-import com.kiwi.domain.ResultSearchPlace
+import com.kiwi.data.model.remote.PlaceListRemote
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -14,5 +14,5 @@ interface SearchService {
         @Query("y") lat: String,
         @Query("radius") radius: String,
         @Query("query") place: String
-    ): Response<ResultSearchPlace>
+    ): Response<PlaceListRemote>
 }

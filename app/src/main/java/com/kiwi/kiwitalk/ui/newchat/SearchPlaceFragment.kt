@@ -17,6 +17,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,9 +27,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.kiwi.domain.ResultSearchPlace
+import com.kiwi.domain.model.PlaceList
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchPlaceFragment : Fragment() {
@@ -79,6 +84,13 @@ class SearchPlaceFragment : Fragment() {
             ActivityCompat.requestPermissions(requireActivity(), permissions, permissionRequest)
         }
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchPlaceViewModel.isPlaceList.collect {
+                    resultSearchPlace(it)
+                }
+            }
+        }
         baseMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_24)
         selectMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_click)
 
@@ -131,10 +143,14 @@ class SearchPlaceFragment : Fragment() {
     private fun resultSearchPlace(resultSearchPlace: ResultSearchPlace){
         resultSearchPlace.documents.forEach { place ->
             val location = LatLng(place.y.toDouble(),place.x.toDouble())
+    private fun resultSearchPlace(placeList: PlaceList){
+        placeList.list.forEach { place ->
+            val location = LatLng(place.lat.toDouble(),place.lng.toDouble())
             val markerOptions =
                 MarkerOptions()
                     .position(location)
                     .title(place.place_name)
+                    .title(place.placeName)
                     .icon(baseMarker)
             mMap.addMarker(markerOptions)
         }
