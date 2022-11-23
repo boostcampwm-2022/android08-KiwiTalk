@@ -28,6 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="10dp"
-        android:src="@drawable/mdi_chat_plus_outline"
+        android:src="@drawable/ic_chatlist_searchchat"
         android:contentDescription="@string/fab_createChat_des" />
 </FrameLayout>
