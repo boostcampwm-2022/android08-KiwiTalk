@@ -20,7 +20,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.kiwi.kiwitalk.Const
 import com.kiwi.kiwitalk.databinding.ActivityLoginBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
-import com.kiwi.kiwitalk.ui.newchat.NewChatActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
         )
 
         if (!viewModel.idToken.value.isNullOrEmpty()) {
-            val intent = Intent(this, NewChatActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             finishAffinity()
             startActivity(intent)
         }
@@ -100,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
                     showPopUpMessage(LOGIN_SUCCESS)
-                    val intent = Intent(this, NewChatActivity::class.java)
+                    val intent = Intent(this, HomeActivity::class.java)
                     finishAffinity()
                     startActivity(intent)
                 } else {

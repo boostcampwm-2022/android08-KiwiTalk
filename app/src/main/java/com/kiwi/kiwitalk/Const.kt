@@ -6,5 +6,4 @@ object Const {
     const val SERVER_CLIENT_ID_KEY = "SERVER_CLIENT_ID"
     const val MAP_KEY_KEYWORD = "keyword"
     const val MAP_KEY_COUNTRY = "country"
-    const val BASE_URL = "https://dapi.kakao.com/"
 }

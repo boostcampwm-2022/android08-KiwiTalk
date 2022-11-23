@@ -8,38 +8,29 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Location
+import androidx.fragment.app.Fragment
+
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.location.*
+
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.kiwi.domain.ResultSearchPlace
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class SearchPlaceFragment : Fragment() {
 
     private var _binding : FragmentSearchPlaceBinding? = null
     private val binding get() = checkNotNull(_binding)
-    private val searchPlaceViewModel: SearchPlaceViewModel by viewModels()
-
     private val permissionRequest = 99
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -48,19 +39,19 @@ class SearchPlaceFragment : Fragment() {
     private var baseMarker: BitmapDescriptor? = null
     private var selectMarker: BitmapDescriptor? = null
 
-    private lateinit var locationCallback: LocationCallback
+    lateinit var locationCallback: LocationCallback
     private var permissions = arrayOf(
-        ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
+        ACCESS_FINE_LOCATION,
+        ACCESS_COARSE_LOCATION
     )
 
-    private val mapReadyCallback = OnMapReadyCallback { googleMap ->
+    private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
         mMap.setMinZoomPreference(5.0F)
         mMap.setMaxZoomPreference(20.0F)
-        mMap.clear()
+
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity()) //gps 자동으로 받아오기
-
         setUpdateLocationListener()
         setMarkerClickListener()
         setMapClickListener()
@@ -70,15 +61,15 @@ class SearchPlaceFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentSearchPlaceBinding.inflate(inflater,container,false)
 
-        return binding.root
+        return _binding?.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.search_map) as SupportMapFragment?
-        mapFragment?.getMapAsync(mapReadyCallback)
+        mapFragment?.getMapAsync(callback)
 
         if (!isPermitted()) {
             ActivityCompat.requestPermissions(requireActivity(), permissions, permissionRequest)
@@ -86,18 +77,6 @@ class SearchPlaceFragment : Fragment() {
 
         baseMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_24)
         selectMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_click)
-
-        searchPlaceViewModel.isPlaceList.observe(viewLifecycleOwner) {
-            resultSearchPlace(it)
-        }
-
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                searchPlaceViewModel.searchPlace.collect {
-//                    resultSearchPlace(it)
-//                }
-//            }
-//        }
     }
 
     private fun isPermitted(): Boolean {
@@ -129,34 +108,29 @@ class SearchPlaceFragment : Fragment() {
         )
     }
 
-    fun setLastLocation(location: Location) {
+        fun setLastLocation(location: Location) {
         val myLocation = LatLng(location.latitude, location.longitude)
-        searchPlaceViewModel.getSearchPlace(location.longitude.toString(),location.latitude.toString(),"카페")
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15.0F))
+        val markerOptions =
+            MarkerOptions()
+                .position(myLocation)
+                .title("현재 위치")
+                .icon(baseMarker)
+
+
+        mMap.addMarker(markerOptions)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17.0F))
     }
 
-    private fun resultSearchPlace(resultSearchPlace: ResultSearchPlace){
-        resultSearchPlace.documents.forEach { place ->
-            val location = LatLng(place.y.toDouble(),place.x.toDouble())
-            val markerOptions =
-                MarkerOptions()
-                    .position(location)
-                    .title(place.place_name)
-                    .icon(baseMarker)
-            mMap.addMarker(markerOptions)
-        }
-    }
-
-    private fun setMarkerClickListener() {
+        private fun setMarkerClickListener() {
         mMap.setOnMarkerClickListener { marker ->
-            markerState = if (markerState != null && markerState != marker) {
+            if (markerState != null && markerState != marker) {
                 clearMarkerClick(checkNotNull(markerState))
                 marker.setIcon(selectMarker)
-                marker
+                markerState = marker
             } else {
                 marker.setIcon(selectMarker)
-                marker
+                markerState = marker
             }
             // 마커 클릭 이벤트의 기본 동작 수행 (클릭시 카메라 이동, title 띄우기 등)
             false
