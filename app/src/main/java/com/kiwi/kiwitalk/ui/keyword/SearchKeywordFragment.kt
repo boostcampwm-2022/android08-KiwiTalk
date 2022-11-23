@@ -33,14 +33,4 @@ class SearchKeywordFragment : Fragment() {
         searchKeywordViewModel.getAllKeywords()
 
     }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-
-    }
 }
