@@ -5,7 +5,6 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,7 +37,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun signIn(token: String) {
+    fun saveToken(token: String) {
         /* pref에는 token만 넣기 */
         Log.d(LOCATION, "로그인 정보 저장 - token size : ${token.length}")
         pref.setString(Const.LOGIN_HISTORY_KEY, token)

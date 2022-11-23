@@ -51,11 +51,7 @@ class LoginActivity : AppCompatActivity() {
             }
         )
 
-        if (!viewModel.idToken.value.isNullOrEmpty()) {
-            val intent = Intent(this, HomeActivity::class.java)
-            finishAffinity()
-            startActivity(intent)
-        }
+        skipLoginWhenTokenExist(viewModel.idToken.value)
 
         binding.btnGoogleSignup.setOnClickListener {
             val intent = viewModel.googleApiClient.signInIntent
@@ -70,13 +66,21 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
+    private fun skipLoginWhenTokenExist(token: String?){
+        if (!token.isNullOrEmpty()) {
+            val intent = Intent(this, HomeActivity::class.java)
+            finishAffinity()
+            startActivity(intent)
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun loginWithGoogleCredential(result: GoogleSignInResult?) {
         try {
             result ?: return
             Log.d(TAG, result.status.toString())
             when (result.status.statusCode) {
-                GoogleSignInStatusCodes.SUCCESS -> viewModel.signIn(
+                GoogleSignInStatusCodes.SUCCESS -> viewModel.saveToken(
                     result.signInAccount?.idToken ?: Const.EMPTY_STRING
                 )
                 GoogleSignInStatusCodes.DEVELOPER_ERROR -> throw Exception("SHA키 등록 여부 확인")
