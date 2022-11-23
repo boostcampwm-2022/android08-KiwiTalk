@@ -21,4 +21,13 @@
         android:gravity="center"
         android:text="@string/tv_chatList_empty"
         android:textSize="20sp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_createChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="10dp"
+        android:src="@drawable/mdi_chat_plus_outline"
+        android:contentDescription="@string/fab_createChat_des" />
 </FrameLayout>

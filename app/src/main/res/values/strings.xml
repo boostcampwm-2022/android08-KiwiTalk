@@ -19,4 +19,6 @@
 
     <string name="tv_itemChatList_country_default">지역</string>
     <string name="tv_itemChatList_keyword_default">키워드</string>
+
+    <string name="fab_createChat_des">채팅방 찾기</string>
 </resources>
