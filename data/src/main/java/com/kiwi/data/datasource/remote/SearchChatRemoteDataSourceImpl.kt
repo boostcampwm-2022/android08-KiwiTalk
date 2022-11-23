@@ -11,6 +11,7 @@ import io.getstream.chat.android.client.api.models.QueryChannelsRequest
 import io.getstream.chat.android.client.api.models.querysort.QuerySortByField
 import com.kiwi.data.mapper.Mapper.toChatInfo
 import io.getstream.chat.android.client.models.Filters
+import io.getstream.chat.android.client.models.User
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -42,7 +43,7 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
         val request = QueryChannelsRequest(
             filter = Filters.and(
                 //Filters.eq("cid", cid),
-                Filters.`in`("name", "naver")
+                Filters.`in`("type", "messaging")
             ),
             offset = 0,
             limit = 10,
@@ -53,15 +54,23 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
             limit = ONE  // The number of channels to return (max is 30)
         }
 
+        //val user = User(id = "kimgyeon2", name = "")
+        //chatClient.devToken(user.id)
+
+        Log.d(TAG, chatClient.getCurrentUser().toString())
+
         val result = chatClient.queryChannels(request).await()
         return if(result.isSuccess){
+            Log.d(TAG, result.toString())
             result.data().first().toChatInfo()
         } else {
+            Log.d(TAG, result.toString())
             null
         }
     }
 
     companion object{
         private const val ONE = 1
+        private const val TAG = "k001"
     }
 }
