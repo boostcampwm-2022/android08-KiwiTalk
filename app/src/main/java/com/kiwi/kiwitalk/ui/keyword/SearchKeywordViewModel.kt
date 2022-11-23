@@ -24,7 +24,7 @@ class SearchKeywordViewModel @Inject constructor(
         viewModelScope.launch {
             searchKeywordRepository.getAllKeyWord().also { Log.d("FIRESTORE_CALL_KEYWORD", "getKeywords: VM 1 ${it}") }
                 ?.let {
-                    _keywords.value = it
+                    _keywords.value = it.toString()
                 }
         }
         Log.d("FIRESTORE_CALL_KEYWORD", "getKeywords: VM 2")
