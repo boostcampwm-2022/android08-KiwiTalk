@@ -26,7 +26,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.kiwi.domain.ResultSearchPlace
 import com.kiwi.domain.model.PlaceList
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
@@ -43,6 +42,7 @@ class SearchPlaceFragment : Fragment() {
     private val permissionRequest = 99
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var currentLocation : Location? = null
 
     private var markerState: Marker? = null
     private var baseMarker: BitmapDescriptor? = null
@@ -91,17 +91,16 @@ class SearchPlaceFragment : Fragment() {
                 }
             }
         }
+
+        binding.btnKeywordSearch.setOnClickListener {
+            searchLocation(currentLocation?:return@setOnClickListener,binding.etKeywordSearch.text.toString())
+            binding.etKeywordSearch.text = null
+        }
+
         baseMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_24)
         selectMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_click)
 
-        searchPlaceViewModel.isPlaceList.observe(viewLifecycleOwner) {
-            resultSearchPlace(it)
-        }
 
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                searchPlaceViewModel.searchPlace.collect {
-//                    resultSearchPlace(it)
     }
 
     private fun isPermitted(): Boolean {
@@ -133,23 +132,24 @@ class SearchPlaceFragment : Fragment() {
         )
     }
 
-    fun setLastLocation(location: Location) {
-        val myLocation = LatLng(location.latitude, location.longitude)
-        searchPlaceViewModel.getSearchPlace(location.longitude.toString(),location.latitude.toString(),"카페")
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15.0F))
+    private fun searchLocation(location: Location, keyword: String){
+        mMap.clear()
+        searchPlaceViewModel.getSearchPlace(location.longitude.toString(),location.latitude.toString(),keyword)
     }
 
-    private fun resultSearchPlace(resultSearchPlace: ResultSearchPlace){
-        resultSearchPlace.documents.forEach { place ->
-            val location = LatLng(place.y.toDouble(),place.x.toDouble())
+    fun setLastLocation(location: Location) {
+        currentLocation = location
+        val myLocation = LatLng(location.latitude, location.longitude)
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17.0F))
+    }
+
     private fun resultSearchPlace(placeList: PlaceList){
         placeList.list.forEach { place ->
             val location = LatLng(place.lat.toDouble(),place.lng.toDouble())
             val markerOptions =
                 MarkerOptions()
                     .position(location)
-                    .title(place.place_name)
                     .title(place.placeName)
                     .icon(baseMarker)
             mMap.addMarker(markerOptions)
