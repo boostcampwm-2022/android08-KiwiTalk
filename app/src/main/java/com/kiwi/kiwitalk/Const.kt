@@ -1,7 +1,9 @@
 package com.kiwi.kiwitalk
 
 object Const {
-    const val LOGIN_HISTORY_KEY = "login_history_key"
+    const val LOGIN_ID_KEY = "login_history_key"
+    const val LOGIN_NAME_KEY = "login_name"
+    const val LOGIN_URL_KEY = "login_url"
     const val EMPTY_STRING = ""
     const val SERVER_CLIENT_ID_KEY = "SERVER_CLIENT_ID"
     const val MAP_KEY_KEYWORD = "keyword"
