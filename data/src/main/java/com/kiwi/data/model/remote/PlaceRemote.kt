@@ -1,4 +1,4 @@
-package com.kiwi.domain
+package com.kiwi.data.model.remote
 
 data class PlaceRemote (
     var place_name: String, // 장소명, 업체명
