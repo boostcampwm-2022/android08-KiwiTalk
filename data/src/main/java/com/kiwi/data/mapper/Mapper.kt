@@ -18,5 +18,6 @@ object Mapper {
         name = this.name,
         memberCount = this.memberCount,
         lastMessageAt = this.lastMessageAt,
+        country = this.extraData["country"] as String
     )
 }
