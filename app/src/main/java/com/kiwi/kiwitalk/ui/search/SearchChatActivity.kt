@@ -36,6 +36,7 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search_chat)
+        binding.lifecycleOwner = this
         binding.vm = viewModel
 
         initMap()
@@ -86,13 +87,12 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun initBottomSheetCallBack() {
         bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                Log.d(TAG, newState.toString())
                 when (newState) {
                     BottomSheetBehavior.STATE_DRAGGING -> {
-                        //binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
+                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        //binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
                     }
                 }
             }
@@ -108,9 +108,5 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onDestroy() {
         super.onDestroy()
         bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
-    }
-
-    companion object {
-        private const val TAG = "k001"
     }
 }

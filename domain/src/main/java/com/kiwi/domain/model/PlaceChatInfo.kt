@@ -3,8 +3,8 @@ package com.kiwi.domain.model
 data class PlaceChatInfo (
     val chatList: List<ChatInfo>,
 ){
-    fun getChattingNumber(): Int{
-        return chatList.size
+    fun getChattingNumber(): String{
+        return chatList.size.toString()
     }
 
     fun getPopularChat(): ChatInfo {
