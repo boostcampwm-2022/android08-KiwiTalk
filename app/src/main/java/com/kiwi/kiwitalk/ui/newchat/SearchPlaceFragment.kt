@@ -179,6 +179,16 @@ class SearchPlaceFragment : Fragment() {
         }
     }
 
+    private fun setMapLongClickListener(){
+        mMap.setOnMapLongClickListener {
+            val markerOptions =
+                MarkerOptions()
+                    .position(it)
+                    .icon(baseMarker)
+
+            mMap.addMarker(markerOptions)
+        }
+    }
     private fun clearMarkerClick(marker: Marker) {
         marker.setIcon(baseMarker)
     }
