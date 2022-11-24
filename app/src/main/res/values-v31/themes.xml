@@ -23,4 +23,12 @@
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo_splash_light</item>
 
     </style>
+
+    <style name="Theme.Keyword" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="checkedIconVisible">false</item>
+        <item name="chipStrokeColor">@color/grey1</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipBackgroundColor">@color/color_chip_background_keyword</item>
+        <item name="android:textColor">@color/color_chip_text_keyword</item>
+    </style>
 </resources>

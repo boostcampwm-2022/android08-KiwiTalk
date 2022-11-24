@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.keyword.SearchKeywordFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<layout>
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:context=".ui.keyword.SearchKeywordFragment">
 
-</FrameLayout>
+        <Toolbar
+            android:id="@+id/tb_searchKeyword_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:navigationIcon="@drawable/ic_backarrow_48"
+            android:title="키워드검색"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_searchKeyword_keywordCategoryList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_searchKeyword_title"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_keywordcategory" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
