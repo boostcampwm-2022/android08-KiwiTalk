@@ -65,7 +65,7 @@ class SearchChatActivity2 : AppCompatActivity() {
             }
         }
 
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.infoBottomSheet)
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.layoutBottomSheet)
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
