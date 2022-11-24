@@ -6,11 +6,14 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -20,9 +23,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.myLocationButtonClickEvents
+import com.kiwi.domain.model.Marker
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.ActivitySearchChatBinding
 import com.kiwi.kiwitalk.model.ClusterMarker
@@ -32,7 +37,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class SearchChatActivity : AppCompatActivity() {
-    private val binding by lazy { ActivitySearchChatBinding.inflate(layoutInflater) }
+    private lateinit var binding: ActivitySearchChatBinding
     private val viewModel: SearchChatViewModel by viewModels()
     private lateinit var map: GoogleMap
     private lateinit var clusterManager: ClusterManager<ClusterMarker>
@@ -50,14 +55,33 @@ class SearchChatActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_chat)
+        binding.vm = viewModel
+
         initMap()
         binding.tvSearchChatKeywords.setOnClickListener {
             viewModel.getMarkerList(listOf("축구", "영화"), 36.9, 127.0)
-            getDeviceLocation()
-        } //TODO: 검색버튼 만들고 제거
+        } //TODO: FloatingButton 만들고 제거
+
+        initBottomSheetCallBack()
+
+        /* TODO 마커 클릭으로 바꿔야함 */
+        binding.fabCreateChat.setOnClickListener {
+            // newChatActivity로 바꾸는 코드로 대체해야함
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            viewModel.getPlaceInfo(Marker("messaging:-149653492", 1.0, 1.0, listOf()))
+        }
+
+        /* TODO 바깥 누르면 바텀시트 내려가게하기 */
+        binding.fragmentSearchChatMap.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
     }
 
     private fun initMap() {
@@ -159,8 +183,37 @@ class SearchChatActivity : AppCompatActivity() {
         )
     }
 
+    private fun initBottomSheetCallBack() {
+        bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                Log.d(TAG, newState.toString())
+                when (newState) {
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                        //binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
+                    }
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        //binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        }
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.layoutBottomSheet)
+        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
+    }
+
     companion object {
         private val Any.TAG get() = this::class.simpleName
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val TAG = "k001"
     }
 }

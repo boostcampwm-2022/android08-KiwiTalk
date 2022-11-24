@@ -118,3 +118,7 @@ fabric.properties
 
 # Mac .DS_Store
 .DS_Store
+
+# 기타 발견된 항목
+gradle/wrapper/gradle-wrapper.properties
+

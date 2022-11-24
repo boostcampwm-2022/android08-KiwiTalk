@@ -21,4 +21,6 @@
     <string name="tv_itemChatList_keyword_default">키워드</string>
 
     <string name="fab_createChat_des">채팅방 찾기</string>
+    <string name="new_chat_description">새로운 채팅방 생성</string>
+    <string name="chat_number_prefix">현재 채팅방 수</string>
 </resources>

@@ -4,14 +4,12 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kiwi.kiwitalk.AppPreference
 import com.kiwi.kiwitalk.BuildConfig
 import com.kiwi.kiwitalk.Const
-import com.kiwi.kiwitalk.ui.login.LoginActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +23,7 @@ object ApplicationModule {
     @Singleton
     @Provides
     fun providePreference(@ApplicationContext context: Context): AppPreference =
-        AppPreference(context.getSharedPreferences(Const.LOGIN_HISTORY_KEY, Context.MODE_PRIVATE))
+        AppPreference(context.getSharedPreferences(Const.LOGIN_ID_KEY, Context.MODE_PRIVATE))
 
     @Singleton
     @Provides
