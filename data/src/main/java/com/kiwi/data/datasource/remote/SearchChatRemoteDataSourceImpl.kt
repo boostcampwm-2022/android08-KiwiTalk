@@ -1,6 +1,5 @@
 package com.kiwi.data.datasource.remote
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.kiwi.data.Const
@@ -8,6 +7,7 @@ import com.kiwi.data.mapper.Mapper.toMarker
 import com.kiwi.data.model.remote.ChatInfoRemote
 import com.kiwi.data.model.remote.MarkerRemote
 import com.kiwi.domain.model.Marker
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -21,20 +21,25 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
         x: Double,
         y: Double
     ): Flow<Marker> = callbackFlow {
-        //TODO: Chat 컬렉션의 모든 데이터를 가져오지 않고, 쿼리를 사용하도록 변경
-        firestore.collection(Const.CHAT_COLLECTION).get()
-            .addOnSuccessListener {
-                Log.d("SearchChatRemoteImpl", "getMarkerList: ${it.documents}")
-                it.toObjects<MarkerRemote>().forEach { markerRemote ->
+        firestore.collection(Const.CHAT_COLLECTION)
+            .whereArrayContainsAny("keywords", keyword).get()
+            .addOnSuccessListener { querySnapshot ->
+                querySnapshot.toObjects<MarkerRemote>().filter { markerRemote ->
+                    markerRemote.x in x.toRange && markerRemote.y in y.toRange
+                }.forEach { markerRemote ->
                     trySend(markerRemote.toMarker())
                 }
             }.addOnFailureListener {
-                Log.d("SearchChatRemoteImpl", "getMarkerList: $it")
+                cancel()
             }
         awaitClose()
     }
 
     override suspend fun getChat(cid: String): ChatInfoRemote {
         TODO("Not yet implemented")
+    }
+
+    companion object {
+        private val Double.toRange get() = this - 1..this + 1
     }
 }
