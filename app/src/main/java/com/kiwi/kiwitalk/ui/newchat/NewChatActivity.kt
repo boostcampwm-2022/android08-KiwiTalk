@@ -1,9 +1,7 @@
 package com.kiwi.kiwitalk.ui.newchat
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.fragment.NavHostFragment
-import com.kiwi.kiwitalk.R
+import androidx.appcompat.app.AppCompatActivity
 import com.kiwi.kiwitalk.databinding.ActivityNewChatBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,5 +15,6 @@ class NewChatActivity : AppCompatActivity() {
         binding = ActivityNewChatBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
     }
 }

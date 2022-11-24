@@ -15,8 +15,6 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.kiwi.kiwitalk.Const
 import com.kiwi.kiwitalk.databinding.ActivityLoginBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
@@ -51,16 +49,7 @@ class LoginActivity : AppCompatActivity() {
             }
         )
 
-        if (!viewModel.idToken.value.isNullOrEmpty()) {
-            val intent = Intent(this, HomeActivity::class.java)
-            finishAffinity()
-            startActivity(intent)
-        }
-
-        binding.btnGoogleSignup.setOnClickListener {
-            val intent = viewModel.googleApiClient.signInIntent
-            activityResultLauncher.launch(intent)
-        }
+        skipLoginWhenTokenExist(viewModel.userId.value)
 
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -68,6 +57,19 @@ class LoginActivity : AppCompatActivity() {
                     Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
                 )
             }
+
+        binding.btnGoogleSignup.setOnClickListener {
+            val intent = viewModel.googleApiClient.signInIntent
+            activityResultLauncher.launch(intent)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun skipLoginWhenTokenExist(token: String?) {
+        if (!token.isNullOrEmpty()) {
+            loginWithLocalToken()
+            navigateToHome()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -75,10 +77,15 @@ class LoginActivity : AppCompatActivity() {
         try {
             result ?: return
             Log.d(TAG, result.status.toString())
+
             when (result.status.statusCode) {
-                GoogleSignInStatusCodes.SUCCESS -> viewModel.signIn(
-                    result.signInAccount?.idToken ?: Const.EMPTY_STRING
-                )
+                GoogleSignInStatusCodes.SUCCESS -> result.signInAccount?.apply {
+                    viewModel.saveToken(
+                        id = id!!,
+                        name = displayName ?: Const.EMPTY_STRING,
+                        imageUrl = photoUrl.toString()
+                    )
+                }
                 GoogleSignInStatusCodes.DEVELOPER_ERROR -> throw Exception("SHA키 등록 여부 확인")
                 GoogleSignInStatusCodes.NETWORK_ERROR -> showPopUpMessage(NO_NETWORK)
                 12501 -> throw Exception("디바이스가 Google Play 서비스를 포함하는지 확인")
@@ -87,28 +94,22 @@ class LoginActivity : AppCompatActivity() {
             Log.d(TAG, e.toString())
         }
 
-        if (!viewModel.idToken.value.isNullOrEmpty()) {
-            loginOnFireAuth(viewModel.idToken.value!!)
+        if (!viewModel.userId.value.isNullOrEmpty()) {
+            loginWithLocalToken()
         }
     }
 
-    private fun loginOnFireAuth(token: String) {
-        val credential = GoogleAuthProvider.getCredential(token, null)
-        val auth: FirebaseAuth = FirebaseAuth.getInstance()
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) {
-                if (it.isSuccessful) {
-                    showPopUpMessage(LOGIN_SUCCESS)
-                    val intent = Intent(this, HomeActivity::class.java)
-                    finishAffinity()
-                    startActivity(intent)
-                } else {
-                    showPopUpMessage(LOGIN_FAIL)
-                }
-            }
-            .addOnCanceledListener(this) {
-                showPopUpMessage(LOGIN_SERVER_ERROR)
-            }
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun loginWithLocalToken() {
+        viewModel.loginWithLocalToken()
+        showPopUpMessage(LOGIN_SUCCESS)
+        navigateToHome()
+    }
+
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        finishAffinity()
+        startActivity(intent)
     }
 
     private fun showPopUpMessage(text: String) {
@@ -118,8 +119,6 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "k001"
         private const val LOGIN_SUCCESS = "로그인 성공"
-        private const val LOGIN_FAIL = "로그인 실패"
-        private const val LOGIN_SERVER_ERROR = "서버와의 연결이 불안정합니다"
         private const val NO_NETWORK = "인터넷 연결을 확인해주세요"
     }
 }
