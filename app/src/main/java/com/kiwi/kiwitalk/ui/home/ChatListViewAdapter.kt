@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kiwi.kiwitalk.databinding.ChatItemBinding
+import com.kiwi.kiwitalk.databinding.ItemChatListBinding
 import io.getstream.chat.android.client.models.Channel
 
 class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDiffUtil) {
@@ -14,7 +14,7 @@ class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ChatViewHolder(
-            ChatItemBinding.inflate(
+            ItemChatListBinding.inflate(
                 LayoutInflater.from(
                     parent.context
                 ), parent, false
@@ -34,7 +34,7 @@ class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDi
 
     }
 
-    class ChatViewHolder(private val binding: ChatItemBinding) :
+    class ChatViewHolder(private val binding: ItemChatListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Channel) {
             Log.d("ChatListViewAdapter", "bind: ${item.image}")

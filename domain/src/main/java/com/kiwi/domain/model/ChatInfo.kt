@@ -1,11 +1,11 @@
 package com.kiwi.domain.model
 
-import java.util.*
-
 data class ChatInfo(
     val cid:String,
     val name: String,
-    var memberCount: Int,
-    var lastMessageAt: Date?,
-    var country: String,
+    val keywords: List<String>,
+    val description: String,
+    val memberCount: Int,
+    val lastMessageAt: String,
+    val country: String,
 )
