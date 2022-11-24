@@ -134,8 +134,8 @@ class SearchChatActivity : AppCompatActivity() {
                 Log.d(TAG, "getDeviceLocation location: $location")
                 location ?: return@addOnSuccessListener
                 map.moveCamera(
-                    CameraUpdateFactory.newLatLng(
-                        LatLng(location.latitude, location.longitude)
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(location.latitude, location.longitude), 15f
                     )
                 )
             }.addOnFailureListener {
