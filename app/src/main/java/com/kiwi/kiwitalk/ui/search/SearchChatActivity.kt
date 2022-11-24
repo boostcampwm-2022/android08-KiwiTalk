@@ -114,6 +114,8 @@ class SearchChatActivity : AppCompatActivity() {
         map.setOnCameraIdleListener(clusterManager)
         clusterManager.setOnClusterItemClickListener { item ->
             Log.d("SearchChatActivity", "setOnClusterItemClickListener: $item")
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            viewModel.getPlaceInfo(Marker("messaging:-149653492", 1.0, 1.0, listOf()))
             false
         }
         clusterManager.setOnClusterClickListener { cluster ->
