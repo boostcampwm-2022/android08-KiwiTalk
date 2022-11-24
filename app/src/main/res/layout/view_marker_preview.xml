@@ -46,10 +46,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/medium_margin"
                     android:text="@{item.popularChat.lastMessageAt}"
+                    android:textColor="?attr/colorOnSurfaceLight"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="어제"
-                    android:textColor="?attr/colorOnSurfaceLight"/>
+                    tools:text="어제" />
 
                 <TextView
                     android:id="@+id/tv_chat_title"
@@ -58,11 +58,11 @@
                     android:layout_margin="@dimen/medium_margin"
                     android:ellipsize="end"
                     android:text="@{item.popularChat.name}"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rv_chat_Keywords"
-                    tools:text="방 제목"
-                    android:textStyle="bold"
-                    android:textColor="?attr/colorOnSurface"/>
+                    tools:text="방 제목" />
 
                 <TextView
                     android:id="@+id/tv_chat_description"
@@ -70,10 +70,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/medium_margin"
                     android:text="@{item.popularChat.description}"
+                    android:textColor="?attr/colorOnSurfaceLight"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_chat_title"
-                    tools:text="저희는 이런 모임 입니다."
-                    android:textColor="?attr/colorOnSurfaceLight"/>
+                    tools:text="저희는 이런 모임 입니다." />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -86,33 +86,22 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/large_margin"
             android:text="@{item.popularChat.country}"
+            android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/card_chat"
             app:layout_constraintTop_toBottomOf="@id/card_chat"
-            tools:text="청주시 청원구"
-            android:textColor="?attr/colorOnSurface"/>
+            tools:text="청주시 청원구" />
 
         <TextView
             android:id="@+id/tv_chat_number_prefix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/large_margin"
-            android:text="@string/chat_number_prefix"
+            android:text="@{@string/chat_number(item.chattingNumber)}"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/tv_chat_number"
-            app:layout_constraintTop_toBottomOf="@id/card_chat" />
-
-        <TextView
-            android:id="@+id/tv_chat_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/large_margin"
-            android:text="@{item.chattingNumber}"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/card_chat"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/card_chat"
-            tools:text="4" />
+            tools:text="현재 채팅방 수 : 5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
