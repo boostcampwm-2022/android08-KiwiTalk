@@ -24,13 +24,14 @@ class SearchChatViewModel @Inject constructor(
     val markerList: SharedFlow<Marker> = _markerList
 
     private val _placeChatInfo = MutableLiveData<PlaceChatInfo>()
-    val placeChatInfo : LiveData<PlaceChatInfo> = _placeChatInfo
+    val placeChatInfo: LiveData<PlaceChatInfo> = _placeChatInfo
 
-    fun getPlaceInfo(marker: Marker){
+    fun getPlaceInfo(marker: Marker) {
         viewModelScope.launch {
             _placeChatInfo.value = searchChatRepository.getChat(marker)
         }
     }
+
     fun getMarkerList(keywords: List<String>, x: Double, y: Double) {
         viewModelScope.launch {
             searchChatRepository.getMarkerList(keywords, x, y)
