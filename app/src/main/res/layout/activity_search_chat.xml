@@ -73,7 +73,7 @@
                 layout="@layout/view_marker_preview"
                 bind:item="@{vm.placeChatInfo}"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/bottomSheet_collapse_size"/>
+                android:layout_height="wrap_content"/>
 
 
             <TextView

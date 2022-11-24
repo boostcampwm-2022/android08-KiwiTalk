@@ -18,8 +18,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kiwi.domain.model.Marker
+import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.ActivitySearchChatBinding
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -64,6 +66,13 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.fragmentSearchChatMap.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
+
+        val adapter = KeywordAdapter(mutableListOf<Keyword>())
+        binding.layoutMarkerInfoPreview.rvChatKeywords.adapter = adapter
+        viewModel.placeChatInfo.observe(this){
+            adapter.updateList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
+        }
+
     }
 
     private fun initMap() {

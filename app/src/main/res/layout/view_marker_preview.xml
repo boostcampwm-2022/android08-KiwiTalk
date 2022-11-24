@@ -14,7 +14,6 @@
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/brown"
         android:padding="10dp">
 
         <com.google.android.material.card.MaterialCardView
@@ -35,8 +34,8 @@
                     android:id="@+id/rv_chat_Keywords"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/medium_margin"
                     android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toStartOf="@id/tv_chat_date"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -115,6 +114,5 @@
             app:layout_constraintEnd_toEndOf="@id/card_chat"
             app:layout_constraintTop_toBottomOf="@id/card_chat"
             tools:text="4" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
