@@ -102,6 +102,7 @@ class SearchPlaceFragment : Fragment() {
                     markerState?.position?.latitude?:return@setOnClickListener,
                     markerState?.position?.longitude?:return@setOnClickListener
                     )
+                setDialog(address)
 
             }
         }
@@ -219,6 +220,29 @@ class SearchPlaceFragment : Fragment() {
         return nowAddress
     }
 
+    private fun setDialog(address: String){
+        val layoutInflater = LayoutInflater.from(context)
+        val view = layoutInflater.inflate(R.layout.dialog_new_chat, null)
+        val dialog = AlertDialog.Builder(context)
+            .setView(view)
+            .show()
+
+        val textTitle = view.findViewById<TextView>(R.id.tv_current_address)
+        val buttonConfirm =  view.findViewById<TextView>(R.id.btn_chat_place_save)
+        val buttonClose =  view.findViewById<View>(R.id.btn_chat_place_cancel)
+        textTitle.text = address
+
+        dialog.window?.setGravity(Gravity.TOP)
+
+        buttonClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        buttonConfirm.setOnClickListener {
+            dialog.dismiss()
+            findNavController().navigate(R.id.action_searchPlaceFragment_to_newChatFragment)
+        }
+    }
     // 벡터 이미지 변환
     private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
         return ContextCompat.getDrawable(context, vectorResId)?.run {
