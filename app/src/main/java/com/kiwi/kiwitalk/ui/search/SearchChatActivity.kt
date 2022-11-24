@@ -117,7 +117,6 @@ class SearchChatActivity : AppCompatActivity() {
             false
         }
         clusterManager.setOnClusterClickListener { cluster ->
-            cluster.position
             Log.d("SearchChatActivity", "setOnClusterClickListener: $cluster")
             cluster.items.forEach {
                 Log.d("SearchChatActivity", "forEach: $it")
@@ -129,15 +128,18 @@ class SearchChatActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     private fun getDeviceLocation() {
         checkPermission()
-        val locationResult = fusedLocationClient.lastLocation
-        locationResult.addOnCompleteListener(this) { task ->
+
+        fusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
             task.addOnSuccessListener { location: Location? ->
+                Log.d(TAG, "getDeviceLocation location: $location")
                 location ?: return@addOnSuccessListener
                 map.moveCamera(
                     CameraUpdateFactory.newLatLng(
                         LatLng(location.latitude, location.longitude)
                     )
                 )
+            }.addOnFailureListener {
+
             }
         }
     }
