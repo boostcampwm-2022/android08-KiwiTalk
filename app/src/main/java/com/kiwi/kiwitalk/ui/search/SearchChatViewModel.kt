@@ -1,8 +1,6 @@
 package com.kiwi.kiwitalk.ui.search
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kiwi.domain.model.Marker
@@ -26,7 +24,7 @@ class SearchChatViewModel @Inject constructor(
         viewModelScope.launch {
             searchChatRepository.getMarkerList(keywords, x, y)
                 .catch {
-                    Log.d("searchChatRepository", "getMarkerList: ${this.toResult()} $it")
+                    Log.d("SearchChatViewModel", "getMarkerList: ${this.toResult()} $it")
                 }.collect {
                     _markerList.emit(it)
                 }
