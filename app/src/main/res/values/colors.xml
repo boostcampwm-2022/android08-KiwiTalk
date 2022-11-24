@@ -10,6 +10,7 @@
 
     <color name="green">#FFCDDB4D</color>
     <color name="green_deep">#FF99AA12</color>
+    <color name="green_text">#606C00</color>
     <color name="green_light">#FFD9E851</color>
 
     <color name="brown">#FFA46D46</color>
