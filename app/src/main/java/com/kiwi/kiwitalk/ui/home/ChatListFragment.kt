@@ -1,5 +1,6 @@
 package com.kiwi.kiwitalk.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kiwi.kiwitalk.databinding.FragmentChatListBinding
+import com.kiwi.kiwitalk.ui.search.SearchChatActivity2
 import dagger.hilt.android.AndroidEntryPoint
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.Channel
@@ -40,6 +42,12 @@ class ChatListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUser()
         initRecyclerView()
+
+        /* 임시 코드 */
+        binding.fabMoveToNewChat.setOnClickListener{
+            val intent = Intent(context, SearchChatActivity2::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initRecyclerView() {

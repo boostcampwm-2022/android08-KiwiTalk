@@ -17,4 +17,5 @@
     <string name="img_chatList_profile_des">채팅방 이미지</string>
     <string name="tv_chatList_empty">참여한 채팅방이 없습니다.</string>
     <string name="new_chat_description">새로운 채팅방 생성</string>
+    <string name="chat_number_prefix">현재 채팅방 수</string>
 </resources>

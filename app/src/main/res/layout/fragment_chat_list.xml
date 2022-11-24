@@ -21,4 +21,9 @@
         android:gravity="center"
         android:text="@string/tv_chatList_empty"
         android:textSize="20sp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fab_moveToNewChat"/>
 </FrameLayout>

@@ -11,7 +11,6 @@ import io.getstream.chat.android.client.api.models.QueryChannelsRequest
 import io.getstream.chat.android.client.api.models.querysort.QuerySortByField
 import com.kiwi.data.mapper.Mapper.toChatInfo
 import io.getstream.chat.android.client.models.Filters
-import io.getstream.chat.android.client.models.User
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -42,8 +41,7 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
     override suspend fun getChat(cid: String): ChatInfo? {
         val request = QueryChannelsRequest(
             filter = Filters.and(
-                //Filters.eq("cid", cid),
-                Filters.`in`("type", "messaging")
+                Filters.eq("cid", cid),
             ),
             offset = 0,
             limit = 10,
@@ -59,6 +57,7 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
 
         Log.d(TAG, chatClient.getCurrentUser().toString())
 
+        /* await는 실패하면 터진다. 코루틴 Result 보기싫다고 빼면 안된다. await 동작 잘 보자 */
         val result = chatClient.queryChannels(request).await()
         return if(result.isSuccess){
             Log.d(TAG, result.toString())
