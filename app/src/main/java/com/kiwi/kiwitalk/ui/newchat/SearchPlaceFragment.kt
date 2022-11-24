@@ -96,7 +96,15 @@ class SearchPlaceFragment : Fragment() {
             searchLocation(currentLocation?:return@setOnClickListener,binding.etKeywordSearch.text.toString())
             binding.etKeywordSearch.text = null
         }
+        with(binding){
+            btnPlaceSave.setOnClickListener {
+                val address = getAddress(requireContext(),
+                    markerState?.position?.latitude?:return@setOnClickListener,
+                    markerState?.position?.longitude?:return@setOnClickListener
+                    )
 
+            }
+        }
         baseMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_24)
         selectMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_click)
 
@@ -157,6 +165,7 @@ class SearchPlaceFragment : Fragment() {
 
     private fun setMarkerClickListener() {
         mMap.setOnMarkerClickListener { marker ->
+            binding.btnPlaceSave.visibility = View.VISIBLE
             markerState = if (markerState != null && markerState != marker) {
                 clearMarkerClick(checkNotNull(markerState))
                 marker.setIcon(selectMarker)
@@ -173,6 +182,7 @@ class SearchPlaceFragment : Fragment() {
     private fun setMapClickListener() {
         mMap.setOnMapClickListener {
             if (markerState != null) {
+                binding.btnPlaceSave.visibility = View.GONE
                 markerState?.setIcon(baseMarker)
                 markerState = null
             }
@@ -191,6 +201,22 @@ class SearchPlaceFragment : Fragment() {
     }
     private fun clearMarkerClick(marker: Marker) {
         marker.setIcon(baseMarker)
+    }
+
+    private fun getAddress(context: Context, lat: Double, lng: Double): String {
+        var nowAddress: String = ADDRESS_ERROR
+        val geocoder = Geocoder(context, Locale.KOREA)
+        try {
+            geocoder.changeLatLngToAddress(lat, lng) {
+                if(it != null){
+                    val currentLocationAddress: String = it.getAddressLine(0).toString()
+                    nowAddress = currentLocationAddress
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return nowAddress
     }
 
     // 벡터 이미지 변환
