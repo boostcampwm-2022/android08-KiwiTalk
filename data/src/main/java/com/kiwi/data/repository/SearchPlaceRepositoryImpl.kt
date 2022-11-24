@@ -19,8 +19,7 @@ class SearchPlaceRepositoryImpl @Inject constructor(
         lat: String,
         place: String
     ): Flow<PlaceList> = flow {
-        dataSource.getSearchKeyword(lng, lat, place)?.collect {
-            Log.d("SearchPlaceRepositoryImpl", "${it.documents[0]}")
+        dataSource.getSearchKeyword(lng, lat, place).collect {
             emit(it.toPlaceList())
         }
     }

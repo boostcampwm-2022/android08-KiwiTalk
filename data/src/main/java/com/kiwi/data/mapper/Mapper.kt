@@ -3,9 +3,9 @@ package com.kiwi.data.mapper
 import com.kiwi.data.model.remote.MarkerRemote
 import com.kiwi.data.model.remote.PlaceListRemote
 import com.kiwi.data.model.remote.PlaceRemote
-import com.kiwi.domain.model.PlaceList
-import com.kiwi.domain.model.Place
 import com.kiwi.domain.model.Marker
+import com.kiwi.domain.model.Place
+import com.kiwi.domain.model.PlaceList
 
 object Mapper {
     fun MarkerRemote.toMarker() = Marker(
@@ -15,15 +15,11 @@ object Mapper {
         keywords = keywords
     )
 
-
     fun PlaceListRemote.toPlaceList() : PlaceList {
-        var cnt = 0
         val result = mutableListOf<Place>()
-        documents.forEach {
-            result.add(cnt,it.toPlace())
-            cnt++
+        documents.mapIndexed { index, placeRemote ->
+            result.add(index,placeRemote.toPlace())
         }
-
         return PlaceList(list = result)
     }
 

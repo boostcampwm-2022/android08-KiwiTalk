@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
         )
 
         if (!viewModel.idToken.value.isNullOrEmpty()) {
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, NewChatActivity::class.java)
             finishAffinity()
             startActivity(intent)
         }
@@ -100,7 +100,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
                     showPopUpMessage(LOGIN_SUCCESS)
-                    val intent = Intent(this, HomeActivity::class.java)
+                    val intent = Intent(this, NewChatActivity::class.java)
                     finishAffinity()
                     startActivity(intent)
                 } else {

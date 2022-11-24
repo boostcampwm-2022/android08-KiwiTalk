@@ -2,6 +2,8 @@ package com.kiwi.kiwitalk.di
 
 import android.util.Log
 import com.kiwi.kiwitalk.Const.BASE_URL
+import com.kiwi.kiwitalk.Const.KAKAO_AUTH
+import com.kiwi.kiwitalk.Const.KAKAO_KEY
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,7 +57,7 @@ object KakaoApiModule {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request().newBuilder()
-                .addHeader("Authorization", "KakaoAK c42505e275dcf6c9770aa45d2db6cc49")
+                .addHeader(KAKAO_AUTH, KAKAO_KEY)
                 .build()
             return chain.proceed(request)
         }

@@ -84,7 +84,7 @@ class SearchPlaceFragment : Fragment() {
             ActivityCompat.requestPermissions(requireActivity(), permissions, permissionRequest)
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 searchPlaceViewModel.isPlaceList.collect {
                     resultSearchPlace(it)
@@ -99,7 +99,6 @@ class SearchPlaceFragment : Fragment() {
 
         baseMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_24)
         selectMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_click)
-
 
     }
 
