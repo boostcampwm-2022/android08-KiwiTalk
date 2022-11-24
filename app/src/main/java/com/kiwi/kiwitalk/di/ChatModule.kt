@@ -25,7 +25,8 @@ class ChatModule {
             .build()
     }
 
-    private fun getOfflinePlugin(context: Context) =
+    @Singleton
+    private fun getOfflinePlugin(@ApplicationContext context: Context) =
         StreamOfflinePluginFactory(
             config = Config(),
             appContext = context,

@@ -2,7 +2,6 @@ package com.kiwi.kiwitalk.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.kiwi.kiwitalk.ui.search.SearchChatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.Channel
-import io.getstream.chat.android.client.models.User
 import io.getstream.chat.android.ui.channel.list.viewmodel.ChannelListViewModel
 import io.getstream.chat.android.ui.channel.list.viewmodel.factory.ChannelListViewModelFactory
 import io.getstream.chat.android.ui.message.MessageListActivity
@@ -40,7 +38,6 @@ class ChatListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initUser()
         initRecyclerView()
 
         binding.fabCreateChat.setOnClickListener {
@@ -68,22 +65,6 @@ class ChatListFragment : Fragment() {
         }
         binding.rvChatList.apply {
             this.adapter = adapter
-        }
-    }
-
-    private fun initUser() {
-        val user = User(
-            id = "kiwi",
-            name = "Wi Ki",
-            image = "https://bit.ly/2TIt8NR",
-        )
-        val token = client.devToken(user.id)
-        if (client.getCurrentUser() == null) {
-            client.connectUser(user, token).enqueue { result ->
-                Log.d(TAG, "result is ${result.isSuccess}: $result")
-            }
-        } else {
-            Log.d(TAG, "user: ${client.getCurrentUser()}")
         }
     }
 

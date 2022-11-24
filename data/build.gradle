@@ -53,4 +53,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
+
+    // stream chat : Client only
+    def stream_version = "5.11.6"
+    implementation "io.getstream:stream-chat-android-client:$stream_version"
+
 }
