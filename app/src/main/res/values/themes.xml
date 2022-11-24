@@ -16,6 +16,7 @@
         <item name="colorSurfaceDark">@color/grey1</item>
         <item name="colorOnSurface">@color/black</item>
         <item name="colorOnSurfaceLight">@color/grey5</item>
+        <item name="colorOnSurfaceVariant">@color/green_text</item>
 
     </style>
 

@@ -27,8 +27,10 @@ import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.myLocationButtonClickEvents
 import com.kiwi.domain.model.Marker
+import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.ActivitySearchChatBinding
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordAdapter
 import com.kiwi.kiwitalk.model.ClusterMarker
 import com.kiwi.kiwitalk.model.ClusterMarker.Companion.toClusterMarker
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,6 +64,7 @@ class SearchChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search_chat)
+        binding.lifecycleOwner = this
         binding.vm = viewModel
 
         initMap()
@@ -82,6 +85,13 @@ class SearchChatActivity : AppCompatActivity() {
         binding.fragmentSearchChatMap.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
+
+        val adapter = KeywordAdapter(mutableListOf<Keyword>())
+        binding.layoutMarkerInfoPreview.rvChatKeywords.adapter = adapter
+        viewModel.placeChatInfo.observe(this){
+            adapter.updateList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
+        }
+
     }
 
     private fun initMap() {
@@ -140,8 +150,6 @@ class SearchChatActivity : AppCompatActivity() {
                         LatLng(location.latitude, location.longitude), 15f
                     )
                 )
-            }.addOnFailureListener {
-
             }
         }
     }
@@ -192,13 +200,14 @@ class SearchChatActivity : AppCompatActivity() {
     private fun initBottomSheetCallBack() {
         bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                Log.d(TAG, newState.toString())
                 when (newState) {
                     BottomSheetBehavior.STATE_DRAGGING -> {
-                        //binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
+                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
+                        binding.tvDetail.visibility = View.VISIBLE
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        //binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+                        binding.tvDetail.visibility = View.GONE
                     }
                 }
             }
