@@ -48,6 +48,7 @@ dependencies {
     // Inject(For Hilt)
     implementation "javax.inject:javax.inject:1"
 
+
     // retrofit
     def retrofit_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -57,5 +58,4 @@ dependencies {
     // stream chat : Client only
     def stream_version = "5.11.6"
     implementation "io.getstream:stream-chat-android-client:$stream_version"
-
 }
