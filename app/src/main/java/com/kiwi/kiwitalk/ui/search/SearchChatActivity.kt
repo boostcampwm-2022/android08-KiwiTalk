@@ -18,8 +18,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kiwi.domain.model.Marker
+import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.ActivitySearchChatBinding
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,6 +38,7 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search_chat)
+        binding.lifecycleOwner = this
         binding.vm = viewModel
 
         initMap()
@@ -63,6 +66,13 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.fragmentSearchChatMap.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
+
+        val adapter = KeywordAdapter(mutableListOf<Keyword>())
+        binding.layoutMarkerInfoPreview.rvChatKeywords.adapter = adapter
+        viewModel.placeChatInfo.observe(this){
+            adapter.updateList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
+        }
+
     }
 
     private fun initMap() {
@@ -86,13 +96,14 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun initBottomSheetCallBack() {
         bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                Log.d(TAG, newState.toString())
                 when (newState) {
                     BottomSheetBehavior.STATE_DRAGGING -> {
-                        //binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
+                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
+                        binding.tvDetail.visibility = View.VISIBLE
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        //binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+                        binding.tvDetail.visibility = View.GONE
                     }
                 }
             }
@@ -108,9 +119,5 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onDestroy() {
         super.onDestroy()
         bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
-    }
-
-    companion object {
-        private const val TAG = "k001"
     }
 }

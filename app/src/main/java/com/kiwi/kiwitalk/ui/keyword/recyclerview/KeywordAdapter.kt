@@ -23,6 +23,12 @@ class KeywordAdapter(
         return keywordList.size
     }
 
+    fun updateList(newData: MutableList<Keyword>) {
+        keywordList.clear()
+        keywordList.addAll(newData)
+        notifyDataSetChanged()
+    }
+
     inner class KeywordViewHolder(val binding: ItemKeywordBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int){
             binding.chipKeyword.text = keywordList[position].name
