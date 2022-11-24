@@ -17,8 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -34,6 +33,7 @@ import com.kiwi.kiwitalk.model.ClusterMarker
 import com.kiwi.kiwitalk.model.ClusterMarker.Companion.toClusterMarker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchChatActivity : AppCompatActivity() {
@@ -92,20 +92,22 @@ class SearchChatActivity : AppCompatActivity() {
         lifecycleScope.launchWhenCreated {
             map = mapFragment.awaitMap()
             getDeviceLocation()
+            setUpCluster()
             map.myLocationButtonClickEvents().collectLatest {
                 getDeviceLocation()
             }
-            setUpCluster()
         }
     }
 
-    private suspend fun setUpCluster() {
+    private fun setUpCluster() {
         clusterManager = ClusterManager(this, map)
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.markerList.collect {
-                Log.d("SearchChatActivity", "initMap: $it")
-                clusterManager.addItem(it.toClusterMarker())
-                clusterManager.cluster()
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.markerList.collect {
+                    Log.d("SearchChatActivity", "initMap: $it")
+                    clusterManager.addItem(it.toClusterMarker())
+                    clusterManager.cluster()
+                }
             }
         }
 
