@@ -1,6 +1,7 @@
 package com.kiwi.data.mapper
 
 import com.kiwi.data.Const
+import com.kiwi.data.mapper.DateFormatter.formatTimeString
 import com.kiwi.data.model.remote.MarkerRemote
 import com.kiwi.data.model.remote.PlaceListRemote
 import com.kiwi.data.model.remote.PlaceRemote
@@ -9,7 +10,6 @@ import com.kiwi.domain.model.Marker
 import com.kiwi.domain.model.Place
 import com.kiwi.domain.model.PlaceList
 import io.getstream.chat.android.client.models.Channel
-import com.kiwi.data.mapper.DateFormatter.formatTimeString
 
 object Mapper {
     fun MarkerRemote.toMarker() = Marker(
