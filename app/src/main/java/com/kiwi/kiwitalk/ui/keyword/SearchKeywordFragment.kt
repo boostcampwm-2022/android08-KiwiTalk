@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kiwi.kiwitalk.databinding.FragmentSearchKeywordBinding
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordCategoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +25,10 @@ class SearchKeywordFragment : Fragment() {
         binding = FragmentSearchKeywordBinding.inflate( inflater,container,false)
         binding.lifecycleOwner = this
         binding.viewmodel = searchKeywordViewModel
+
+
+        setObserve()
+
         return binding.root
     }
 
@@ -33,4 +38,11 @@ class SearchKeywordFragment : Fragment() {
         searchKeywordViewModel.getAllKeywords()
 
     }
+
+    fun setObserve(){
+        searchKeywordViewModel.keywords.observe(viewLifecycleOwner){
+            binding.rvSearchKeywordKeywordCategoryList.adapter = KeywordCategoryAdapter(it)
+        }
+    }
+
 }

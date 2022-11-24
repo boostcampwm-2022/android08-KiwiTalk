@@ -15,8 +15,9 @@
         tools:text="카테고리 이름" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tv_keywordCategory_keywordList"
+        android:id="@+id/rv_keywordCategory_keywordList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_keyword"/>
 
 </LinearLayout>
