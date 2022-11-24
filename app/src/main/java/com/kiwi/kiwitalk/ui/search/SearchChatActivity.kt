@@ -99,7 +99,7 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         }
 
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.infoBottomSheet)
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.layoutBottomSheet)
         bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }

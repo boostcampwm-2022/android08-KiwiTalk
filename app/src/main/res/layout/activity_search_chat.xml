@@ -47,7 +47,7 @@
             android:src="@drawable/mdi_chat_plus_outline" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/info_bottom_sheet"
+            android:id="@+id/layout_bottomSheet"
             style="@style/Widget.Material3.BottomSheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
