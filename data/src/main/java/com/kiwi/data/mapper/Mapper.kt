@@ -19,10 +19,10 @@ object Mapper {
         keywords = keywords
     )
 
-    fun PlaceListRemote.toPlaceList() : PlaceList {
+    fun PlaceListRemote.toPlaceList(): PlaceList {
         val result = mutableListOf<Place>()
         documents.mapIndexed { index, placeRemote ->
-            result.add(index,placeRemote.toPlace())
+            result.add(index, placeRemote.toPlace())
         }
         return PlaceList(list = result)
     }
@@ -32,19 +32,21 @@ object Mapper {
         addressName = address_name,
         roadAddressName = road_address_name,
         lng = x,
-        lat =y
+        lat = y
     )
 
     /*
-    * 키워드 경고뜨긴 하는데 데이터만 잘 넘어오면 제대로 작동함.
-    * */
+    * 경고가 안 뜨긴 하는데 조금 더러워진 느낌..
+    */
     fun Channel.toChatInfo() = ChatInfo(
         cid = this.cid,
         name = this.name,
-        keywords = this.extraData["keyword"] as? List<String>? ?: listOf("키워드가 없습니다"),
+        keywords = this.extraData["keywords"]?.let {
+            if (it is List<*>) it.filterIsInstance<String>() else null
+        } ?: listOf("키워드가 없습니다."),
         description = "채팅방 설명이 없습니다.",
         memberCount = this.memberCount,
-        lastMessageAt = this.lastMessageAt?.formatTimeString()?:"오래전",
-        country = this.extraData["**주소key**"]?.toString()?: Const.EMPTY_STRING
+        lastMessageAt = this.lastMessageAt?.formatTimeString() ?: "오래전",
+        country = this.extraData["**주소key**"]?.toString() ?: Const.EMPTY_STRING
     )
 }
