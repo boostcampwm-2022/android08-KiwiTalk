@@ -99,9 +99,11 @@ class SearchChatActivity : AppCompatActivity(), OnMapReadyCallback {
                 when (newState) {
                     BottomSheetBehavior.STATE_DRAGGING -> {
                         binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
+                        binding.tvDetail.visibility = View.VISIBLE
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+                        binding.tvDetail.visibility = View.GONE
                     }
                 }
             }
