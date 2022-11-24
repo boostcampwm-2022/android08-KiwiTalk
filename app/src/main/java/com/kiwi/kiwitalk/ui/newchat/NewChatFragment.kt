@@ -30,7 +30,6 @@ class NewChatFragment : Fragment() {
         binding.btnChatPlace.setOnClickListener {
             findNavController().navigate(R.id.action_newChatFragment_to_searchPlaceFragment)
         }
-
     }
     
     override fun onDestroy() {
