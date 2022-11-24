@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
         )
 
         if (!viewModel.idToken.value.isNullOrEmpty()) {
-            val intent = Intent(this, NewChatActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             finishAffinity()
             startActivity(intent)
         }
