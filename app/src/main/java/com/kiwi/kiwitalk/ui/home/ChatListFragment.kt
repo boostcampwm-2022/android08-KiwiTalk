@@ -41,7 +41,6 @@ class ChatListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUser()
-        initRecyclerView()
 
         binding.fabCreateChat.setOnClickListener {
             startActivity(Intent(requireContext(), SearchChatActivity::class.java))
@@ -81,6 +80,7 @@ class ChatListFragment : Fragment() {
         if (client.getCurrentUser() == null) {
             client.connectUser(user, token).enqueue { result ->
                 Log.d(TAG, "result is ${result.isSuccess}: $result")
+                initRecyclerView()
             }
         } else {
             Log.d(TAG, "user: ${client.getCurrentUser()}")
