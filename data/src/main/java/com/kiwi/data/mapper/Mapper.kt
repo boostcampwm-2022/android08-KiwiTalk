@@ -41,10 +41,10 @@ object Mapper {
     fun Channel.toChatInfo() = ChatInfo(
         cid = this.cid,
         name = this.name,
-        keywords = this.extraData["keyword"] as? List<String>? ?: listOf("키워드가 없습니다"),
+        keywords = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf("키워드가 없습니다"),
         description = "채팅방 설명이 없습니다.",
         memberCount = this.memberCount,
         lastMessageAt = this.lastMessageAt?.formatTimeString()?:"오래전",
-        country = this.extraData["**주소key**"]?.toString()?: Const.EMPTY_STRING
+        country = this.extraData[Const.MAP_KEY_COUNTRY]?.toString()?: Const.EMPTY_STRING
     )
 }
