@@ -5,5 +5,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchPlaceRepository {
    suspend fun getSearchKeyword(lng:String,lat:String,place: String): Flow<PlaceList>
-
 }
