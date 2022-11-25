@@ -19,8 +19,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChatListFragment : Fragment() {
-    private val TAG = this::class.simpleName
-    private val chatListViewModel: ChannelListViewModel by viewModels { ChannelListViewModelFactory() }
+    private val chatListViewModel: ChannelListViewModel
+            by viewModels { ChannelListViewModelFactory() }
 
     @Inject
     lateinit var client: ChatClient // 임시

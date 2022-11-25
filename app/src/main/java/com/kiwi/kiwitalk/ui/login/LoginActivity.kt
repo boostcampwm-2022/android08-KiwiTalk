@@ -68,7 +68,6 @@ class LoginActivity : AppCompatActivity() {
     private fun skipLoginWhenTokenExist(token: String?) {
         if (!token.isNullOrEmpty()) {
             loginWithLocalToken()
-            navigateToHome()
         }
     }
 

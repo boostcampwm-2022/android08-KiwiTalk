@@ -19,10 +19,10 @@ object Mapper {
         keywords = keywords
     )
 
-    fun PlaceListRemote.toPlaceList() : PlaceList {
+    fun PlaceListRemote.toPlaceList(): PlaceList {
         val result = mutableListOf<Place>()
         documents.mapIndexed { index, placeRemote ->
-            result.add(index,placeRemote.toPlace())
+            result.add(index, placeRemote.toPlace())
         }
         return PlaceList(list = result)
     }
@@ -32,7 +32,7 @@ object Mapper {
         addressName = address_name,
         roadAddressName = road_address_name,
         lng = x,
-        lat =y
+        lat = y
     )
 
     /*
@@ -44,7 +44,7 @@ object Mapper {
         keywords = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf("키워드가 없습니다"),
         description = "채팅방 설명이 없습니다.",
         memberCount = this.memberCount,
-        lastMessageAt = this.lastMessageAt?.formatTimeString()?:"오래전",
-        country = this.extraData[Const.MAP_KEY_COUNTRY]?.toString()?: Const.EMPTY_STRING
+        lastMessageAt = this.lastMessageAt?.formatTimeString() ?: "오래전",
+        country = this.extraData[Const.MAP_KEY_COUNTRY]?.toString() ?: Const.EMPTY_STRING
     )
 }

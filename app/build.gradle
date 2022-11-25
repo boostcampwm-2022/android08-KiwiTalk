@@ -84,6 +84,9 @@ dependencies {
     // 디바이스 위치
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.maps.android:android-maps-utils:2.3.0'
+    implementation 'com.google.maps.android:maps-ktx:3.4.0'
+    implementation 'com.google.maps.android:maps-utils-ktx:3.4.0'
     
     implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0' //파이어스토어
 
