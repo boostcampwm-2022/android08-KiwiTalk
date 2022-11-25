@@ -10,10 +10,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Geocoder
 import android.location.Location
-import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -256,7 +255,11 @@ class SearchPlaceFragment : Fragment() {
 
         buttonConfirm.setOnClickListener {
             dialog.dismiss()
-            findNavController().navigate(R.id.action_searchPlaceFragment_to_newChatFragment)
+            val bundle = bundleOf(ADDRESS_KEY to address)
+            findNavController().navigate(
+                R.id.action_searchPlaceFragment_to_newChatFragment,
+                bundle
+            )
         }
     }
 
@@ -275,6 +278,9 @@ class SearchPlaceFragment : Fragment() {
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
+    }
+    companion object {
+        const val ADDRESS_KEY = "Address"
     }
 }
 
