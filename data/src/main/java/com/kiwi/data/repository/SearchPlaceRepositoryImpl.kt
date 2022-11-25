@@ -13,7 +13,6 @@ import javax.inject.Inject
 class SearchPlaceRepositoryImpl @Inject constructor(
     private val dataSource: SearchPlaceRemoteDataSource
 ): SearchPlaceRepository {
-
     override suspend fun getSearchKeyword(
         lng: String,
         lat: String,
@@ -23,5 +22,4 @@ class SearchPlaceRepositoryImpl @Inject constructor(
             emit(it.toPlaceList())
         }
     }
-
 }

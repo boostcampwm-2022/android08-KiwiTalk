@@ -7,105 +7,139 @@
     tools:context=".ui.newchat.NewChatFragment"
     android:padding="20dp"
     >
-
-    <TextView
-        android:id="@+id/tv_chat_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_chat_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/et_chat_name"
-        style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
+    
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_chat_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:hint="@string/et_chat_name_hint"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chat_name" />
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_chat_name"
+           android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:hint="@string/text_chat_name"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tv_chat_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/text_chat_description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_chat_name" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/et_chat_description"
-        style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_chat_description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:counterEnabled="true"
+        app:counterMaxLength="50"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:hint="@string/et_chat_description_hint"
+        android:layout_marginTop="45dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chat_description" />
+        app:layout_constraintTop_toBottomOf="@+id/til_chat_name"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_chat_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="50"
+            android:hint="@string/text_chat_description"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tv_chat_max_personnel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/text_chat_max_personnel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_chat_description" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/et_chat_max_personnel"
-        style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_chat_max_personnel"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:hint="@string/et_chat_max_personnel_hint"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chat_max_personnel" />
+        app:layout_constraintTop_toBottomOf="@+id/til_chat_description"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_chat_max_personnel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/text_chat_max_personnel"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/tv_chat_keyword"
+        android:id="@+id/tv_max_personnel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="최대 설정 가능한 인원은 100명입니다"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_chat_max_personnel" />
+
+
+    <TextView
+        android:id="@+id/tv_chat_keyword_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/text_chat_keyword"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_chat_max_personnel" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_max_personnel" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/et_chat_keyword"
-        style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_chat_keyword"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="@string/et_chat_keyword_hint"
+        app:icon="@drawable/ic_baseline_search_24"
+        android:text="키워드 검색"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text"/> >
 
     <TextView
-        android:id="@+id/tv_chat_place"
+        android:id="@+id/tv_chat_address_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/text_chat_place"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_chat_keyword" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_chat_keyword"/>
+
+    <TextView
+        android:id="@+id/tv_chat_select_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_chat_address_text" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_chat_place"
+        android:id="@+id/btc_chat_address"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="@string/btn_chat_place"
+        app:icon="@drawable/ic_baseline_search_24"
+        android:text="주소 검색"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chat_place" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_chat_select_address"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_new_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="채팅방 생성"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 
