@@ -1,14 +1,13 @@
 package com.kiwi.data.mapper
 
+import com.google.type.LatLng
 import com.kiwi.data.Const
 import com.kiwi.data.mapper.DateFormatter.formatTimeString
 import com.kiwi.data.model.remote.MarkerRemote
+import com.kiwi.data.model.remote.NewChatRemote
 import com.kiwi.data.model.remote.PlaceListRemote
 import com.kiwi.data.model.remote.PlaceRemote
-import com.kiwi.domain.model.ChatInfo
-import com.kiwi.domain.model.Marker
-import com.kiwi.domain.model.Place
-import com.kiwi.domain.model.PlaceList
+import com.kiwi.domain.model.*
 import io.getstream.chat.android.client.models.Channel
 
 object Mapper {
@@ -46,5 +45,16 @@ object Mapper {
         memberCount = this.memberCount,
         lastMessageAt = this.lastMessageAt?.formatTimeString()?:"오래전",
         country = this.extraData["**주소key**"]?.toString()?: Const.EMPTY_STRING
+    )
+
+    fun NewChat.toNewChatRemote() = NewChatRemote(
+        imageUri = this.imageUri,
+        chatName = this.chatName,
+        chatDescription = this.chatDescription,
+        maxPersonnel = this.maxPersonnel,
+        keywords = this.keywords,
+        address = this.address,
+        lat = this.lat,
+        lng = this.lng
     )
 }

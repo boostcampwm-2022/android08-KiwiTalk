@@ -1,12 +1,11 @@
 package com.kiwi.kiwitalk.di
 
-import com.kiwi.data.datasource.remote.SearchChatRemoteDataSource
-import com.kiwi.data.datasource.remote.SearchChatRemoteDataSourceImpl
-import com.kiwi.data.datasource.remote.SearchPlaceRemoteDataSource
-import com.kiwi.data.datasource.remote.SearchPlaceRemoteDataSourceImpl
+import com.kiwi.data.datasource.remote.*
+import com.kiwi.data.repository.NewChatRepositoryImpl
 import com.kiwi.data.repository.SearchChatRepositoryImpl
 import com.kiwi.data.repository.SearchKeywordRepositoryImpl
 import com.kiwi.data.repository.SearchPlaceRepositoryImpl
+import com.kiwi.domain.repository.NewChatRepository
 import com.kiwi.domain.repository.SearchChatRepository
 import com.kiwi.domain.repository.SearchKeywordRepository
 import com.kiwi.domain.repository.SearchPlaceRepository
@@ -38,4 +37,12 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsSearchPlaceRemoteDataSource(searchPlaceRemoteDataSourceImpl: SearchPlaceRemoteDataSourceImpl): SearchPlaceRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindsNewChatRemoteDataSource(newChatRemoteDataSourceImpl: NewChatRemoteDataSourceImpl): NewChatRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindsNewChatRepository(newChatRepositoryImpl: NewChatRepositoryImpl): NewChatRepository
 }
