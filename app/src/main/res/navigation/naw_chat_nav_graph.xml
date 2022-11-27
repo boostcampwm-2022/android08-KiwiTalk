@@ -10,9 +10,6 @@
         android:name="com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment"
         android:label="fragment_search_place"
         tools:layout="@layout/fragment_search_place">
-        <action
-            android:id="@+id/action_searchPlaceFragment_to_newChatFragment"
-            app:destination="@id/newChatFragment" />
     </fragment>
     <fragment
         android:id="@+id/newChatFragment"

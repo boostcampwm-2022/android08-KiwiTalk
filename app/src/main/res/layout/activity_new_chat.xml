@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.newchat.NewChatActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/new_chat_nav_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
