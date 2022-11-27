@@ -260,6 +260,12 @@ class SearchPlaceFragment : Fragment() {
                 R.id.action_searchPlaceFragment_to_newChatFragment,
                 bundle
             )
+            findNavController().apply {
+                previousBackStackEntry?.savedStateHandle?.set(ADDRESS_KEY, address)
+                previousBackStackEntry?.savedStateHandle?.set(LATLNG_KEY, markerState?.position)
+                popBackStack()
+            }
+            // findNavController().navigate(R.id.action_searchPlaceFragment_to_newChatFragment)
         }
     }
 
@@ -281,6 +287,7 @@ class SearchPlaceFragment : Fragment() {
     }
     companion object {
         const val ADDRESS_KEY = "Address"
+        const val LATLNG_KEY = "LatLng"
     }
 }
 

@@ -39,6 +39,17 @@ class NewChatFragment : Fragment() {
         address = arguments?.getString(ADDRESS_KEY)
 
         if(address != null){
+        findNavController().currentBackStackEntry
+            ?.savedStateHandle?.apply {
+                getLiveData<String>(ADDRESS_KEY).observe(viewLifecycleOwner) {
+                    newChatViewModel.setAddress(it)
+                }
+                getLiveData<LatLng>(LATLNG_KEY).observe(viewLifecycleOwner) {
+                    newChatViewModel.setLatLng(it)
+
+                }
+            }
+
             binding.tvChatSelectAddress.visibility = View.VISIBLE
             binding.tvChatSelectAddress.text = address
         }
