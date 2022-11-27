@@ -2,27 +2,51 @@ package com.kiwi.kiwitalk.ui.newchat
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavGraph
-import androidx.navigation.NavOptions
+import android.widget.EditText
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
+import com.google.android.gms.maps.model.LatLng
+import com.kiwi.domain.model.NewChat
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentNewChatBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
 import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.ADDRESS_KEY
+import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.LATLNG_KEY
+import com.kiwi.kiwitalk.ui.setImage
+import dagger.hilt.android.AndroidEntryPoint
+import org.w3c.dom.Text
 
-
+@AndroidEntryPoint
 class NewChatFragment : Fragment() {
 
-    private var _binding : FragmentNewChatBinding? = null
+    private var _binding: FragmentNewChatBinding? = null
     private val binding get() = checkNotNull(_binding)
-    private var address: String? = null
-    private val viewModel: SearchPlaceViewModel by navGraphViewModels(R.id.nav_graph) {
-        defaultViewModelProviderFactory
+    private val newChatViewModel: NewChatViewModel by viewModels()
+//    private val searchPlaceViewModel: SearchPlaceViewModel by navGraphViewModels(R.id.nav_graph) {
+//        defaultViewModelProviderFactory
+//    }
+
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
+            newChatViewModel.setChatImage(
+                it.data?.data?.toString() ?: return@registerForActivityResult
+            )
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("NewChatFragment", "onCreate")
     }
 
     override fun onCreateView(
@@ -30,15 +54,17 @@ class NewChatFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentNewChatBinding.inflate(inflater,container,false)
+        Log.d("NewChatFragment", "onCreateView")
+        _binding = FragmentNewChatBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("NewChatFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-        address = arguments?.getString(ADDRESS_KEY)
 
-        if(address != null){
+
+
         findNavController().currentBackStackEntry
             ?.savedStateHandle?.apply {
                 getLiveData<String>(ADDRESS_KEY).observe(viewLifecycleOwner) {
@@ -50,8 +76,9 @@ class NewChatFragment : Fragment() {
                 }
             }
 
+        newChatViewModel.isAddress.observe(viewLifecycleOwner) {
             binding.tvChatSelectAddress.visibility = View.VISIBLE
-            binding.tvChatSelectAddress.text = address
+            binding.tvChatSelectAddress.text = it
         }
 
         newChatViewModel.isChatImage.observe(viewLifecycleOwner) {
@@ -67,6 +94,12 @@ class NewChatFragment : Fragment() {
         binding.btcChatAddress.setOnClickListener {
             findNavController().navigate(R.id.action_newChatFragment_to_searchPlaceFragment)
         }
+        binding.btnChatAddImage.setOnClickListener {
+            activityResultLauncher.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "image/*"
+            })
+        }
+
         binding.btnNewChat.setOnClickListener {
             if (allCheckNull()) {
                 newChatViewModel.setNewChat(changeChatInfo())
