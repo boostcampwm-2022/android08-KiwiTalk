@@ -5,13 +5,14 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Context.VIBRATOR_MANAGER_SERVICE
+import android.content.Context.VIBRATOR_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Geocoder
 import android.location.Location
-import android.os.Bundle
-import android.os.Looper
+import android.os.*
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +20,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -46,14 +46,14 @@ import java.util.*
 @AndroidEntryPoint
 class SearchPlaceFragment : Fragment() {
 
-    private var _binding : FragmentSearchPlaceBinding? = null
+    private var _binding: FragmentSearchPlaceBinding? = null
     private val binding get() = checkNotNull(_binding)
     private val searchPlaceViewModel: SearchPlaceViewModel by viewModels()
 
     private val permissionRequest = 99
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private var currentLocation : Location? = null
+    private var currentLocation: Location? = null
 
     private var markerState: Marker? = null
     private var baseMarker: BitmapDescriptor? = null
@@ -63,7 +63,7 @@ class SearchPlaceFragment : Fragment() {
     private var permissions = arrayOf(
         ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
     )
-
+    
     private val mapReadyCallback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
         mMap.setMinZoomPreference(5.0F)
@@ -166,7 +166,7 @@ class SearchPlaceFragment : Fragment() {
 
     private fun resultSearchPlace(placeList: PlaceList){
         placeList.list.forEach { place ->
-            val location = LatLng(place.lat.toDouble(),place.lng.toDouble())
+            val location = LatLng(place.lat.toDouble(), place.lng.toDouble())
 
             val markerOptions =
                 MarkerOptions()
@@ -212,6 +212,31 @@ class SearchPlaceFragment : Fragment() {
                     .icon(baseMarker)
 
             mMap.addMarker(markerOptions)
+            generateVibrator(requireContext())
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    fun generateVibrator(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager =
+                context.getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
+
+            val vibrationEffect = VibrationEffect.createOneShot(
+                200L,
+                50
+            )
+            val combinedVibration = CombinedVibration.createParallel(vibrationEffect)
+            vibratorManager.vibrate(combinedVibration)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
+            val effect = VibrationEffect.createOneShot(
+                200L, 50
+            )
+            vibrator.vibrate(effect)
+        } else {
+            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
+            vibrator.vibrate(200L)
         }
     }
 
@@ -255,11 +280,6 @@ class SearchPlaceFragment : Fragment() {
 
         buttonConfirm.setOnClickListener {
             dialog.dismiss()
-            val bundle = bundleOf(ADDRESS_KEY to address)
-            findNavController().navigate(
-                R.id.action_searchPlaceFragment_to_newChatFragment,
-                bundle
-            )
             findNavController().apply {
                 previousBackStackEntry?.savedStateHandle?.set(ADDRESS_KEY, address)
                 previousBackStackEntry?.savedStateHandle?.set(LATLNG_KEY, markerState?.position)
