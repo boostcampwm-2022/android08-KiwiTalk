@@ -1,13 +1,15 @@
 package com.kiwi.kiwitalk.ui.keyword.recyclerview
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.databinding.ItemKeywordBinding
 
 class KeywordAdapter(
-    val keywordList: MutableList<Keyword>
+    val keywordList: MutableList<Keyword>,
+    private val keywordClickListener: (View) -> Unit
 ): RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeywordViewHolder {
@@ -23,9 +25,11 @@ class KeywordAdapter(
         return keywordList.size
     }
 
+    //TODO 재활용을 위해 일반 클래스로 빼내기
     inner class KeywordViewHolder(val binding: ItemKeywordBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int){
             binding.chipKeyword.text = keywordList[position].name
+            binding.chipKeyword.setOnClickListener(keywordClickListener)
         }
     }
 }
