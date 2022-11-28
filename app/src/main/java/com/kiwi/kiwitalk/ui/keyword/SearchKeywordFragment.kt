@@ -60,7 +60,7 @@ class SearchKeywordFragment : Fragment() {
         keywordCategoryAdapter = KeywordCategoryAdapter(searchKeywordViewModel.allKeywords.value,keywordClickListener)
         binding.rvSearchKeywordKeywordCategoryList.adapter = keywordCategoryAdapter
 
-        selectedKeywordAdapter = SelectedKeywordAdapter(keywordClickListener)
+        selectedKeywordAdapter = SelectedKeywordAdapter()
         binding.rvSearchKeywordSelectedKeywordList.adapter = selectedKeywordAdapter
     }
 }

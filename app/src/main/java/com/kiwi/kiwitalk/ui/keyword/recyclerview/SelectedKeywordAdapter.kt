@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.databinding.ItemKeywordBinding
 
-class SelectedKeywordAdapter(val keywordClickListener: (View) -> Unit): ListAdapter<Keyword,SelectedKeywordAdapter.SelectedKeywordViewHolder>(diffUtil) {
+class SelectedKeywordAdapter(): ListAdapter<Keyword,SelectedKeywordAdapter.SelectedKeywordViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectedKeywordViewHolder {
         val binding = ItemKeywordBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -26,7 +26,6 @@ class SelectedKeywordAdapter(val keywordClickListener: (View) -> Unit): ListAdap
                 text = keyword.name
                 isChecked = true
                 isClickable = false
-//                setOnClickListener(keywordClickListener)
             }
         }
     }
