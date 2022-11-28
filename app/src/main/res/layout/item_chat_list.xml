@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.kiwi.kiwitalk.Const" />
+
+        <variable
+            name="chat"
+            type="io.getstream.chat.android.client.models.Channel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/img_rvChatList_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="6dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/img_chatList_profile_des"
+                app:loadImageByUri="@{chat.image}"
+                tools:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/tv_rvChatList_chat_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:text="@{chat.name}"
+                tools:text="방 제목" />
+
+            <TextView
+                android:id="@+id/tv_rvChatList_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{chat.extraData.getOrDefault(Const.MAP_KEY_COUNTRY, @string/tv_itemChatList_country_default).toString()}"
+                tools:text="서울특별시 강남구" />
+
+            <TextView
+                android:id="@+id/tv_rvChatList_keyword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{chat.extraData.getOrDefault(Const.MAP_KEY_KEYWORD, @string/tv_itemChatList_keyword_default).toString()}"
+                tools:text="축구, 농구, 운동" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -1,7 +1,6 @@
 package com.kiwi.kiwitalk.di
 
 import android.content.Context
-import com.kiwi.kiwitalk.BuildConfig.STREAM_API_KEY
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,13 +18,14 @@ class ChatModule {
     @Provides
     @Singleton
     fun provideChatClient(@ApplicationContext context: Context): ChatClient {
-        return ChatClient.Builder(STREAM_API_KEY, context)
+        return ChatClient.Builder("zjqddnpezttd", context)
             .withPlugin(getOfflinePlugin(context))
             .logLevel(ChatLogLevel.ALL)
             .build()
     }
 
-    private fun getOfflinePlugin(context: Context) =
+    @Singleton
+    private fun getOfflinePlugin(@ApplicationContext context: Context) =
         StreamOfflinePluginFactory(
             config = Config(),
             appContext = context,

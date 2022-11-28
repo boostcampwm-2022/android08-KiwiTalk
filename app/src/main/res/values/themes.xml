@@ -12,9 +12,19 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- custom color-->
+        <item name="colorSurface">@color/white</item>
         <item name="colorSurfaceDark">@color/grey1</item>
         <item name="colorOnSurface">@color/black</item>
         <item name="colorOnSurfaceLight">@color/grey5</item>
+        <item name="colorOnSurfaceVariant">@color/green_text</item>
 
+    </style>
+
+    <style name="Theme.Keyword" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="checkedIconVisible">false</item>
+        <item name="chipStrokeColor">@color/grey1</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipBackgroundColor">@color/color_chip_background_keyword</item>
+        <item name="android:textColor">@color/color_chip_text_keyword</item>
     </style>
 </resources>

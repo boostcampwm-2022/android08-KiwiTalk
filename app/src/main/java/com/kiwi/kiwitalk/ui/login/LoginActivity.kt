@@ -1,23 +1,20 @@
 package com.kiwi.kiwitalk.ui.login
 
-import android.os.Build
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.android.gms.auth.api.signin.GoogleSignInResult
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
+import com.google.android.material.snackbar.Snackbar
 import com.kiwi.kiwitalk.Const
 import com.kiwi.kiwitalk.databinding.ActivityLoginBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
@@ -27,8 +24,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var auth: FirebaseAuth
-    private lateinit var googleApiClient: GoogleSignInClient
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -37,12 +32,15 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val manageSplashScreen: View = findViewById(android.R.id.content)
-        manageSplashScreen.viewTreeObserver.addOnPreDrawListener(
+        val splashScreen: View = findViewById(android.R.id.content)
+        splashScreen.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     return if (viewModel.isReady) {
-                        manageSplashScreen.viewTreeObserver.removeOnPreDrawListener(this)
+                        if (!viewModel.isNetworkConnect) {
+                            showPopUpMessage(NO_NETWORK)
+                        }
+                        splashScreen.viewTreeObserver.removeOnPreDrawListener(this)
                         true
                     } else {
                         false
@@ -51,53 +49,75 @@ class LoginActivity : AppCompatActivity() {
             }
         )
 
-        val googleSignOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(SERVER_CLIENT_KEY)
-            .requestEmail()
-            .build()
-        googleApiClient = GoogleSignIn.getClient(this, googleSignOptions)
+        skipLoginWhenTokenExist(viewModel.userId.value)
 
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                try {
-                    val result = Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
-                    result ?: return@registerForActivityResult
-                    if (result.isSuccess) {
-                        val account = result.signInAccount
-                        viewModel.signIn(account?.idToken?: Const.EMPTY_STRING)
-                    }
-                } catch (e: Exception) {
-                    Log.d("LoginResultFail", e.toString())
-                }
+                loginWithGoogleCredential(
+                    Auth.GoogleSignInApi.getSignInResultFromIntent(it.data)
+                )
             }
 
         binding.btnGoogleSignup.setOnClickListener {
-            val intent = googleApiClient.signInIntent
+            val intent = viewModel.googleApiClient.signInIntent
             activityResultLauncher.launch(intent)
-        }
-
-        viewModel.idToken.observe(this) {
-            doOnLoginInfoExist(it)
         }
     }
 
-    private fun doOnLoginInfoExist(token: String) {
-        val credential = GoogleAuthProvider.getCredential(token, null)
-        auth = FirebaseAuth.getInstance()
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) {
-                if (it.isSuccessful) {
-                    Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun skipLoginWhenTokenExist(token: String?) {
+        if (!token.isNullOrEmpty()) {
+            loginWithLocalToken()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun loginWithGoogleCredential(result: GoogleSignInResult?) {
+        try {
+            result ?: return
+            Log.d(TAG, result.status.toString())
+
+            when (result.status.statusCode) {
+                GoogleSignInStatusCodes.SUCCESS -> result.signInAccount?.apply {
+                    viewModel.saveToken(
+                        id = id!!,
+                        name = displayName ?: Const.EMPTY_STRING,
+                        imageUrl = photoUrl.toString()
+                    )
                 }
+                GoogleSignInStatusCodes.DEVELOPER_ERROR -> throw Exception("SHA키 등록 여부 확인")
+                GoogleSignInStatusCodes.NETWORK_ERROR -> showPopUpMessage(NO_NETWORK)
+                12501 -> throw Exception("디바이스가 Google Play 서비스를 포함하는지 확인")
             }
+        } catch (e: Exception) {
+            Log.d(TAG, e.toString())
+        }
+
+        if (!viewModel.userId.value.isNullOrEmpty()) {
+            loginWithLocalToken()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun loginWithLocalToken() {
+        viewModel.loginWithLocalToken()
+        showPopUpMessage(LOGIN_SUCCESS)
+        navigateToHome()
+    }
+
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        finishAffinity()
+        startActivity(intent)
+    }
+
+    private fun showPopUpMessage(text: String) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
     }
 
     companion object {
-        //const val SERVER_CLIENT_KEY = BuildConfig.SERVER_CLIENT_ID
-        const val SERVER_CLIENT_KEY = "611516619499-v3b7482t6qbldpn0ens6rgp45i6fo577.apps.googleusercontent.com"
+        private const val TAG = "k001"
+        private const val LOGIN_SUCCESS = "로그인 성공"
+        private const val NO_NETWORK = "인터넷 연결을 확인해주세요"
     }
 }

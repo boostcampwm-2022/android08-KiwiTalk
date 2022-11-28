@@ -4,10 +4,9 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
     id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     compileSdk 33
@@ -18,10 +17,6 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
-        buildConfigField 'String', 'TEXT', '"text"'
-        buildConfigField 'String', 'SERVER_CLIENT_ID', properties["server_client.id"]
-        buildConfigField "String", "STREAM_API_KEY", properties['stream_api_key']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -73,6 +68,34 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:21.1.1' //파이어베이스 코어
     implementation 'com.google.firebase:firebase-auth:21.1.0' //파이어베이스 인증
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0' //파이어베이스 인증 2
+
+    // navigation
+    def nav_version = "2.5.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // 디바이스 위치
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.maps.android:android-maps-utils:2.3.0'
+    implementation 'com.google.maps.android:maps-ktx:3.4.0'
+    implementation 'com.google.maps.android:maps-utils-ktx:3.4.0'
+    
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.0' //파이어스토어
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+
+    // FlexBoxLayout
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+
+    // retrofit
+    def retrofit_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
 }
 
 kapt {

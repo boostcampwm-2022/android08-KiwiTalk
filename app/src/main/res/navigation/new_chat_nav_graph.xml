@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/newChatFragment"
+    >
+    <fragment
+        android:id="@+id/searchPlaceFragment"
+        android:name="com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment"
+        android:label="fragment_search_place"
+        tools:layout="@layout/fragment_search_place">
+    </fragment>
+    <fragment
+        android:id="@+id/newChatFragment"
+        android:name="com.kiwi.kiwitalk.ui.newchat.NewChatFragment"
+        android:label="fragment_new_chat"
+        tools:layout="@layout/fragment_new_chat">
+        <action
+            android:id="@+id/action_newChatFragment_to_searchPlaceFragment"
+            app:destination="@id/searchPlaceFragment" />
+    </fragment>
+</navigation>
