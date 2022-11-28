@@ -17,20 +17,23 @@
 
 ## 기능, 동작화면
 
-|준비중|준비중|준비중|준비중|
+|<img src="https://user-images.githubusercontent.com/67748153/204210238-23f2f2a7-545f-43d7-945d-9887a8b3d789.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204210806-7e363ef6-1362-4da3-bfe3-1064cf155e29.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204210806-7e363ef6-1362-4da3-bfe3-1064cf155e29.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204210834-df4daf31-edcb-4419-8d8c-fe4504e61f03.png" width="180" />|
 |:--:|:--:|:--:|:--:|
 |로그인|참여중인 채팅방 목록|채팅방 찾기|채팅방 생성|
+|준비중|준비중|준비중|준비중|
 
-
-|준비중||||
+|<img src="https://user-images.githubusercontent.com/67748153/204214163-1a0fa2a1-90c2-40e1-bf60-85f20e92fec9.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204213565-ef1b1be5-796b-4fff-a903-11cf7df6dbda.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204211205-4606e95d-c7c6-4884-a252-941f7861dac1.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204213842-3654f1a7-04e2-40cf-8883-adfb33772de1.png" width="180" />|
 |:--:|:--:|:--:|:--:|
-|채팅방||||
+|장소 선택|키워드 선택|채팅방|프로필 수정|
+|준비중|준비중|준비중|준비중|
 
 ## 기술스택
+
 - Firebase
 - Android jetpack
 - Hilt
 - Kakao Local Api, Google Map Api
 - Stream Chat Api
+- Asynchronous(Coroutine, Flow)
 
 ![그룹프로젝트 기술스택 사진](https://user-images.githubusercontent.com/67748153/204139833-838a2d8f-bafc-4bd5-b802-ac3997a06032.png)
