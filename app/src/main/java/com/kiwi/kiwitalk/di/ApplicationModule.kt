@@ -30,7 +30,7 @@ object ApplicationModule {
     fun provideGoogleApiClient(@ApplicationContext context: Context): GoogleSignInClient {
         val googleSignOptions: GoogleSignInOptions =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(BuildConfig.SERVER_CLIENT_ID)
+                .requestIdToken("611516619499-v3b7482t6qbldpn0ens6rgp45i6fo577.apps.googleusercontent.com")
                 .requestEmail()
                 .build()
         return GoogleSignIn.getClient(context, googleSignOptions)
