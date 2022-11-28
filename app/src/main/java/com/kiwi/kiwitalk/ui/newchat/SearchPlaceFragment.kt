@@ -76,6 +76,12 @@ class SearchPlaceFragment : Fragment() {
         setMarkerClickListener()
         setMapClickListener()
         setMapLongClickListener()
+
+        lifecycleScope.launchWhenCreated {
+            mMap.myLocationButtonClickEvents().collectLatest {
+                updateLocationListener()
+            }
+        }
     }
 
     override fun onCreateView(
@@ -214,6 +220,18 @@ class SearchPlaceFragment : Fragment() {
             mMap.addMarker(markerOptions)
             generateVibrator(requireContext())
         }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private fun checkPermission() {
+        if (isPermitted()) {
+            mMap.uiSettings.isMyLocationButtonEnabled = true
+            mMap.isMyLocationEnabled = true
+            return
+        }
+
+        ActivityCompat.requestPermissions(requireActivity(), permissions, permissionRequest)
     }
 
     @Suppress("DEPRECATION")
