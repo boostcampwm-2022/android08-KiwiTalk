@@ -8,9 +8,6 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
 android {
     compileSdk 33
 
@@ -20,10 +17,6 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
-        buildConfigField 'String', 'TEXT', '"text"'
-        buildConfigField 'String', 'SERVER_CLIENT_ID', properties["server_client.id"]
-        buildConfigField "String", "STREAM_API_KEY", properties['stream_api_key']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
