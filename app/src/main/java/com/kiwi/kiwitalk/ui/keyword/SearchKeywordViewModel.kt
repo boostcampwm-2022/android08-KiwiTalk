@@ -37,9 +37,7 @@ class SearchKeywordViewModel @Inject constructor(
     }
 
     fun setSelectedKeywords(text: String){
-        Log.d("KEYWORD_CLICK", "setSelectedKeywords: ")
         getKeyword(text)?.let { keyword ->
-            Log.d("KEYWORD_CLICK", "setSelectedKeywords: ${keyword.name}")
             if (_selectedKeywords.value == null){
                 _selectedKeywords.value = listOf(keyword)
             } else {
