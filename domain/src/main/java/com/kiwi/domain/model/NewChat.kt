@@ -1,7 +1,7 @@
 package com.kiwi.domain.model
 
 data class NewChat(
-    val imageUri: String?,
+    val imageUri: String = "",
     val chatName: String,
     val chatDescription: String,
     val maxPersonnel: String,

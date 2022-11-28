@@ -24,7 +24,6 @@ class ChatListFragment : Fragment() {
 
     @Inject
     lateinit var client: ChatClient // 임시
-
     private var _binding: FragmentChatListBinding? = null
     private val binding get() = _binding!!
 
