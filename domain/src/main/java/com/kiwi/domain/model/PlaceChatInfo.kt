@@ -1,9 +1,9 @@
 package com.kiwi.domain.model
 
-data class PlaceChatInfo (
+data class PlaceChatInfo(
     val chatList: List<ChatInfo>,
-){
-    fun getChattingNumber(): Int{
+) {
+    fun getChattingNumber(): Int {
         return chatList.size
     }
 

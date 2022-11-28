@@ -1,15 +1,14 @@
 package com.kiwi.data.mapper
 
+import com.google.type.LatLng
 import com.kiwi.data.Const
+import com.kiwi.data.mapper.DateFormatter.formatTimeString
 import com.kiwi.data.model.remote.MarkerRemote
+import com.kiwi.data.model.remote.NewChatRemote
 import com.kiwi.data.model.remote.PlaceListRemote
 import com.kiwi.data.model.remote.PlaceRemote
-import com.kiwi.domain.model.ChatInfo
-import com.kiwi.domain.model.Marker
-import com.kiwi.domain.model.Place
-import com.kiwi.domain.model.PlaceList
+import com.kiwi.domain.model.*
 import io.getstream.chat.android.client.models.Channel
-import com.kiwi.data.mapper.DateFormatter.formatTimeString
 
 object Mapper {
     fun MarkerRemote.toMarker() = Marker(
@@ -19,10 +18,10 @@ object Mapper {
         keywords = keywords
     )
 
-    fun PlaceListRemote.toPlaceList() : PlaceList {
+    fun PlaceListRemote.toPlaceList(): PlaceList {
         val result = mutableListOf<Place>()
         documents.mapIndexed { index, placeRemote ->
-            result.add(index,placeRemote.toPlace())
+            result.add(index, placeRemote.toPlace())
         }
         return PlaceList(list = result)
     }
@@ -32,7 +31,7 @@ object Mapper {
         addressName = address_name,
         roadAddressName = road_address_name,
         lng = x,
-        lat =y
+        lat = y
     )
 
     /*
@@ -41,10 +40,21 @@ object Mapper {
     fun Channel.toChatInfo() = ChatInfo(
         cid = this.cid,
         name = this.name,
-        keywords = this.extraData["keyword"] as? List<String>? ?: listOf("키워드가 없습니다"),
+        keywords = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf("키워드가 없습니다"),
         description = "채팅방 설명이 없습니다.",
         memberCount = this.memberCount,
-        lastMessageAt = this.lastMessageAt?.formatTimeString()?:"오래전",
-        country = this.extraData["**주소key**"]?.toString()?: Const.EMPTY_STRING
+        lastMessageAt = this.lastMessageAt?.formatTimeString() ?: "오래전",
+        country = this.extraData[Const.MAP_KEY_COUNTRY]?.toString() ?: Const.EMPTY_STRING
+    )
+
+    fun NewChat.toNewChatRemote() = NewChatRemote(
+        imageUri = this.imageUri,
+        chatName = this.chatName,
+        chatDescription = this.chatDescription,
+        maxPersonnel = this.maxPersonnel,
+        keywords = this.keywords,
+        address = this.address,
+        lat = this.lat,
+        lng = this.lng
     )
 }

@@ -3,13 +3,12 @@ package com.kiwi.kiwitalk.di
 import android.util.Log
 import com.kiwi.kiwitalk.Const.BASE_URL
 import com.kiwi.kiwitalk.Const.KAKAO_AUTH
-import com.kiwi.kiwitalk.Const.KAKAO_KEY
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -57,7 +56,7 @@ object KakaoApiModule {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request().newBuilder()
-                .addHeader(KAKAO_AUTH, KAKAO_KEY)
+                .addHeader(KAKAO_AUTH, "KakaoAK c42505e275dcf6c9770aa45d2db6cc49")
                 .build()
             return chain.proceed(request)
         }

@@ -25,6 +25,13 @@ class KeywordAdapter(
         return keywordList.size
     }
 
+
+    fun updateList(newData: MutableList<Keyword>) {
+        keywordList.clear()
+        keywordList.addAll(newData)
+        notifyDataSetChanged()
+    }
+
     //TODO 재활용을 위해 일반 클래스로 빼내기
     inner class KeywordViewHolder(val binding: ItemKeywordBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int){

@@ -13,8 +13,8 @@ class NewChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewChatBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
+
 
     }
 }
