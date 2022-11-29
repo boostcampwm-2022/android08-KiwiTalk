@@ -67,11 +67,12 @@
                 android:id="@+id/layout_markerInfo_preview"
                 layout="@layout/view_marker_preview"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/bottomSheet_collapse_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                bind:item="@{vm.placeChatInfo}" />
+                bind:item="@{vm.placeChatInfo}"
+                bind:adapter="@{vm.previewAdapter}"/>
 
             <TextView
                 android:id="@+id/tv_detail"

@@ -88,10 +88,13 @@ class SearchChatMapFragment : Fragment() {
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
 
-        val adapter = SelectedKeywordAdapter()
-        binding.layoutMarkerInfoPreview.rvChatKeywords.adapter = adapter
         viewModel.placeChatInfo.observe(viewLifecycleOwner) {
-            adapter.submitList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
+            val previewKeyword = it.getPopularChat()
+            if (previewKeyword != null){
+                viewModel.previewAdapter.submitList(previewKeyword.keywords.map { Keyword(it, 0) }.toMutableList())
+            } else {
+                viewModel.previewAdapter.submitList(mutableListOf())
+            }
         }
     }
 
