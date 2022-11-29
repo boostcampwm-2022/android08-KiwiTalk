@@ -21,6 +21,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -88,20 +89,22 @@ class SearchChatMapFragment : Fragment() {
 
     private fun initAdapter() {
         viewModel.clickedChatCid.observe(viewLifecycleOwner) {
-            // TODO dialog 띄우기
-            startChat(it.cid)
-        }
-        viewModel.placeChatInfo.observe(viewLifecycleOwner) {
-            viewModel.detailAdapter.submitList(it.chatList)
-
-            val previewKeyword = it.getPopularChat()
-            if (previewKeyword != null) {
-                viewModel.previewAdapter.submitList(previewKeyword.keywords.map { Keyword(it, 0) }
-                    .toMutableList())
-            } else {
-                viewModel.previewAdapter.submitList(mutableListOf())
+            if (it != null) {
+                val dialog = ChatJoinDialog(this, it)
+                dialog.show(childFragmentManager, "Chat_Join_Dialog")
             }
         }
+        viewModel.placeChatInfo.observe(viewLifecycleOwner) { placeChatInfo ->
+            viewModel.detailAdapter.submitList(placeChatInfo.chatList)
+            placeChatInfo.getPopularChat()?.let {
+                viewModel.previewAdapter.submitList(mutableListOf(it))
+            }
+        }
+        binding.rvDetail.layoutManager = GridLayoutManager(context, 2)
+    }
+
+    override fun onClickJoinButton(cid: String) {
+        startChat(cid)
     }
 
     private fun startChat(cid: String) {
