@@ -14,7 +14,8 @@ import com.kiwi.kiwitalk.databinding.ItemKeywordcategoryBinding
 
 class KeywordCategoryAdapter(
     var keywordCategoryList: List<KeywordCategory>?,
-    private val keywordClickListener: (View) -> Unit
+    private val keywordClickListener: (View) -> Unit,
+    private val selectedKeywordList: List<Keyword>? = null
 ): RecyclerView.Adapter<KeywordCategoryAdapter.KeywordCategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeywordCategoryViewHolder {
@@ -46,7 +47,8 @@ class KeywordCategoryAdapter(
                 binding.rvKeywordCategoryKeywordList.adapter =
                     KeywordAdapter(
                         it[position].keywords,
-                        keywordClickListener
+                        keywordClickListener,
+                        selectedKeywordList
                     )
             }
         }

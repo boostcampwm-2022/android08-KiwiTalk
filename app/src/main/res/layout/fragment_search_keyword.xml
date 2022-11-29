@@ -27,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/ic_backarrow_48"
-            app:title="키워드검색" />
+            app:title="키워드선택" />
 
         <TextView
             android:id="@+id/tv_searchKeyword_selected"

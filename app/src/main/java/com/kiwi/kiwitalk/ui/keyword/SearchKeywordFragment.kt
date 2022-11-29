@@ -2,9 +2,11 @@ package com.kiwi.kiwitalk.ui.keyword
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -21,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SearchKeywordFragment : Fragment() {
 
-    private val searchKeywordViewModel: SearchKeywordViewModel by viewModels()
+    private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
     private lateinit var binding: FragmentSearchKeywordBinding
     private lateinit var keywordCategoryAdapter: KeywordCategoryAdapter
     private lateinit var selectedKeywordAdapter: SelectedKeywordAdapter
@@ -68,8 +70,13 @@ class SearchKeywordFragment : Fragment() {
         }
     }
 
-    private fun setAdapter(){
-        keywordCategoryAdapter = KeywordCategoryAdapter(searchKeywordViewModel.allKeywords.value,keywordClickListener)
+    private fun setAdapter() {
+        keywordCategoryAdapter =
+            KeywordCategoryAdapter(
+                searchKeywordViewModel.allKeywords.value,
+                keywordClickListener,
+                searchKeywordViewModel.selectedKeyword.value
+            )
         binding.rvSearchKeywordKeywordCategoryList.adapter = keywordCategoryAdapter
 
         selectedKeywordAdapter = SelectedKeywordAdapter()
@@ -92,6 +99,17 @@ class SearchKeywordFragment : Fragment() {
             }
 
             setOnMenuItemClickListener {
+                Log.d("NAV_CONTROLLER", "setOnMenuItemClickListener TRY: ")
+                when(it.itemId){
+                    R.id.item_select_keyword -> {
+                        try {
+                            val navController = this@SearchKeywordFragment.findNavController()
+                            navController.popBackStack()
+                        } catch (e: Exception) {
+                            Log.d("NAV_CONTROLLER", "setOnMenuItemClickListener ERROR: $e")
+                        }
+                    }
+                }
                 return@setOnMenuItemClickListener true
             }
         }
