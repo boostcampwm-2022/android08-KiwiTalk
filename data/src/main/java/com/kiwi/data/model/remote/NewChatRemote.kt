@@ -1,9 +1,7 @@
 package com.kiwi.data.model.remote
 
-import com.google.type.LatLng
-
 data class NewChatRemote(
-    val imageUri: String?,
+    val imageUri: String = "",
     val chatName: String,
     val chatDescription: String,
     val maxPersonnel: String,
