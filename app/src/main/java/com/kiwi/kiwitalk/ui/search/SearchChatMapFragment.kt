@@ -37,7 +37,7 @@ import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchChatMapBinding
 import com.kiwi.kiwitalk.model.ClusterMarker
 import com.kiwi.kiwitalk.model.ClusterMarker.Companion.toClusterMarker
-import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordAdapter
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import com.kiwi.kiwitalk.ui.newchat.NewChatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -80,18 +80,14 @@ class SearchChatMapFragment : Fragment() {
         viewModel.getMarkerList(37.0, 127.0)
         initBottomSheetCallBack()
 
-        /* TODO 마커 클릭으로 바꿔야함 */
         binding.fabCreateChat.setOnClickListener {
-            // newChatActivity로 바꾸는 코드로 대체해야함
-//            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//            viewModel.getPlaceInfo(Marker("messaging:-149653492", 1.0, 1.0, listOf()))
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
 
-        val adapter = KeywordAdapter(mutableListOf<Keyword>())
+        val adapter = SelectedKeywordAdapter()
         binding.layoutMarkerInfoPreview.rvChatKeywords.adapter = adapter
         viewModel.placeChatInfo.observe(viewLifecycleOwner) {
-            adapter.updateList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
+            adapter.submitList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
         }
     }
 
