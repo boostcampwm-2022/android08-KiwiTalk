@@ -23,4 +23,6 @@
     <string name="ic_chatlist_searchchat_des">채팅방 찾기</string>
     <string name="new_chat_description">새로운 채팅방 생성</string>
     <string name="chat_number">현재 채팅방 수 : %d</string>
+    <string name="item_chatList_actionToProfileSetting">프로필 수정</string>
+    <string name="item_chatList_logout">로그아웃</string>
 </resources>
