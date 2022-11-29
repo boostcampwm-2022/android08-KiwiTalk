@@ -8,10 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import com.kiwi.kiwitalk.databinding.FragmentSearchKeywordBinding
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordCategoryAdapter
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import dagger.hilt.android.AndroidEntryPoint
+
+/**
+ * TODO 완료 버튼이랑 화면 전환
+ */
 
 @AndroidEntryPoint
 class SearchKeywordFragment : Fragment() {
@@ -22,7 +27,12 @@ class SearchKeywordFragment : Fragment() {
     private lateinit var selectedKeywordAdapter: SelectedKeywordAdapter
     private val keywordClickListener: (View) -> Unit = { chip ->
         Log.d("KEYWORD_CLICK", "clicked!: ")
-        searchKeywordViewModel.setSelectedKeywords((chip as Chip).text.toString())
+        if (selectedKeywordAdapter.itemCount<5 || !(chip as Chip).isChecked){
+            searchKeywordViewModel.setSelectedKeywords((chip as Chip).text.toString())
+        } else {
+            chip.isChecked = false
+            Snackbar.make(binding.root,"최대 5개 까지 선택 가능합니다",Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateView(
