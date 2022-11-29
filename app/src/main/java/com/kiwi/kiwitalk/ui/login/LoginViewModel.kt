@@ -27,8 +27,8 @@ class LoginViewModel @Inject constructor(
     var isNetworkConnect: Boolean = false
     var isReady: Boolean = false
 
-    private val _idToken = MutableLiveData<Boolean>(false)
-    val loginState: LiveData<Boolean> = _idToken
+    private val _loginState = MutableLiveData<Boolean>(false)
+    val loginState: LiveData<Boolean> = _loginState
 
     init {
         isNetworkConnect = checkNetworkState()
@@ -74,15 +74,15 @@ class LoginViewModel @Inject constructor(
             val token = chatClient.devToken(user.id)
             if (chatClient.getCurrentUser() == null) {
                 chatClient.connectUser(user, token).enqueue { result ->
-                    _idToken.value =  result.isSuccess
+                    _loginState.value =  result.isSuccess
                 }
             } else {
                 Log.d(LOCATION, "user: ${chatClient.getCurrentUser()}")
-                _idToken.value = true
+                _loginState.value = true
             }
         } else {
             pref.setString(Const.LOGIN_ID_KEY, Const.EMPTY_STRING)
-            _idToken.value = false
+            _loginState.value = false
         }
     }
 
