@@ -20,69 +20,16 @@
         android:layout_height="@dimen/bottomSheet_collapse_size"
         android:padding="10dp">
 
-        <com.google.android.material.card.MaterialCardView
+        <include
             android:id="@+id/card_chat"
+            layout="@layout/item_chat_list_no_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/medium_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_chat_Keywords"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toStartOf="@id/tv_chat_date"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_chat_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/medium_margin"
-                    android:text="@{item.popularChat.lastMessageAt}"
-                    android:textColor="?attr/colorOnSurfaceLight"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="어제" />
-
-                <TextView
-                    android:id="@+id/tv_chat_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/medium_margin"
-                    android:ellipsize="end"
-                    android:text="@{item.popularChat.name}"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_chat_Keywords"
-                    tools:text="방 제목" />
-
-                <TextView
-                    android:id="@+id/tv_chat_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/medium_margin"
-                    android:text="@{item.popularChat.description}"
-                    android:textColor="?attr/colorOnSurfaceLight"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_chat_title"
-                    tools:text="저희는 이런 모임 입니다." />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+            app:layout_constraintTop_toTopOf="parent"
+            bind:item="@{item}"
+            bind:adapter="@{adapter}"/>
 
         <TextView
             android:id="@+id/tv_chat_location"
