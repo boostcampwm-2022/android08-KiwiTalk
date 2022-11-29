@@ -7,7 +7,8 @@
 
         <variable
             name="item"
-            type="com.kiwi.domain.model.PlaceChatInfo" />
+            type="com.kiwi.domain.model.ChatInfo" />
+
         <variable
             name="adapter"
             type="com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter" />
@@ -19,13 +20,13 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_chat"
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="?attr/materialCardViewFilledStyle"
             app:strokeColor="@color/grey1"
             app:strokeWidth="1dp">
 
@@ -38,20 +39,20 @@
                     android:id="@+id/rv_chat_Keywords"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="@dimen/medium_margin"
                     android:adapter="@{adapter}"
+                    android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toStartOf="@id/tv_chat_date"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginHorizontal="@dimen/medium_margin"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_chat_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/medium_margin"
-                    android:text="@{item.popularChat.lastMessageAt}"
+                    android:text="@{item.lastMessageAt}"
                     android:textColor="?attr/colorOnSurfaceLight"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -63,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/medium_margin"
                     android:ellipsize="end"
-                    android:text="@{item.popularChat.name}"
+                    android:text="@{item.name}"
                     android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/medium_margin"
-                    android:text="@{item.popularChat.description}"
+                    android:text="@{item.description}"
                     android:textColor="?attr/colorOnSurfaceLight"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_chat_title"
