@@ -38,6 +38,7 @@ import com.kiwi.kiwitalk.databinding.FragmentSearchChatMapBinding
 import com.kiwi.kiwitalk.model.ClusterMarker
 import com.kiwi.kiwitalk.model.ClusterMarker.Companion.toClusterMarker
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordAdapter
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import com.kiwi.kiwitalk.ui.newchat.NewChatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -88,10 +89,10 @@ class SearchChatMapFragment : Fragment() {
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
 
-        val adapter = KeywordAdapter(mutableListOf<Keyword>())
+        val adapter = SelectedKeywordAdapter()
         binding.layoutMarkerInfoPreview.rvChatKeywords.adapter = adapter
         viewModel.placeChatInfo.observe(viewLifecycleOwner) {
-            adapter.updateList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
+            adapter.submitList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
         }
     }
 
