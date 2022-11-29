@@ -7,11 +7,11 @@ data class PlaceChatInfo(
         return chatList.size
     }
 
-    fun getPopularChat(): ChatInfo {
-        return chatList.first()
+    fun getPopularChat(): ChatInfo? {
+        return chatList.getOrNull(0)
     }
 
-    fun getPlaceInfo(): String {
-        return chatList.first().country
+    fun getPlaceInfo(): String? {
+        return chatList.getOrNull(0)?.country
     }
 }
