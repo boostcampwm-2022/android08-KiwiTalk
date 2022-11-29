@@ -8,7 +8,7 @@
 
     <style name="kiwi.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">?android:attr/colorPrimary</item>
-        <item name="navigationIcon">@drawable/ic_backarrow_48</item>
+        <item name="navigationIcon">?attr/homeAsUpIndicator</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>
