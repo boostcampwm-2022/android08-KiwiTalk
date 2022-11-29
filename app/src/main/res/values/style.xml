@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="ShapeAppearanceOverlay.App.CornerCut" parent="">
         <item name="cornerSize">15dp</item>
         <item name="cornerFamily">cut</item>
-        
+    </style>
+
+    <style name="kiwi.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">?android:attr/colorPrimary</item>
+        <item name="navigationIcon">@drawable/ic_backarrow_48</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 </resources>
