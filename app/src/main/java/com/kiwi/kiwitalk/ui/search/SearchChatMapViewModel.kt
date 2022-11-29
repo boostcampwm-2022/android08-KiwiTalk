@@ -10,6 +10,7 @@ import com.kiwi.domain.model.Marker
 import com.kiwi.domain.model.PlaceChatInfo
 import com.kiwi.domain.repository.SearchChatRepository
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
+import com.kiwi.kiwitalk.ui.newchat.ChatAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.utils.toResult
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,6 +36,10 @@ class SearchChatMapViewModel @Inject constructor(
     val location: LiveData<Location> = _location
 
     val previewAdapter = SelectedKeywordAdapter()
+
+    val detailAdapter = ChatAdapter(placeChatInfo.value?.chatList) {
+        Log.d("k001", "채팅방 클릭")
+    }
 
     fun getPlaceInfo(marker: Marker) {
         viewModelScope.launch {

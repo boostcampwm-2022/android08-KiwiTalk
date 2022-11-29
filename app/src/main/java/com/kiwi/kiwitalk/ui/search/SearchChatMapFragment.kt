@@ -37,7 +37,6 @@ import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchChatMapBinding
 import com.kiwi.kiwitalk.model.ClusterMarker
 import com.kiwi.kiwitalk.model.ClusterMarker.Companion.toClusterMarker
-import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import com.kiwi.kiwitalk.ui.newchat.NewChatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -76,6 +75,7 @@ class SearchChatMapFragment : Fragment() {
         binding.vm = viewModel
         initMap()
         initToolbar()
+        initAdapter()
 
         viewModel.getMarkerList(37.0, 127.0)
         initBottomSheetCallBack()
@@ -87,8 +87,12 @@ class SearchChatMapFragment : Fragment() {
 //            viewModel.getPlaceInfo(Marker("messaging:-149653492", 1.0, 1.0, listOf()))
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
+    }
 
+    private fun initAdapter(){
         viewModel.placeChatInfo.observe(viewLifecycleOwner) {
+            viewModel.detailAdapter.submitList(it.chatList)
+
             val previewKeyword = it.getPopularChat()
             if (previewKeyword != null){
                 viewModel.previewAdapter.submitList(previewKeyword.keywords.map { Keyword(it, 0) }.toMutableList())

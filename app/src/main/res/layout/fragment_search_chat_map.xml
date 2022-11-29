@@ -71,15 +71,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                bind:item="@{vm.placeChatInfo}"
-                bind:adapter="@{vm.previewAdapter}"/>
+                bind:adapter="@{vm.previewAdapter}"
+                bind:item="@{vm.placeChatInfo}" />
 
-            <TextView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tv_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:adapter="@{vm.detailAdapter}"
                 android:background="@color/green_deep"
-                android:text="@{vm.placeChatInfo.toString()}"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_markerInfo_preview" />
 
