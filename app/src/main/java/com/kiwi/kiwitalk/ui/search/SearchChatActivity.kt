@@ -33,6 +33,7 @@ import com.kiwi.kiwitalk.databinding.ActivitySearchChatBinding
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordAdapter
 import com.kiwi.kiwitalk.model.ClusterMarker
 import com.kiwi.kiwitalk.model.ClusterMarker.Companion.toClusterMarker
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -86,10 +87,10 @@ class SearchChatActivity : AppCompatActivity() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
-        val adapter = KeywordAdapter(mutableListOf<Keyword>())
+        val adapter = SelectedKeywordAdapter()
         binding.layoutMarkerInfoPreview.rvChatKeywords.adapter = adapter
         viewModel.placeChatInfo.observe(this){
-            adapter.updateList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
+            adapter.submitList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
         }
 
     }
