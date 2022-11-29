@@ -26,6 +26,7 @@
                 android:id="@+id/searchChat_map_toolbar"
                 style="@style/kiwi.Toolbar"
                 android:layout_width="match_parent"
+                app:menu="@menu/menu_search_chat_map"
                 app:title="채팅방 검색" />
 
             <androidx.fragment.app.FragmentContainerView
