@@ -73,20 +73,17 @@ class ChatListFragment : Fragment() {
 
     private fun initToolbar() {
         val navigation = Navigation.findNavController(binding.root)
-        binding.chatListToolbar.run {
-            inflateMenu(R.menu.menu_chat_list)
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.item_chatList_logout -> {
-                        Toast.makeText(requireContext(), "미구현 기능입니다.", Toast.LENGTH_SHORT).show()
-                        true
-                    }
-                    R.id.item_chatList_actionToProffileSetting -> {
-                        navigation.navigate(R.id.action_chatListFragment_to_profileSettingFragment)
-                        true
-                    }
-                    else -> false
+        binding.chatListToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_chatList_logout -> {
+                    Toast.makeText(requireContext(), "미구현 기능입니다.", Toast.LENGTH_SHORT).show()
+                    true
                 }
+                R.id.item_chatList_actionToProffileSetting -> {
+                    navigation.navigate(R.id.action_chatListFragment_to_profileSettingFragment)
+                    true
+                }
+                else -> false
             }
         }
     }

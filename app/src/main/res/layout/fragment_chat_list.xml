@@ -11,6 +11,7 @@
         android:id="@+id/chatList_toolbar"
         style="@style/kiwi.Toolbar"
         android:layout_width="match_parent"
+        app:menu="@menu/menu_chat_list"
         app:navigationIcon="@null"
         app:title="@string/chatList_title" />
 
