@@ -9,8 +9,9 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/chatList_toolbar"
+        style="@style/kiwi.Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        app:navigationIcon="@null"
         app:title="@string/chatList_title" />
 
     <com.google.android.material.circularreveal.CircularRevealFrameLayout
