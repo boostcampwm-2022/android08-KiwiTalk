@@ -1,5 +1,6 @@
 package com.kiwi.kiwitalk.ui.search
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,6 +30,9 @@ class SearchChatMapViewModel @Inject constructor(
     private val _keywords = MutableLiveData<List<String>>(listOf("축구", "카페"))
     val keywords: LiveData<List<String>> = _keywords
 
+    private val _location = MutableLiveData<Location>()
+    val location: LiveData<Location> = _location
+
     fun getPlaceInfo(marker: Marker) {
         viewModelScope.launch {
             _placeChatInfo.value = searchChatRepository.getChat(marker)
@@ -46,5 +50,9 @@ class SearchChatMapViewModel @Inject constructor(
                     _markerList.emit(it)
                 }
         }
+    }
+
+    fun setDeviceLocation(newLocation: Location) {
+        _location.value = newLocation
     }
 }

@@ -3,7 +3,6 @@ package com.kiwi.kiwitalk.ui.search
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -11,10 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -33,7 +31,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.mapClickEvents
-import com.google.maps.android.ktx.myLocationButtonClickEvents
 import com.kiwi.domain.model.Marker
 import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.R
@@ -59,23 +56,7 @@ class SearchChatMapFragment : Fragment() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback
 
-    @SuppressLint("MissingPermission")
-    private val activityResultLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
-            Log.d(TAG, "activityResultLauncher: $permissionResult")
-            if (permissionResult.values.all { it }) {
-                map.uiSettings.isMyLocationButtonEnabled = true
-                map.isMyLocationEnabled = true
-                getDeviceLocation()
-            } else {
-                map.uiSettings.isMyLocationButtonEnabled = false
-                map.isMyLocationEnabled = false
-                Toast.makeText(requireContext(), "권한이 필요합니다", Toast.LENGTH_SHORT).show()
-                ActivityCompat.requestPermissions(
-                    requireActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE
-                )
-            }
-        }
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Array<String>>
     private var permissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
     )
@@ -85,6 +66,7 @@ class SearchChatMapFragment : Fragment() {
     ): View {
         _binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_search_chat_map, container, false)
+        initPermissionLauncher()
         return binding.root
     }
 
@@ -94,7 +76,6 @@ class SearchChatMapFragment : Fragment() {
         binding.vm = viewModel
         initMap()
         initToolbar()
-        Log.d(TAG, "onViewCreated: ")
 
         viewModel.getMarkerList(37.0, 127.0)
         initBottomSheetCallBack()
@@ -114,6 +95,22 @@ class SearchChatMapFragment : Fragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun initPermissionLauncher() {
+        activityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
+                if (permissionResult.values.all { it }) {
+                    map.uiSettings.isMyLocationButtonEnabled = true
+                    map.isMyLocationEnabled = true
+                    getDeviceLocation()
+                } else {
+                    map.uiSettings.isMyLocationButtonEnabled = false
+                    map.isMyLocationEnabled = false
+                    Toast.makeText(requireContext(), "권한이 필요합니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
     private fun initMap() {
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.fragment_searchChat_map_container) as? SupportMapFragment
@@ -121,10 +118,15 @@ class SearchChatMapFragment : Fragment() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         viewLifecycleOwner.lifecycleScope.launch {
             map = mapFragment.awaitMap()
-            checkPermission()
+            getDeviceLocation(permissions)
             setUpCluster()
             setupMapClickListener()
         }
+        viewModel.location.observe(viewLifecycleOwner) {
+            moveToLocation(it)
+            viewModel.location.removeObservers(viewLifecycleOwner)
+        }
+
     }
 
     private fun setUpCluster() {
@@ -132,7 +134,6 @@ class SearchChatMapFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.markerList.collect {
-                    Log.d(TAG, "initMap: $it")
                     clusterManager.addItem(it.toClusterMarker())
                     clusterManager.cluster()
                 }
@@ -143,13 +144,6 @@ class SearchChatMapFragment : Fragment() {
     }
 
     private fun setupMapClickListener() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                map.myLocationButtonClickEvents().collectLatest {
-                    checkPermission()
-                }
-            }
-        }
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 map.mapClickEvents().collectLatest {
@@ -175,19 +169,23 @@ class SearchChatMapFragment : Fragment() {
     private fun getDeviceLocation() {
         fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
             task.addOnSuccessListener { location: Location? ->
-                Log.d(TAG, "getDeviceLocation location: $location")
                 location ?: return@addOnSuccessListener
-                map.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        LatLng(location.latitude, location.longitude), 15f
-                    )
-                )
+                viewModel.setDeviceLocation(location)
             }
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun checkPermission() {
+    private fun moveToLocation(location: Location?) {
+        Log.d(TAG, "moveToLocation: $location")
+        location ?: return
+        map.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(location.latitude, location.longitude), 15f
+            )
+        )
+    }
+
+    private fun getDeviceLocation(permissions: Array<String>) {
         activityResultLauncher.launch(permissions)
     }
 
@@ -223,7 +221,6 @@ class SearchChatMapFragment : Fragment() {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.item_action_search_keyword -> {
-                        Log.d(TAG, "onMenuItemSelected: search")
                         Navigation.findNavController(binding.root).navigate(
                             R.id.action_searchChatFragment_to_searchKeywordFragment,
                             bundleOf("keywords" to viewModel.keywords.value)
@@ -243,7 +240,6 @@ class SearchChatMapFragment : Fragment() {
     }
 
     companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
         const val TAG = "SearchChatMapFragment"
     }
 }
