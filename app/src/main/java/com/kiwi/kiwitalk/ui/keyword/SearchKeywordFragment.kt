@@ -2,13 +2,13 @@ package com.kiwi.kiwitalk.ui.keyword
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
+import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchKeywordBinding
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordCategoryAdapter
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
@@ -43,8 +43,10 @@ class SearchKeywordFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewmodel = searchKeywordViewModel
 
+        initToolbar()
         setAdapter()
         setObserve()
+        setListener()
 
         return binding.root
     }
@@ -72,5 +74,26 @@ class SearchKeywordFragment : Fragment() {
 
         selectedKeywordAdapter = SelectedKeywordAdapter()
         binding.rvSearchKeywordSelectedKeywordList.adapter = selectedKeywordAdapter
+    }
+
+    private fun initToolbar(){
+        binding.tbSearchKeywordTitle.inflateMenu(R.menu.menu_search_keyword_toolbar)
+    }
+
+    private fun setListener(){
+        with(binding.tbSearchKeywordTitle){
+            setNavigationOnClickListener {
+                try {
+                    val navController = this@SearchKeywordFragment.findNavController()
+                    navController.popBackStack()
+                } catch (e: Exception){
+                    Log.d("NAV_CONTROLLER", "setNavigationOnClickListener: $e")
+                }
+            }
+
+            setOnMenuItemClickListener {
+                return@setOnMenuItemClickListener true
+            }
+        }
     }
 }
