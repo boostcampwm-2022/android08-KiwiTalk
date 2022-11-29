@@ -9,5 +9,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_search_chat)
     }
 }

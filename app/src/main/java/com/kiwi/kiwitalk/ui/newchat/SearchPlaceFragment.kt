@@ -32,12 +32,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.ktx.markerClickEvents
+import com.google.maps.android.ktx.myLocationButtonClickEvents
 import com.kiwi.domain.model.PlaceList
 import com.kiwi.kiwitalk.ChangeExpansion.changeLatLngToAddress
 import com.kiwi.kiwitalk.Const.ADDRESS_ERROR
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
@@ -59,7 +62,6 @@ class SearchPlaceFragment : Fragment() {
     private var baseMarker: BitmapDescriptor? = null
     private var selectMarker: BitmapDescriptor? = null
 
-    private lateinit var locationCallback: LocationCallback
     private var permissions = arrayOf(
         ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
     )
@@ -72,10 +74,16 @@ class SearchPlaceFragment : Fragment() {
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity()) //gps 자동으로 받아오기
 
-        setUpdateLocationListener()
+        updateLocationListener()
         setMarkerClickListener()
         setMapClickListener()
         setMapLongClickListener()
+
+        lifecycleScope.launchWhenCreated {
+            mMap.myLocationButtonClickEvents().collectLatest {
+                updateLocationListener()
+            }
+        }
     }
 
     override fun onCreateView(
@@ -89,12 +97,9 @@ class SearchPlaceFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.search_map) as SupportMapFragment?
         mapFragment?.getMapAsync(mapReadyCallback)
-
-        if (!isPermitted()) {
-            ActivityCompat.requestPermissions(requireActivity(), permissions, permissionRequest)
-        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -133,35 +138,24 @@ class SearchPlaceFragment : Fragment() {
     }
 
     @SuppressLint("MissingPermission")
-    fun setUpdateLocationListener() {
-        val locationRequest =
-            LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 500000).build()
+    fun updateLocationListener() {
+        checkPermission()
 
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                locationResult.locations.withIndex().forEach {
-                    setLastLocation(it.value)
-                }
+        fusedLocationProviderClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
+            task.addOnSuccessListener { location: Location? ->
+                location ?: return@addOnSuccessListener
+                mMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(location.latitude, location.longitude), 17f
+                    )
+                )
             }
         }
-        //location 요청 함수 호출 (locationRequest, locationCallback)
-        fusedLocationProviderClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            Looper.myLooper()
-        )
     }
 
     private fun searchLocation(location: Location, keyword: String){
         mMap.clear()
         searchPlaceViewModel.getSearchPlace(location.longitude.toString(),location.latitude.toString(),keyword)
-    }
-
-    fun setLastLocation(location: Location) {
-        currentLocation = location
-        val myLocation = LatLng(location.latitude, location.longitude)
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17.0F))
     }
 
     private fun resultSearchPlace(placeList: PlaceList){
@@ -179,18 +173,18 @@ class SearchPlaceFragment : Fragment() {
     }
 
     private fun setMarkerClickListener() {
-        mMap.setOnMarkerClickListener { marker ->
-            binding.btnPlaceSave.visibility = View.VISIBLE
-            markerState = if (markerState != null && markerState != marker) {
-                clearMarkerClick(checkNotNull(markerState))
-                marker.setIcon(selectMarker)
-                marker
-            } else {
-                marker.setIcon(selectMarker)
-                marker
+        lifecycleScope.launch {
+            mMap.markerClickEvents().collectLatest {
+                binding.btnPlaceSave.visibility = View.VISIBLE
+                markerState = if (markerState != null && markerState != it) {
+                    clearMarkerClick(checkNotNull(markerState))
+                    it.setIcon(selectMarker)
+                    it
+                } else {
+                    it.setIcon(selectMarker)
+                    it
+                }
             }
-            // 마커 클릭 이벤트의 기본 동작 수행 (클릭시 카메라 이동, title 띄우기 등)
-            false
         }
     }
 
@@ -214,6 +208,18 @@ class SearchPlaceFragment : Fragment() {
             mMap.addMarker(markerOptions)
             generateVibrator(requireContext())
         }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private fun checkPermission() {
+        if (isPermitted()) {
+            mMap.uiSettings.isMyLocationButtonEnabled = true
+            mMap.isMyLocationEnabled = true
+            return
+        }
+
+        ActivityCompat.requestPermissions(requireActivity(), permissions, permissionRequest)
     }
 
     @Suppress("DEPRECATION")
@@ -285,12 +291,9 @@ class SearchPlaceFragment : Fragment() {
                 previousBackStackEntry?.savedStateHandle?.set(LATLNG_KEY, markerState?.position)
                 popBackStack()
             }
-            // findNavController().navigate(R.id.action_searchPlaceFragment_to_newChatFragment)
         }
     }
 
-
-    // 벡터 이미지 변환
     private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
         return ContextCompat.getDrawable(context, vectorResId)?.run {
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)

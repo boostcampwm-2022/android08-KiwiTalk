@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface NewChatRemoteDataSource {
 
-    suspend fun addFireBaseChat(newChatRemote: NewChatRemote)
+    suspend fun addFireBaseChat(cid:String, newChatRemote: NewChatRemote)
 
-    suspend fun addStreamChat(newChatRemote: NewChatRemote)
+    suspend fun addStreamChat(userId: String, currentTime: String, newChatRemote: NewChatRemote)
 }
