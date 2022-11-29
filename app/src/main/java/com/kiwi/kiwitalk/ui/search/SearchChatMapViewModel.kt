@@ -63,9 +63,9 @@ class SearchChatMapViewModel @Inject constructor(
 
     }
 
-    fun getPlaceInfo(marker: Marker) {
+    fun getPlaceInfo(cidList: List<String>) {
         viewModelScope.launch {
-            _placeChatInfo.value = searchChatRepository.getChat(marker)
+            _placeChatInfo.value = searchChatRepository.getPlaceChatList(cidList)
         }
     }
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -12,7 +11,7 @@
 
         <variable
             name="adapter"
-            type="com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter" />
+            type="com.kiwi.kiwitalk.ui.search.ChatAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,23 +20,23 @@
         android:layout_height="@dimen/bottomSheet_collapse_size"
         android:padding="10dp">
 
-        <include
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/card_chat"
-            layout="@layout/item_chat_list_no_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:adapter="@{adapter}"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            bind:adapter="@{adapter}"
-            bind:item="@{item.popularChat}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_chat_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/large_margin"
-            android:text="@{item.popularChat.country}"
+            android:text="@{item.popularChat.address}"
             android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/card_chat"
