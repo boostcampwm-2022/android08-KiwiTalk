@@ -20,7 +20,7 @@
 
     </style>
 
-    <style name="Theme.Keyword" parent="Widget.MaterialComponents.Chip.Choice">
+    <style name="Theme.Keyword" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="checkedIconVisible">false</item>
         <item name="chipStrokeColor">@color/grey1</item>
         <item name="chipStrokeWidth">1dp</item>
