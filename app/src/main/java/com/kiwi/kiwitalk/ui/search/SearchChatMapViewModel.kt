@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchChatViewModel @Inject constructor(
+class SearchChatMapViewModel @Inject constructor(
     private val searchChatRepository: SearchChatRepository
 ) : ViewModel() {
     private val _markerList = MutableSharedFlow<Marker>()
@@ -26,18 +26,23 @@ class SearchChatViewModel @Inject constructor(
     private val _placeChatInfo = MutableLiveData<PlaceChatInfo>()
     val placeChatInfo: LiveData<PlaceChatInfo> = _placeChatInfo
 
+    private val _keywords = MutableLiveData<List<String>>(listOf("축구", "카페"))
+    val keywords: LiveData<List<String>> = _keywords
+
     fun getPlaceInfo(marker: Marker) {
         viewModelScope.launch {
             _placeChatInfo.value = searchChatRepository.getChat(marker)
         }
     }
 
-    fun getMarkerList(keywords: List<String>, x: Double, y: Double) {
+    fun getMarkerList(x: Double, y: Double) {
+        val keywords = keywords.value ?: return
         viewModelScope.launch {
             searchChatRepository.getMarkerList(keywords, x, y)
                 .catch {
                     Log.d("SearchChatViewModel", "getMarkerList: ${this.toResult()} $it")
                 }.collect {
+                    Log.d("SearchChatViewModel", "getMarkerList: collect $it")
                     _markerList.emit(it)
                 }
         }
