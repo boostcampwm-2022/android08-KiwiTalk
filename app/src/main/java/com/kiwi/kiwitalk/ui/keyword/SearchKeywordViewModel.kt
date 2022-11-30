@@ -21,6 +21,7 @@ class SearchKeywordViewModel @Inject constructor(
     val allKeywords: LiveData<List<KeywordCategory>>
         get() = _allKeywords
 
+
     private val _selectedKeywords = MutableLiveData<List<Keyword>>()
     val selectedKeyword: LiveData<List<Keyword>>
         get() = _selectedKeywords
@@ -28,9 +29,10 @@ class SearchKeywordViewModel @Inject constructor(
 
     fun getAllKeywords(){
         viewModelScope.launch {
-            searchKeywordRepository.getAllKeyWord().also { Log.d("FIRESTORE_CALL_KEYWORD", "getKeywords: VM 1 ${it}") }
+            allKeywords.value ?: searchKeywordRepository.getAllKeyWord()
                 .let {
                     _allKeywords.value = it
+                    Log.d("FIRESTORE_CALL_KEYWORD", "getKeywords: VM 1 ${it}")
                 }
         }
         Log.d("FIRESTORE_CALL_KEYWORD", "getKeywords: VM 2")

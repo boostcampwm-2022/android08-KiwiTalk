@@ -3,7 +3,9 @@
 <layout>
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewmodel"
             type="com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel" />
@@ -16,44 +18,46 @@
         android:layout_height="match_parent"
         tools:context=".ui.keyword.SearchKeywordFragment">
 
-        <Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_searchKeyword_title"
+            style="@style/Widget.MaterialComponents.Toolbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:navigationIcon="@drawable/ic_backarrow_48"
-            android:title="키워드검색"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_backarrow_48"
+            app:title="키워드선택" />
 
         <TextView
             android:id="@+id/tv_searchKeyword_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="선택된 키워드"
-            android:textSize="20sp"
             android:textColor="@color/black"
+            android:textSize="20sp"
             android:visibility="@{viewmodel.selectedKeyword.size() &lt;= 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/sv_searchKeyword_selectedKeywordList"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/sv_searchKeyword_selectedKeywordList"
-            app:layout_constraintBottom_toBottomOf="@id/sv_searchKeyword_selectedKeywordList"/>
+            app:layout_constraintTop_toTopOf="@id/sv_searchKeyword_selectedKeywordList" />
 
         <ScrollView
             android:id="@+id/sv_searchKeyword_selectedKeywordList"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_searchKeyword_selected"
-            app:layout_constraintTop_toBottomOf="@id/tb_searchKeyword_title"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/tb_searchKeyword_title">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_searchKeyword_selectedKeywordList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_keyword"
-                tools:itemCount="3"/>
+                tools:itemCount="3"
+                tools:listitem="@layout/item_keyword" />
         </ScrollView>
 
 

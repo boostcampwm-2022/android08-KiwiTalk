@@ -80,7 +80,11 @@ class SearchChatMapFragment : Fragment() {
         viewModel.getMarkerList(37.0, 127.0)
         initBottomSheetCallBack()
 
+        /* TODO 마커 클릭으로 바꿔야함 */
         binding.fabCreateChat.setOnClickListener {
+            // newChatActivity로 바꾸는 코드로 대체해야함
+//            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//            viewModel.getPlaceInfo(Marker("messaging:-149653492", 1.0, 1.0, listOf()))
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
 

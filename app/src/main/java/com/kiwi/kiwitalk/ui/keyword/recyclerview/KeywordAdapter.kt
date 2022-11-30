@@ -7,9 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.databinding.ItemKeywordBinding
 
+/**
+ * TODO innerClass 없애기
+ */
+
 class KeywordAdapter(
     val keywordList: MutableList<Keyword>,
-    private val keywordClickListener: (View) -> Unit
+    private val keywordClickListener: (View) -> Unit,
+    private val selectedKeywordList: List<Keyword>? = null
 ): RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeywordViewHolder {
@@ -25,18 +30,16 @@ class KeywordAdapter(
         return keywordList.size
     }
 
-
-    fun updateList(newData: MutableList<Keyword>) {
-        keywordList.clear()
-        keywordList.addAll(newData)
-        notifyDataSetChanged()
-    }
-
     //TODO 재활용을 위해 일반 클래스로 빼내기
     inner class KeywordViewHolder(val binding: ItemKeywordBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(position: Int){
-            binding.chipKeyword.text = keywordList[position].name
-            binding.chipKeyword.setOnClickListener(keywordClickListener)
+            with(binding.chipKeyword){
+                text = keywordList[position].name
+                setOnClickListener(keywordClickListener)
+                selectedKeywordList?.let { list ->
+                    if (list.contains(keywordList[position])) this.isChecked = true
+                }
+            }
         }
     }
 }
