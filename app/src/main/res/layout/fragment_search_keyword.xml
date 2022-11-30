@@ -20,13 +20,11 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_searchKeyword_title"
-            style="@style/Widget.MaterialComponents.Toolbar"
+            style="@style/kiwi.Toolbar"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_backarrow_48"
             app:title="키워드선택" />
 
         <TextView
