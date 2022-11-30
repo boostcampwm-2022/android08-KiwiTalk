@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +37,7 @@ import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchChatMapBinding
 import com.kiwi.kiwitalk.model.ClusterMarker
 import com.kiwi.kiwitalk.model.ClusterMarker.Companion.toClusterMarker
+import com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import com.kiwi.kiwitalk.ui.newchat.NewChatActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +48,8 @@ import kotlinx.coroutines.launch
 class SearchChatMapFragment : Fragment() {
     private var _binding: FragmentSearchChatMapBinding? = null
     val binding get() = _binding!!
-    private val viewModel: SearchChatMapViewModel by viewModels()
+    private val chatViewModel: SearchChatMapViewModel by viewModels()
+    private val keywordViewModel: SearchKeywordViewModel by activityViewModels()
 
     private val fusedLocationClient
             by lazy() { LocationServices.getFusedLocationProviderClient(requireActivity()) }
@@ -72,7 +75,7 @@ class SearchChatMapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.vm = viewModel
+        binding.vm = chatViewModel
         initMap()
         initToolbar()
         initBottomSheetCallBack()
@@ -84,7 +87,7 @@ class SearchChatMapFragment : Fragment() {
 
         val adapter = SelectedKeywordAdapter()
         binding.layoutMarkerInfoPreview.rvChatKeywords.adapter = adapter
-        viewModel.placeChatInfo.observe(viewLifecycleOwner) {
+        chatViewModel.placeChatInfo.observe(viewLifecycleOwner) {
             adapter.submitList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
         }
     }
@@ -113,18 +116,17 @@ class SearchChatMapFragment : Fragment() {
             getDeviceLocation(permissions)
             setUpCluster()
         }
-        viewModel.location.observe(viewLifecycleOwner) {
+        chatViewModel.location.observe(viewLifecycleOwner) {
             moveToLocation(it)
-            viewModel.location.removeObservers(viewLifecycleOwner)
+            chatViewModel.location.removeObservers(viewLifecycleOwner)
         }
-
     }
 
     private fun setUpCluster() {
         val clusterManager = ClusterManager<ClusterMarker>(requireContext(), map)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.markerList.collect {
+                chatViewModel.markerList.collect {
                     clusterManager.addItem(it.toClusterMarker())
                     clusterManager.cluster()
                 }
@@ -144,7 +146,7 @@ class SearchChatMapFragment : Fragment() {
         }
         clusterManager.setOnClusterItemClickListener { item ->
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            viewModel.getPlaceInfo(Marker(item.cid, item.x, item.y, item.keywords))
+            chatViewModel.getPlaceInfo(Marker(item.cid, item.x, item.y, item.keywords))
             false
         }
         clusterManager.setOnClusterClickListener { cluster ->
@@ -161,7 +163,7 @@ class SearchChatMapFragment : Fragment() {
         fusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
             task.addOnSuccessListener { location: Location? ->
                 location ?: return@addOnSuccessListener
-                viewModel.setDeviceLocation(location)
+                chatViewModel.setDeviceLocation(location)
             }
         }
     }
