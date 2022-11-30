@@ -42,7 +42,7 @@ class SearchKeywordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSearchKeywordBinding.inflate( inflater,container,false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = searchKeywordViewModel
 
         initToolbar()
@@ -57,6 +57,7 @@ class SearchKeywordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         searchKeywordViewModel.getAllKeywords()
+        searchKeywordViewModel.saveBeforeKeywords()
     }
 
     private fun setObserve(){
@@ -92,6 +93,7 @@ class SearchKeywordFragment : Fragment() {
             setNavigationOnClickListener {
                 try {
                     val navController = this@SearchKeywordFragment.findNavController()
+                    searchKeywordViewModel.SaveSelectedKeywordOrNot(false)
                     navController.popBackStack()
                 } catch (e: Exception){
                     Log.d("NAV_CONTROLLER", "setNavigationOnClickListener: $e")
@@ -104,6 +106,7 @@ class SearchKeywordFragment : Fragment() {
                     R.id.item_select_keyword -> {
                         try {
                             val navController = this@SearchKeywordFragment.findNavController()
+                            searchKeywordViewModel.SaveSelectedKeywordOrNot(true)
                             navController.popBackStack()
                         } catch (e: Exception) {
                             Log.d("NAV_CONTROLLER", "setOnMenuItemClickListener ERROR: $e")
