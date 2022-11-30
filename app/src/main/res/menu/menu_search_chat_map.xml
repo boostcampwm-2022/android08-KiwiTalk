@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_action_search_keyword"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="키워드 검색"
+        app:showAsAction="ifRoom" />
+</menu>

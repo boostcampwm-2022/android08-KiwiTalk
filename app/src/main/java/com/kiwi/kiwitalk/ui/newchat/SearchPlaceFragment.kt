@@ -213,14 +213,13 @@ class SearchPlaceFragment : Fragment() {
             generateVibrator(requireContext())
         }
     }
-
+    
     @SuppressLint("MissingPermission")
     private fun checkPermission() {
         if (isPermitted()) {
             mMap.uiSettings.isMyLocationButtonEnabled = true
             mMap.isMyLocationEnabled = true
             return
-        }
 
         ActivityCompat.requestPermissions(requireActivity(), permissions, permissionRequest)
     }
@@ -266,7 +265,7 @@ class SearchPlaceFragment : Fragment() {
             }
         }
     }
-
+    
     override fun onDestroy() {
         _binding = null
         super.onDestroy()

@@ -1,33 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.circularreveal.CircularRevealLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.home.ChatListFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_chatList"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/chatList_toolbar"
+        style="@style/kiwi.Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-        app:spanCount="2"
-        tools:listitem="@layout/item_chat_list" />
+        app:menu="@menu/menu_chat_list"
+        app:navigationIcon="@null"
+        app:title="@string/chatList_title" />
 
-    <TextView
-        android:id="@+id/tv_chatList_empty"
+    <com.google.android.material.circularreveal.CircularRevealFrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/tv_chatList_empty"
-        android:textSize="20sp" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_createChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="10dp"
-        android:contentDescription="@string/ic_chatlist_searchchat_des"
-        android:src="@drawable/ic_chatlist_searchchat" />
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chatList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_chat_list" />
+
+        <TextView
+            android:id="@+id/tv_chatList_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/tv_chatList_empty"
+            android:textSize="20sp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_createChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/ic_chatlist_searchchat_des"
+            android:src="@drawable/ic_chatlist_searchchat" />
+    </com.google.android.material.circularreveal.CircularRevealFrameLayout>
+</com.google.android.material.circularreveal.CircularRevealLinearLayout>

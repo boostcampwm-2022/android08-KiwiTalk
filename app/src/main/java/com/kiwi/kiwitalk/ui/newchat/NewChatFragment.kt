@@ -85,10 +85,8 @@ class NewChatFragment : Fragment() {
         }
 
         with(binding) {
-
             btnChatAddress.setOnClickListener {
                 findNavController().navigate(R.id.action_newChatFragment_to_searchPlaceFragment)
-
             }
             btnChatAddImage.setOnClickListener {
                 activityResultLauncher.launch(Intent(Intent.ACTION_GET_CONTENT).apply {

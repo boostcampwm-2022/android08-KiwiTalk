@@ -13,7 +13,9 @@ import com.kiwi.domain.model.keyword.KeywordCategory
 import com.kiwi.kiwitalk.databinding.ItemKeywordcategoryBinding
 
 class KeywordCategoryAdapter(
-    private val keywordCategoryList: List<KeywordCategory>
+    var keywordCategoryList: List<KeywordCategory>?,
+    private val keywordClickListener: (View) -> Unit,
+    private val selectedKeywordList: List<Keyword>? = null
 ): RecyclerView.Adapter<KeywordCategoryAdapter.KeywordCategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeywordCategoryViewHolder {
@@ -22,11 +24,13 @@ class KeywordCategoryAdapter(
     }
 
     override fun onBindViewHolder(holder: KeywordCategoryViewHolder, position: Int) {
-        holder.bind(keywordCategoryList[position].keywords,position)
+        keywordCategoryList?.let {
+            holder.bind(it[position].keywords,position)
+        }
     }
 
     override fun getItemCount(): Int {
-        return keywordCategoryList.size
+        return if (keywordCategoryList == null) 0 else keywordCategoryList!!.size
     }
 
     inner class KeywordCategoryViewHolder(
@@ -34,12 +38,19 @@ class KeywordCategoryAdapter(
         val contextForLayoutManager: Context,
     ) : RecyclerView.ViewHolder(binding.root){
         fun bind(keywordList: MutableList<Keyword>, position: Int){
-            binding.tvKeywordCategoryCategoryName.text = keywordCategoryList[position].name
-            binding.rvKeywordCategoryKeywordList.layoutManager =
-                FlexboxLayoutManager(contextForLayoutManager).apply {
+            keywordCategoryList?.let {
+                binding.tvKeywordCategoryCategoryName.text = it[position].name
+                binding.rvKeywordCategoryKeywordList.layoutManager =
+                    FlexboxLayoutManager(contextForLayoutManager).apply {
 
-                }
-            binding.rvKeywordCategoryKeywordList.adapter = KeywordAdapter(keywordCategoryList[position].keywords)
+                    }
+                binding.rvKeywordCategoryKeywordList.adapter =
+                    KeywordAdapter(
+                        it[position].keywords,
+                        keywordClickListener,
+                        selectedKeywordList
+                    )
+            }
         }
     }
 }
