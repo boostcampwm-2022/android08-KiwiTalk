@@ -7,5 +7,5 @@ data class ChatInfo(
     val description: String,
     val memberCount: Int,
     val lastMessageAt: String,
-    val country: String,
+    val address: String,
 )

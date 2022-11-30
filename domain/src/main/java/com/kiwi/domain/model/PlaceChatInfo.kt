@@ -12,6 +12,6 @@ data class PlaceChatInfo(
     }
 
     fun getPlaceInfo(): String? {
-        return chatList.getOrNull(0)?.country
+        return chatList.getOrNull(0)?.address
     }
 }
