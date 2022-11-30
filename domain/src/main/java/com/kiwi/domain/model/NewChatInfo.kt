@@ -1,10 +1,10 @@
 package com.kiwi.domain.model
 
-data class NewChat(
+data class NewChatInfo(
     val imageUri: String = "",
     val chatName: String,
     val chatDescription: String,
-    val maxPersonnel: String,
+    val maxMemberCnt: String,
     val keywords: List<String>,
     val address: String,
     val lat: Double,
