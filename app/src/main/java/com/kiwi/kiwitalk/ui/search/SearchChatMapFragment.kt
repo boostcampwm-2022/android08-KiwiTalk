@@ -113,9 +113,11 @@ class SearchChatMapFragment : Fragment() {
                 ?: return
         viewLifecycleOwner.lifecycleScope.launch {
             map = mapFragment.awaitMap()
+            map.clear()
             getDeviceLocation(permissions)
             setUpCluster()
         }
+        chatViewModel.getMarkerList(keywordViewModel.selectedKeyword.value)
         chatViewModel.location.observe(viewLifecycleOwner) {
             moveToLocation(it)
             chatViewModel.location.removeObservers(viewLifecycleOwner)
