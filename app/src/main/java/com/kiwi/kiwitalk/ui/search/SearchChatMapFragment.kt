@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,10 +20,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -49,15 +48,15 @@ class SearchChatMapFragment : Fragment() {
     val binding get() = _binding!!
     private val viewModel: SearchChatMapViewModel by viewModels()
 
-    private lateinit var clusterManager: ClusterManager<ClusterMarker>
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val fusedLocationClient
+            by lazy() { LocationServices.getFusedLocationProviderClient(requireActivity()) }
     private lateinit var map: GoogleMap
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback
 
-    private lateinit var activityResultLauncher: ActivityResultLauncher<Array<String>>
-    private var permissions = arrayOf(
+    private val activityResultLauncher = initPermissionLauncher()
+    private val permissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
@@ -76,15 +75,10 @@ class SearchChatMapFragment : Fragment() {
         binding.vm = viewModel
         initMap()
         initToolbar()
-
-        viewModel.getMarkerList(37.0, 127.0)
         initBottomSheetCallBack()
 
         /* TODO 마커 클릭으로 바꿔야함 */
         binding.fabCreateChat.setOnClickListener {
-            // newChatActivity로 바꾸는 코드로 대체해야함
-//            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//            viewModel.getPlaceInfo(Marker("messaging:-149653492", 1.0, 1.0, listOf()))
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
 
@@ -96,31 +90,28 @@ class SearchChatMapFragment : Fragment() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun initPermissionLauncher() {
-        activityResultLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
-                if (permissionResult.values.all { it }) {
-                    map.uiSettings.isMyLocationButtonEnabled = true
-                    map.isMyLocationEnabled = true
-                    getDeviceLocation()
-                } else {
-                    map.uiSettings.isMyLocationButtonEnabled = false
-                    map.isMyLocationEnabled = false
-                    Toast.makeText(requireContext(), "권한이 필요합니다", Toast.LENGTH_SHORT).show()
-                }
+    private fun initPermissionLauncher(): ActivityResultLauncher<Array<String>> {
+        return registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
+            if (permissionResult.values.all { it }) {
+                map.uiSettings.isMyLocationButtonEnabled = true
+                map.isMyLocationEnabled = true
+                getDeviceLocation()
+            } else {
+                map.uiSettings.isMyLocationButtonEnabled = false
+                map.isMyLocationEnabled = false
+                Toast.makeText(requireContext(), "권한이 필요합니다", Toast.LENGTH_SHORT).show()
             }
+        }
     }
 
     private fun initMap() {
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.fragment_searchChat_map_container) as? SupportMapFragment
                 ?: return
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         viewLifecycleOwner.lifecycleScope.launch {
             map = mapFragment.awaitMap()
             getDeviceLocation(permissions)
             setUpCluster()
-            setupMapClickListener()
         }
         viewModel.location.observe(viewLifecycleOwner) {
             moveToLocation(it)
@@ -130,7 +121,7 @@ class SearchChatMapFragment : Fragment() {
     }
 
     private fun setUpCluster() {
-        clusterManager = ClusterManager(requireContext(), map)
+        val clusterManager = ClusterManager<ClusterMarker>(requireContext(), map)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.markerList.collect {
@@ -139,11 +130,11 @@ class SearchChatMapFragment : Fragment() {
                 }
             }
         }
-
         map.setOnCameraIdleListener(clusterManager)
+        setupMapClickListener(clusterManager)
     }
 
-    private fun setupMapClickListener() {
+    private fun setupMapClickListener(clusterManager: ClusterManager<ClusterMarker>) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 map.mapClickEvents().collectLatest {
@@ -220,8 +211,7 @@ class SearchChatMapFragment : Fragment() {
             when (it.itemId) {
                 R.id.item_action_search_keyword -> {
                     Navigation.findNavController(binding.root).navigate(
-                        R.id.action_searchChatFragment_to_searchKeywordFragment,
-                        bundleOf("keywords" to viewModel.keywords.value)
+                        R.id.action_searchChatFragment_to_searchKeywordFragment
                     )
                     true
                 }
