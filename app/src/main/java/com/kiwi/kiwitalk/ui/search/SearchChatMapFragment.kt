@@ -235,8 +235,12 @@ class SearchChatMapFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
         bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
