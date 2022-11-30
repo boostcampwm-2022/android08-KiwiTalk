@@ -45,7 +45,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchChatMapFragment : Fragment() {
+class SearchChatMapFragment : Fragment(), ChatDialogAction {
     private var _binding: FragmentSearchChatMapBinding? = null
     val binding get() = _binding!!
     private val viewModel: SearchChatMapViewModel by viewModels()
@@ -101,6 +101,10 @@ class SearchChatMapFragment : Fragment() {
             }
         }
         binding.rvDetail.layoutManager = GridLayoutManager(context, 2)
+    }
+
+    override fun onClickJoinButton(cid: String) {
+        startChat(cid)
     }
 
     override fun onClickJoinButton(cid: String) {
