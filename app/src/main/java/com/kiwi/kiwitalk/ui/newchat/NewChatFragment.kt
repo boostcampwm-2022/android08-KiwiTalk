@@ -62,21 +62,21 @@ class NewChatFragment : Fragment() {
             }
 
         with(newChatViewModel) {
-            isAddress.observe(viewLifecycleOwner) {
+            address.observe(viewLifecycleOwner) {
                 binding.tvChatSelectAddress.visibility = View.VISIBLE
                 binding.tvChatSelectAddress.text = it
             }
 
-            isChatImage.observe(viewLifecycleOwner) {
+            chatImage.observe(viewLifecycleOwner) {
                 setImage(binding.ivChatImage, it)
             }
 
-            isNewChatInfo.observe(viewLifecycleOwner) {
+            newChatInfo.observe(viewLifecycleOwner) {
                 newChatViewModel.setChatId()
             }
 
-            isChatId.observe(viewLifecycleOwner) {
-                addNewChat(it,System.currentTimeMillis().toString(), isNewChatInfo.value ?: return@observe)
+            chatId.observe(viewLifecycleOwner) {
+                addNewChat(it,System.currentTimeMillis().toString(), newChatInfo.value ?: return@observe)
                 val intent = Intent(requireActivity(), HomeActivity::class.java)
                 startActivity(intent)
 
@@ -86,19 +86,22 @@ class NewChatFragment : Fragment() {
 
         with(binding) {
 
-            btcChatAddress.setOnClickListener {
+            btnChatAddress.setOnClickListener {
                 findNavController().navigate(R.id.action_newChatFragment_to_searchPlaceFragment)
+
             }
             btnChatAddImage.setOnClickListener {
                 activityResultLauncher.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
                     type = "image/*"
                 })
             }
-
             btnNewChat.setOnClickListener {
                 if (allCheckNull()) {
                     newChatViewModel.setNewChat(changeChatInfo())
                 }
+            }
+            btnChatKeyword.setOnClickListener {
+                findNavController().navigate(R.id.action_newChatFragment_to_searchKeywordFragment)
             }
         }
     }
@@ -106,14 +109,16 @@ class NewChatFragment : Fragment() {
     private fun changeChatInfo(): NewChat {
         with(newChatViewModel) {
             return NewChat(
-                isChatImage.value ?: "",
+                chatImage.value ?: "",
                 binding.etChatName.text.toString(),
                 binding.etChatDescription.text.toString(),
                 binding.etChatMaxPersonnel.text.toString(),
                 listOf("운동", "카페"),
-                isAddress.value ?: "",
-                isLatLng.value?.latitude ?: 0.0,
-                isLatLng.value?.longitude ?: 0.0
+
+                address.value ?: "",
+
+                latLng.value?.latitude ?: 0.0,
+                latLng.value?.longitude ?: 0.0
             )
         }
     }

@@ -11,4 +11,5 @@ object Const {
     const val BASE_URL = "https://dapi.kakao.com/"
     const val KAKAO_AUTH = "Authorization"
     const val ADDRESS_ERROR = "현재 좌표에서 주소를 가져올 수 없습니다."
+    const val PERMISSION_CODE = 99
 }

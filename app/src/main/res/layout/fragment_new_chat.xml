@@ -155,7 +155,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_chat_address_text" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btc_chat_address"
+            android:id="@+id/btn_chat_address"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -172,6 +172,6 @@
             android:text="채팅방 생성"
             android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btc_chat_address" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_chat_address" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

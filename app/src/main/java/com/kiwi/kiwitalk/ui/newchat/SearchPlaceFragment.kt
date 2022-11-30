@@ -5,14 +5,10 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Context.VIBRATOR_MANAGER_SERVICE
-import android.content.Context.VIBRATOR_SERVICE
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.location.Geocoder
 import android.location.Location
-import android.os.*
+import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -26,23 +22,29 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.markerClickEvents
 import com.google.maps.android.ktx.myLocationButtonClickEvents
 import com.kiwi.domain.model.PlaceList
 import com.kiwi.kiwitalk.ChangeExpansion.changeLatLngToAddress
 import com.kiwi.kiwitalk.Const.ADDRESS_ERROR
+import com.kiwi.kiwitalk.Const.PERMISSION_CODE
 import com.kiwi.kiwitalk.R
+import com.kiwi.kiwitalk.Util.changeVectorToBitmapDescriptor
+import com.kiwi.kiwitalk.Util.generateVibrator
 import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.util.*
 
 
@@ -53,7 +55,7 @@ class SearchPlaceFragment : Fragment() {
     private val binding get() = checkNotNull(_binding)
     private val searchPlaceViewModel: SearchPlaceViewModel by viewModels()
 
-    private val permissionRequest = 99
+    private val permissionRequest = PERMISSION_CODE
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var currentLocation: Location? = null
@@ -79,11 +81,16 @@ class SearchPlaceFragment : Fragment() {
         setMapClickListener()
         setMapLongClickListener()
 
-        lifecycleScope.launchWhenCreated {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             mMap.myLocationButtonClickEvents().collectLatest {
                 updateLocationListener()
             }
         }
+    }
+
+    init {
+        baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_baseline_location_on_24)
+        selectMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_baseline_location_on_click)
     }
 
     override fun onCreateView(
@@ -120,12 +127,8 @@ class SearchPlaceFragment : Fragment() {
                     markerState?.position?.longitude?:return@setOnClickListener
                     )
                 setDialog(address)
-
             }
         }
-        baseMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_24)
-        selectMarker = bitmapDescriptorFromVector(requireContext(), R.drawable.ic_baseline_location_on_click)
-
     }
 
     private fun isPermitted(): Boolean {
@@ -140,10 +143,10 @@ class SearchPlaceFragment : Fragment() {
     @SuppressLint("MissingPermission")
     fun updateLocationListener() {
         checkPermission()
-
         fusedLocationProviderClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
             task.addOnSuccessListener { location: Location? ->
                 location ?: return@addOnSuccessListener
+                currentLocation = location
                 mMap.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         LatLng(location.latitude, location.longitude), 17f
@@ -173,17 +176,18 @@ class SearchPlaceFragment : Fragment() {
     }
 
     private fun setMarkerClickListener() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             mMap.markerClickEvents().collectLatest {
                 binding.btnPlaceSave.visibility = View.VISIBLE
                 markerState = if (markerState != null && markerState != it) {
-                    clearMarkerClick(checkNotNull(markerState))
+                    checkNotNull(markerState).setIcon(baseMarker)
                     it.setIcon(selectMarker)
                     it
                 } else {
                     it.setIcon(selectMarker)
                     it
                 }
+                it.showInfoWindow()
             }
         }
     }
@@ -210,7 +214,6 @@ class SearchPlaceFragment : Fragment() {
         }
     }
 
-
     @SuppressLint("MissingPermission")
     private fun checkPermission() {
         if (isPermitted()) {
@@ -222,47 +225,17 @@ class SearchPlaceFragment : Fragment() {
         ActivityCompat.requestPermissions(requireActivity(), permissions, permissionRequest)
     }
 
-    @Suppress("DEPRECATION")
-    fun generateVibrator(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val vibratorManager =
-                context.getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
-
-            val vibrationEffect = VibrationEffect.createOneShot(
-                200L,
-                50
-            )
-            val combinedVibration = CombinedVibration.createParallel(vibrationEffect)
-            vibratorManager.vibrate(combinedVibration)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
-            val effect = VibrationEffect.createOneShot(
-                200L, 50
-            )
-            vibrator.vibrate(effect)
-        } else {
-            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
-            vibrator.vibrate(200L)
-        }
-    }
-
-    private fun clearMarkerClick(marker: Marker) {
-        marker.setIcon(baseMarker)
-    }
-
     private fun getAddress(context: Context, lat: Double, lng: Double): String {
         var nowAddress: String = ADDRESS_ERROR
         val geocoder = Geocoder(context, Locale.KOREA)
-        try {
-            geocoder.changeLatLngToAddress(lat, lng) {
-                if(it != null){
-                    val currentLocationAddress: String = it.getAddressLine(0).toString()
-                    nowAddress = currentLocationAddress
-                }
+
+        geocoder.changeLatLngToAddress(lat, lng) {
+            if(it != null){
+                val currentLocationAddress: String = it.getAddressLine(0).toString()
+                nowAddress = currentLocationAddress
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
+
         return nowAddress
     }
 
@@ -294,20 +267,11 @@ class SearchPlaceFragment : Fragment() {
         }
     }
 
-    private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
-        return ContextCompat.getDrawable(context, vectorResId)?.run {
-            setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-            val bitmap =
-                Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
-            draw(Canvas(bitmap))
-            BitmapDescriptorFactory.fromBitmap(bitmap)
-        }
-    }
-
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
     }
+
     companion object {
         const val ADDRESS_KEY = "Address"
         const val LATLNG_KEY = "LatLng"
