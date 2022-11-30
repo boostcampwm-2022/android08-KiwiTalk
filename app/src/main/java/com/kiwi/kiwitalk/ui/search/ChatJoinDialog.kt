@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.kiwi.domain.model.ChatInfo
+import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.DialogJoinChatBinding
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 
 class ChatJoinDialog(
     private val chatDialogAction: ChatDialogAction,
@@ -25,12 +27,16 @@ class ChatJoinDialog(
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.dialog_join_chat, container, false)
         binding.chatInfo = chatInfo
+        binding.adapter = SelectedKeywordAdapter().apply {
+            submitList(chatInfo.keywords.map {
+                Keyword(it, 0)
+            }.toMutableList())
+        }
         binding.btnDialogClose.setOnClickListener { dismiss() }
         binding.btnDialogJoin.setOnClickListener {
             chatDialogAction.onClickJoinButton(chatInfo.cid)
             dismiss()
         }
-//        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return binding.root
     }
 

@@ -1,6 +1,5 @@
 package com.kiwi.data.mapper
 
-import com.google.type.LatLng
 import com.kiwi.data.Const
 import com.kiwi.data.mapper.DateFormatter.formatTimeString
 import com.kiwi.data.model.remote.MarkerRemote

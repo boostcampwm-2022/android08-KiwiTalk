@@ -4,24 +4,113 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="chatInfo"
             type="com.kiwi.domain.model.ChatInfo" />
+
+        <variable
+            name="adapter"
+            type="com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/large_margin">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_dialog_chatName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin"
+            android:backgroundTint="?attr/colorPrimaryVariant"
+            android:text="@string/chat_name"
+            app:layout_constraintBottom_toTopOf="@id/chip_dialog_keyword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_temp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/tv_dialog_chatName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:text="@{chatInfo.name}"
+            app:layout_constraintBottom_toBottomOf="@id/chip_dialog_chatName"
+            app:layout_constraintStart_toEndOf="@id/chip_dialog_chatName"
+            app:layout_constraintTop_toTopOf="@id/chip_dialog_chatName"
+            tools:text="채팅방 정보" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_dialog_keyword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin"
+            android:backgroundTint="?attr/colorPrimaryVariant"
+            android:text="@string/chip_keyword"
+            app:layout_constraintBottom_toTopOf="@id/chip_dialog_address"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="채팅방 정보"
-            android:text="@{chatInfo.toString()}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            app:layout_constraintTop_toBottomOf="@id/chip_dialog_chatName"
+
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_dialog_keyword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:adapter="@{adapter}"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@id/chip_dialog_keyword"
+            app:layout_constraintStart_toEndOf="@id/chip_dialog_chatName"
+            app:layout_constraintTop_toTopOf="@id/chip_dialog_keyword" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_dialog_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin"
+            android:backgroundTint="?attr/colorPrimaryVariant"
+            android:text="@string/chip_location"
+            app:layout_constraintBottom_toTopOf="@id/chip_dialog_description"
+            app:layout_constraintEnd_toEndOf="@id/chip_dialog_chatName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chip_dialog_keyword" />
+
+        <TextView
+            android:id="@+id/tv_dialog_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:text="@{chatInfo.address}"
+            app:layout_constraintBottom_toBottomOf="@id/chip_dialog_address"
+            app:layout_constraintStart_toEndOf="@id/chip_dialog_chatName"
+            app:layout_constraintTop_toTopOf="@id/chip_dialog_address"
+            tools:text="채팅방 정보" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_dialog_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/medium_margin"
+            android:backgroundTint="?attr/colorPrimaryVariant"
+            android:text="@string/chip_description"
+            app:layout_constraintBottom_toTopOf="@id/btn_dialog_close"
+            app:layout_constraintEnd_toEndOf="@id/chip_dialog_chatName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chip_dialog_address" />
+
+        <TextView
+            android:id="@+id/tv_dialog_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/medium_margin"
+            android:text="@{chatInfo.description}"
+            app:layout_constraintBottom_toBottomOf="@id/chip_dialog_description"
+            app:layout_constraintStart_toEndOf="@id/chip_dialog_chatName"
+            app:layout_constraintTop_toTopOf="@id/chip_dialog_description"
+            tools:text="채팅방 정보" />
 
         <Button
             android:id="@+id/btn_dialog_close"

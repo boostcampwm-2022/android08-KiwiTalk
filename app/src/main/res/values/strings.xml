@@ -29,4 +29,9 @@
     <string name="item_chatList_logout">로그아웃</string>
     <string name="close_dialog">닫기</string>
     <string name="dialog_join">입장</string>
+
+    <string name="chat_name">채팅방</string>
+    <string name="chip_keyword">키워드</string>
+    <string name="chip_location">위치</string>
+    <string name="chip_description">설명</string>
 </resources>
