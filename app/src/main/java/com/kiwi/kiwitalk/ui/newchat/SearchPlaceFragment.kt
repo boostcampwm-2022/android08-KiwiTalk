@@ -3,6 +3,7 @@ package com.kiwi.kiwitalk.ui.newchat
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
@@ -13,6 +14,11 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -34,7 +40,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.markerClickEvents
 import com.google.maps.android.ktx.myLocationButtonClickEvents
-import com.kiwi.domain.model.PlaceList
+import com.kiwi.domain.model.PlaceInfoList
 import com.kiwi.kiwitalk.ChangeExpansion.changeLatLngToAddress
 import com.kiwi.kiwitalk.Const.ADDRESS_ERROR
 import com.kiwi.kiwitalk.Const.PERMISSION_CODE
@@ -67,7 +73,7 @@ class SearchPlaceFragment : Fragment() {
     private var permissions = arrayOf(
         ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
     )
-    
+
     private val mapReadyCallback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
         mMap.setMinZoomPreference(5.0F)
@@ -113,6 +119,7 @@ class SearchPlaceFragment : Fragment() {
 
         with(binding){
             btnKeywordSearch.setOnClickListener {
+                hideKeyboard()
                 searchLocation(currentLocation?:return@setOnClickListener,etKeywordSearch.text.toString())
                 etKeywordSearch.text = null
             }
@@ -158,8 +165,8 @@ class SearchPlaceFragment : Fragment() {
         searchPlaceViewModel.getSearchPlace(location.longitude.toString(),location.latitude.toString(),keyword)
     }
 
-    private fun resultSearchPlace(placeList: PlaceList){
-        placeList.list.forEach { place ->
+    private fun resultSearchPlace(placeList: PlaceInfoList){
+        placeList.list?.forEach { place ->
             val location = LatLng(place.lat.toDouble(), place.lng.toDouble())
 
             val markerOptions =
@@ -175,7 +182,6 @@ class SearchPlaceFragment : Fragment() {
     private fun setMarkerClickListener() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             mMap.markerClickEvents().collectLatest {
-                binding.btnPlaceSave.visibility = View.VISIBLE
                 markerState = if (markerState != null && markerState != it) {
                     checkNotNull(markerState).setIcon(baseMarker)
                     it.setIcon(selectMarker)
@@ -184,6 +190,7 @@ class SearchPlaceFragment : Fragment() {
                     it.setIcon(selectMarker)
                     it
                 }
+                checkAddButtonShowAndHide()
                 it.showInfoWindow()
             }
         }
@@ -192,9 +199,9 @@ class SearchPlaceFragment : Fragment() {
     private fun setMapClickListener() {
         mMap.setOnMapClickListener {
             if (markerState != null) {
-                binding.btnPlaceSave.visibility = View.GONE
                 markerState?.setIcon(baseMarker)
                 markerState = null
+                checkAddButtonShowAndHide()
             }
         }
     }
@@ -206,6 +213,7 @@ class SearchPlaceFragment : Fragment() {
                     .position(it)
                     .icon(baseMarker)
 
+            mMap.clear()
             mMap.addMarker(markerOptions)
             generateVibrator(requireContext())
         }
@@ -232,7 +240,6 @@ class SearchPlaceFragment : Fragment() {
                 nowAddress = currentLocationAddress
             }
         }
-
         return nowAddress
     }
 
@@ -262,6 +269,27 @@ class SearchPlaceFragment : Fragment() {
                 popBackStack()
             }
         }
+    }
+
+    private fun checkAddButtonShowAndHide() {
+        if(markerState != null){
+            val animation = TranslateAnimation(view?.width?.toFloat() ?: return, 0F,0F,0F)
+            animation.duration = 200
+            animation.fillAfter = true
+            binding.btnPlaceSave.visibility = View.VISIBLE
+            binding.btnPlaceSave.animation = animation
+        } else {
+            val animation = TranslateAnimation(0F,view?.width?.toFloat() ?: return, 0F,0F)
+            animation.duration = 200
+            animation.fillAfter = true
+            binding.btnPlaceSave.visibility = View.GONE
+            binding.btnPlaceSave.animation = animation
+        }
+    }
+
+    private fun hideKeyboard() {
+        val imm  = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
     
     override fun onDestroy() {
