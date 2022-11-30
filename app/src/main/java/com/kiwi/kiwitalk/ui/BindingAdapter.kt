@@ -9,9 +9,9 @@ import com.kiwi.kiwitalk.R
 fun setImage(imageView: ImageView, uri: String?) {
     Glide.with(imageView.context)
         .load(uri)
-        .placeholder(R.drawable.ic_launcher_background)
+        .placeholder(R.drawable.ic_baseline_cloud_sync_24)
         .error(R.drawable.logo_splash_transparent)
-        .fallback(R.drawable.ic_launcher_background)
+        .fallback(R.drawable.ic_baseline_cloud_sync_24)
         .fitCenter()
         .into(imageView)
 }
