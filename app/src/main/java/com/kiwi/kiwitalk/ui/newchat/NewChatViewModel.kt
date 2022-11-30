@@ -20,38 +20,42 @@ class NewChatViewModel @Inject constructor(
     private val pref: AppPreference
 ) : ViewModel() {
 
-    private val _isChatImage = MutableLiveData<String>()
-    val isChatImage: LiveData<String> = _isChatImage
+    private val _chatImage = MutableLiveData<String>()
+    val chatImage: LiveData<String> = _chatImage
 
-    private val _isChatId = MutableLiveData<String>()
-    val isChatId: LiveData<String> = _isChatId
+    private val _chatId = MutableLiveData<String>()
+    val chatId: LiveData<String> = _chatId
 
-    private val _isNewChatInfo = MutableLiveData<NewChat>()
-    val isNewChatInfo: LiveData<NewChat> = _isNewChatInfo
+    private val _newChatInfo = MutableLiveData<NewChat>()
+    val newChatInfo: LiveData<NewChat> = _newChatInfo
 
-    private val _isAddress = MutableLiveData<String>()
-    val isAddress: LiveData<String> = _isAddress
+    private val _address = MutableLiveData<String>()
+    val address: LiveData<String> = _address
 
-    private val _isLatLng = MutableLiveData<LatLng>()
-    val isLatLng: LiveData<LatLng> = _isLatLng
+    private val _latLng = MutableLiveData<LatLng>()
+    val latLng: LiveData<LatLng> = _latLng
 
 
     fun setChatImage(uri: String) {
-        _isChatImage.value = uri
+        _chatImage.value = uri
     }
 
     fun setAddress(address: String) {
-        _isAddress.value = address
+        _address.value = address
     }
 
     fun setLatLng(latLng: LatLng) {
-        _isLatLng.value = latLng
+        _latLng.value = latLng
     }
 
     fun setNewChat(newChat: NewChat) {
-        _isNewChatInfo.value = newChat
+        _newChatInfo.value = newChat
     }
 
+    fun setChatId(){
+        _chatId.value = pref.getString(LOGIN_ID_KEY, EMPTY_STRING)
+    }
+    
     fun setChatId(){
         _isChatId.value = pref.getString(LOGIN_ID_KEY, EMPTY_STRING)
     }
