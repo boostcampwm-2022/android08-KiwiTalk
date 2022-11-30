@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentChatListBinding
 import com.kiwi.kiwitalk.ui.search.SearchChatActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +41,7 @@ class ChatListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        initToolbar()
 
         binding.fabCreateChat.setOnClickListener {
             startActivity(Intent(requireContext(), SearchChatActivity::class.java))
@@ -64,6 +68,23 @@ class ChatListFragment : Fragment() {
         }
         binding.rvChatList.apply {
             this.adapter = adapter
+        }
+    }
+
+    private fun initToolbar() {
+        val navigation = Navigation.findNavController(binding.root)
+        binding.chatListToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_chatList_logout -> {
+                    Toast.makeText(requireContext(), "미구현 기능입니다.", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.item_chatList_actionToProffileSetting -> {
+                    navigation.navigate(R.id.action_chatListFragment_to_profileSettingFragment)
+                    true
+                }
+                else -> false
+            }
         }
     }
 

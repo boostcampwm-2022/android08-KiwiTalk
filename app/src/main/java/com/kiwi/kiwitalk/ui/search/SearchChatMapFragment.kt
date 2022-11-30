@@ -213,22 +213,19 @@ class SearchChatMapFragment : Fragment() {
     }
 
     private fun initToolbar() {
-        binding.searchChatMapToolbar.run {
-            inflateMenu(R.menu.menu_search_chat_map)
-            setNavigationOnClickListener {
-                activity?.finish()
-            }
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.item_action_search_keyword -> {
-                        Navigation.findNavController(binding.root).navigate(
-                            R.id.action_searchChatFragment_to_searchKeywordFragment,
-                            bundleOf("keywords" to viewModel.keywords.value)
-                        )
-                        true
-                    }
-                    else -> false
+        binding.searchChatMapToolbar.setNavigationOnClickListener {
+            activity?.finish()
+        }
+        binding.searchChatMapToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_action_search_keyword -> {
+                    Navigation.findNavController(binding.root).navigate(
+                        R.id.action_searchChatFragment_to_searchKeywordFragment,
+                        bundleOf("keywords" to viewModel.keywords.value)
+                    )
+                    true
                 }
+                else -> false
             }
         }
     }
