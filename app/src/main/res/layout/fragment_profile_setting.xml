@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.home.ProfileSettingFragment">
 
     <data>
 
+        <variable
+            name="viewmodel"
+            type="com.kiwi.kiwitalk.ui.home.ProfileViewModel" />
     </data>
 
     <LinearLayout
@@ -16,11 +18,11 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_profile_title"
-            app:title="프로필 수정"
-            app:navigationIcon="@drawable/ic_backarrow_48"
-            app:menu="@menu/menu_search_keyword_toolbar"
+            style="@style/kiwi.Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:menu="@menu/menu_search_keyword_toolbar"
+            app:title="프로필 수정" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -69,7 +71,7 @@
                         android:id="@+id/et_profile_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/text_chat_name"
+                        android:hint="이름"
                         android:maxLength="20"
                         android:maxLines="1"
                         android:nextFocusDown="@+id/et_chat_description" />
@@ -82,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     app:counterEnabled="true"
-                    app:counterMaxLength="50"
+                    app:counterMaxLength="140"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/til_profile_name">
@@ -91,15 +93,13 @@
                         android:id="@+id/et_profile_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/text_chat_description"
+                        android:hint="소개"
                         android:maxLength="50" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </LinearLayout>
-
-
 
 
 </layout>
