@@ -72,6 +72,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="이름"
+                        android:text="@={viewmodel.name}"
                         android:maxLength="20"
                         android:maxLines="1"
                         android:nextFocusDown="@+id/et_chat_description" />

@@ -1,11 +1,31 @@
 package com.kiwi.kiwitalk.ui.home
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.client.models.User
+import javax.inject.Inject
 
+
+/**
+ * 너무나 단순한 작업에서 MVVM구조를 따라야할까?
+ */
 @HiltViewModel
-class ProfileViewModel(
-
+class ProfileViewModel @Inject constructor(
+    val chatClient: ChatClient
 ): ViewModel() {
-    
+
+    //2way binding
+    var name = MutableLiveData<String>()
+
+    init {
+        getMyProfile()
+    }
+
+    fun getMyProfile(){
+        chatClient.getCurrentUser()?.let { user ->
+            name.value = user.name
+        }
+    }
 }
