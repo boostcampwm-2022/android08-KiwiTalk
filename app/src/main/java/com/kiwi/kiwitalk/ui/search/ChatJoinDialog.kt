@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.kiwi.domain.model.ChatInfo
+import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.DialogJoinChatBinding
 
 class ChatJoinDialog(
@@ -21,8 +23,8 @@ class ChatJoinDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogJoinChatBinding.inflate(inflater, container, false)
-        binding.tvTemp.text = chatInfo.toString()
+        _binding = DataBindingUtil.inflate(inflater, R.layout.dialog_join_chat, container, false)
+        binding.chatInfo = chatInfo
         binding.btnDialogClose.setOnClickListener { dismiss() }
         binding.btnDialogJoin.setOnClickListener {
             chatDialogAction.onClickJoinButton(chatInfo.cid)
