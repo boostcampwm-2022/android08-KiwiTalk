@@ -17,10 +17,9 @@
         android:orientation="vertical">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/tb_profile_title"
+            android:id="@+id/toolbar_profile_title"
             style="@style/kiwi.Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             app:menu="@menu/menu_search_keyword_toolbar"
             app:title="프로필 수정" />
 

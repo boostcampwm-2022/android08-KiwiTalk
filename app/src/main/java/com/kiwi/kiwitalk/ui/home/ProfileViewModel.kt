@@ -14,23 +14,23 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     val chatClient: ChatClient
-): ViewModel() {
+) : ViewModel() {
 
     //2way binding
-    var myName = MutableLiveData<String>()
+    val myName = MutableLiveData<String>()
 
     init {
         getMyProfile()
     }
 
-    fun getMyProfile(){
+    fun getMyProfile() {
         chatClient.getCurrentUser()?.let { user ->
             myName.value = user.name
         }
     }
 
-    fun setUpdateProfile(){
-        with(chatClient){
+    fun setUpdateProfile() {
+        with(chatClient) {
             getCurrentUser()?.let { user ->
                 myName.value?.let { myNameString ->
                     updateUser(user.apply { name = myNameString }).enqueue()
