@@ -26,7 +26,7 @@ class SearchKeywordViewModel @Inject constructor(
     val selectedKeyword: LiveData<List<Keyword>>
         get() = _selectedKeywords
 
-    private var tempSelectedKeywords: MutableList<Keyword>? = null
+    private var tempSelectedKeywords: List<Keyword>? = null
 
     fun getAllKeywords(){
         viewModelScope.launch {

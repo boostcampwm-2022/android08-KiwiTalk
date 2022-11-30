@@ -24,7 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchKeywordFragment : Fragment() {
 
     private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
-    private lateinit var binding: FragmentSearchKeywordBinding
+    private var _binding: FragmentSearchKeywordBinding? = null
+    private val binding get() = _binding!!
     private lateinit var keywordCategoryAdapter: KeywordCategoryAdapter
     private lateinit var selectedKeywordAdapter: SelectedKeywordAdapter
     private val keywordClickListener: (View) -> Unit = { chip ->
@@ -41,7 +42,7 @@ class SearchKeywordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchKeywordBinding.inflate( inflater,container,false)
+        _binding = FragmentSearchKeywordBinding.inflate( inflater,container,false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = searchKeywordViewModel
 
@@ -116,5 +117,11 @@ class SearchKeywordFragment : Fragment() {
                 return@setOnMenuItemClickListener true
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 }
