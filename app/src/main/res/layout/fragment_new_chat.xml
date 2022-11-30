@@ -31,7 +31,7 @@
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
             android:background="@android:color/transparent"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/image_add_btn_Description"
             android:src="@drawable/ic_add_photo"
             app:layout_constraintBottom_toBottomOf="@+id/iv_chat_image"
             app:layout_constraintEnd_toEndOf="@+id/iv_chat_image" />
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:inputType="number"
-                android:hint="@string/text_chat_max_personnel"
+                android:hint="@string/text_chat_max_number_count_hint"
                 android:imeOptions="actionDone"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="최대 설정 가능한 인원은 100명입니다"
+            android:text="@string/text_chat_max_number_count"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_chat_max_personnel" />
 
@@ -129,11 +129,11 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_baseline_search_24"
-            android:text="키워드 검색"
+            app:icon="@drawable/ic_search"
+            android:text="@string/text_chat_keyword_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text"/> >
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text"/>
 
         <TextView
             android:id="@+id/tv_chat_address_text"
@@ -159,8 +159,8 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_baseline_search_24"
-            android:text="주소 검색"
+            app:icon="@drawable/ic_search"
+            android:text="@string/text_chat_place_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_chat_select_address"/>
@@ -169,9 +169,10 @@
             android:id="@+id/btn_new_chat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="채팅방 생성"
+            android:text="@string/text_chat_add"
             android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_chat_address" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_chat_address"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
