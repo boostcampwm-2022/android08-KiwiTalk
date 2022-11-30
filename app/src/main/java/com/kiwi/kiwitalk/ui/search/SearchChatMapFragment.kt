@@ -107,10 +107,6 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         startChat(cid)
     }
 
-    override fun onClickJoinButton(cid: String) {
-        startChat(cid)
-    }
-
     private fun startChat(cid: String) {
         lifecycleScope.launch {
             viewModel.appendUserToChat(cid)

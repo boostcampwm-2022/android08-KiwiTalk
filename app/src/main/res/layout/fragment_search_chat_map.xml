@@ -83,5 +83,6 @@
                 app:layout_constraintTop_toBottomOf="@id/layout_markerInfo_preview" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
