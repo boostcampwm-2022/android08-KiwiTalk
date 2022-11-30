@@ -11,7 +11,6 @@ import com.kiwi.domain.model.ChatInfo
 import com.kiwi.domain.model.Marker
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.api.models.QueryChannelsRequest
-import io.getstream.chat.android.client.api.models.querysort.QuerySortByField
 import io.getstream.chat.android.client.models.Filters
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -48,16 +47,12 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
                 Filters.eq("cid", cid),
             ),
             offset = 0,
-            limit = 10,
-            querySort = QuerySortByField.descByName("member_count")
+            limit = 1,
         ).apply {
             watch = true // if true returns the Channel state
             state = true // if true listen to changes to this Channel in real time.
             limit = ONE  // The number of channels to return (max is 30)
         }
-
-        //val user = User(id = "kimgyeon2", name = "")
-        //chatClient.devToken(user.id)
 
         Log.d(TAG, chatClient.getCurrentUser().toString())
 
@@ -65,7 +60,7 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
         val result = chatClient.queryChannels(request).await()
         return if (result.isSuccess) {
             Log.d(TAG, result.toString())
-            result.data().first().toChatInfo()
+            result.data().getOrNull(0)?.toChatInfo()
         } else {
             Log.d(TAG, result.toString())
             null

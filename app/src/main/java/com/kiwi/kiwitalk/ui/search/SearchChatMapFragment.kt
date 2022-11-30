@@ -174,7 +174,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         }
         clusterManager.setOnClusterItemClickListener { item ->
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            viewModel.getPlaceInfo(Marker(item.cid, item.x, item.y, item.keywords))
+            viewModel.getPlaceInfo(listOf(item.cid))
             false
         }
         clusterManager.setOnClusterClickListener { cluster ->
@@ -182,6 +182,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             cluster.items.forEach {
                 Log.d("SearchChatActivity", "forEach: $it")
             }
+            viewModel.getPlaceInfo(cluster.items.map { it.cid })
             false
         }
     }
