@@ -134,6 +134,15 @@ class SearchChatMapFragment : Fragment() {
                 }
             }
         }
+        clusterManager.markerCollection.setInfoWindowAdapter(object : InfoWindowAdapter {
+            override fun getInfoContents(p0: com.google.android.gms.maps.model.Marker): View {
+                return View(requireContext())
+            }
+
+            override fun getInfoWindow(p0: com.google.android.gms.maps.model.Marker): View {
+                return View(requireContext())
+            }
+        })
         map.setOnCameraIdleListener(clusterManager)
         setupMapClickListener(clusterManager)
     }
