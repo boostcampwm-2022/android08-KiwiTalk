@@ -55,10 +55,6 @@ class NewChatViewModel @Inject constructor(
     fun setChatId(){
         _chatId.value = pref.getString(LOGIN_ID_KEY, EMPTY_STRING)
     }
-    
-    fun setChatId(){
-        _isChatId.value = pref.getString(LOGIN_ID_KEY, EMPTY_STRING)
-    }
 
     fun addNewChat(userid: String, currentTime: String, newChat: NewChat) {
         viewModelScope.launch {

@@ -88,11 +88,6 @@ class SearchPlaceFragment : Fragment() {
         }
     }
 
-    init {
-        baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_baseline_location_on_24)
-        selectMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_baseline_location_on_click)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -129,6 +124,8 @@ class SearchPlaceFragment : Fragment() {
                 setDialog(address)
             }
         }
+        baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_)
+        selectMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_click)
     }
 
     private fun isPermitted(): Boolean {
@@ -221,6 +218,7 @@ class SearchPlaceFragment : Fragment() {
             mMap.isMyLocationEnabled = true
             return
 
+        }
         ActivityCompat.requestPermissions(requireActivity(), permissions, permissionRequest)
     }
 
