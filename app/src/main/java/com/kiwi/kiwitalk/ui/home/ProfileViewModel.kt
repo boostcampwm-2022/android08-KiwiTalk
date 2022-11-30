@@ -17,7 +17,7 @@ class ProfileViewModel @Inject constructor(
 ): ViewModel() {
 
     //2way binding
-    var name = MutableLiveData<String>()
+    var myName = MutableLiveData<String>()
 
     init {
         getMyProfile()
@@ -25,7 +25,17 @@ class ProfileViewModel @Inject constructor(
 
     fun getMyProfile(){
         chatClient.getCurrentUser()?.let { user ->
-            name.value = user.name
+            myName.value = user.name
+        }
+    }
+
+    fun setUpdateProfile(){
+        with(chatClient){
+            getCurrentUser()?.let { user ->
+                myName.value?.let { myNameString ->
+                    updateUser(user.apply { name = myNameString }).enqueue()
+                }
+            }
         }
     }
 }
