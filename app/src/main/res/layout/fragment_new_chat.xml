@@ -19,7 +19,7 @@
             android:layout_height="230dp"
             app:strokeWidth="3dp"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerCut"
-            android:src="@drawable/ic_profile_base_image"
+            android:src="@drawable/logo_splash_transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,13 +28,13 @@
             android:id="@+id/btn_chat_add_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_photo"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
             android:background="@android:color/transparent"
+            android:contentDescription="TODO"
+            android:src="@drawable/ic_add_photo"
             app:layout_constraintBottom_toBottomOf="@+id/iv_chat_image"
-            app:layout_constraintEnd_toEndOf="@+id/iv_chat_image"
-            android:contentDescription="TODO" />
+            app:layout_constraintEnd_toEndOf="@+id/iv_chat_image" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_chat_name"
