@@ -12,7 +12,6 @@ import com.kiwi.domain.model.PlaceChatInfo
 import com.kiwi.domain.repository.SearchChatRepository
 import com.kiwi.kiwitalk.AppPreference
 import com.kiwi.kiwitalk.Const
-import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.utils.toResult
@@ -40,7 +39,9 @@ class SearchChatMapViewModel @Inject constructor(
     private val _location = MutableLiveData<Location>()
     val location: LiveData<Location> = _location
 
-    val previewAdapter = SelectedKeywordAdapter()
+    val previewAdapter = ChatAdapter(mutableListOf()) {
+        clickedChatCid.value = it
+    }
 
     val clickedChatCid = MutableLiveData<ChatInfo>()
     val detailAdapter = ChatAdapter(placeChatInfo.value?.chatList) {

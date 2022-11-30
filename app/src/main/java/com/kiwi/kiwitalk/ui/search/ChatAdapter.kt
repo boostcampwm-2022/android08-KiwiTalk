@@ -15,7 +15,7 @@ class ChatAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatInfoViewHolder {
         val binding = ItemChatListNoImageBinding.inflate(LayoutInflater.from(parent.context))
-        //binding.root.setOnClickListener(clickListener)
+
         return ChatInfoViewHolder(binding)
     }
 
