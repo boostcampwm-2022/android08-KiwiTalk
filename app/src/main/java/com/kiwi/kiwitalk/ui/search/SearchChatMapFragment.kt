@@ -220,8 +220,7 @@ class SearchChatMapFragment : Fragment() {
             when (it.itemId) {
                 R.id.item_action_search_keyword -> {
                     Navigation.findNavController(binding.root).navigate(
-                        R.id.action_searchChatFragment_to_searchKeywordFragment,
-                        bundleOf("keywords" to viewModel.keywords.value)
+                        R.id.action_searchChatFragment_to_searchKeywordFragment
                     )
                     true
                 }
