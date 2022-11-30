@@ -1,7 +1,6 @@
-package com.kiwi.kiwitalk.ui.newchat
+package com.kiwi.kiwitalk.ui.search
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kiwi.domain.model.ChatInfo
@@ -11,18 +10,23 @@ import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 
 class ChatAdapter(
     var chatList: List<ChatInfo>?,
-    private val clickListener: (View) -> Unit
+    private val chatClickListener: (ChatInfo) -> Unit
 ) : RecyclerView.Adapter<ChatAdapter.ChatInfoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatInfoViewHolder {
         val binding = ItemChatListNoImageBinding.inflate(LayoutInflater.from(parent.context))
-        binding.root.setOnClickListener(clickListener)
+        //binding.root.setOnClickListener(clickListener)
         return ChatInfoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ChatInfoViewHolder, position: Int) {
         chatList?.let {
-            holder.bind(it[position], position)
+            val data = it[position]
+            holder.bind(data)
+            // cid를 받아올 수 있는 방법이 기억 안나서 create 말고 bind에 넣음
+            holder.binding.root.setOnClickListener {
+                chatClickListener(data)
+            }
         }
     }
 
@@ -38,7 +42,7 @@ class ChatAdapter(
     inner class ChatInfoViewHolder(
         val binding: ItemChatListNoImageBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(chatInfo: ChatInfo, position: Int) {
+        fun bind(chatInfo: ChatInfo) {
             binding.item = chatInfo
             val adapter = SelectedKeywordAdapter()
             binding.adapter = adapter

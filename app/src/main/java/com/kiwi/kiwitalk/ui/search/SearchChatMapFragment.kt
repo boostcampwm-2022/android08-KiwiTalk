@@ -39,6 +39,7 @@ import com.kiwi.kiwitalk.model.ClusterMarker
 import com.kiwi.kiwitalk.model.ClusterMarker.Companion.toClusterMarker
 import com.kiwi.kiwitalk.ui.newchat.NewChatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import io.getstream.chat.android.ui.message.MessageListActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -89,7 +90,11 @@ class SearchChatMapFragment : Fragment() {
         }
     }
 
-    private fun initAdapter(){
+    private fun initAdapter() {
+        viewModel.clickedChatCid.observe(viewLifecycleOwner) {
+            // TODO dialog 띄우기
+            startChat(it.cid)
+        }
         viewModel.placeChatInfo.observe(viewLifecycleOwner) {
             viewModel.detailAdapter.submitList(it.chatList)
 
