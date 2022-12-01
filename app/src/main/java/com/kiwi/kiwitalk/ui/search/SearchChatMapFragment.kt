@@ -89,7 +89,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun initAdapter() {
         val previewAdapter = ChatAdapter(mutableListOf()) {
-            viewModel.updateClickedChat(it)
+            chatViewModel.updateClickedChat(it)
         }
         binding.layoutMarkerInfoPreview.rvPreviewChat.apply {
             adapter = previewAdapter
@@ -97,14 +97,14 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         }
 
         val detailAdapter = ChatAdapter(mutableListOf()) {
-            viewModel.updateClickedChat(it)
+            chatViewModel.updateClickedChat(it)
         }
         binding.rvDetail.apply {
             adapter = detailAdapter
             layoutManager = GridLayoutManager(context, 2)
         }
 
-        viewModel.placeChatInfo.observe(viewLifecycleOwner) { placeChatInfo ->
+        chatViewModel.placeChatInfo.observe(viewLifecycleOwner) { placeChatInfo ->
             placeChatInfo.getPopularChat()?.let {
                 previewAdapter.submitList(mutableListOf(it))
             }
