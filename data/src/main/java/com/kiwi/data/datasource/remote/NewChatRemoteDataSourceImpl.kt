@@ -39,7 +39,7 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
             "description" to newChatRemote.chatDescription,
             "address" to newChatRemote.address,
             "keywords" to newChatRemote.keywords,
-            "max_member_cnt" to newChatRemote.maxMemberCnt
+            "max_member_count" to newChatRemote.maxMemberCount
         )
 
         val token = chatClient.devToken(userId) // developer 토큰 생성

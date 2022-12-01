@@ -10,7 +10,6 @@ import javax.inject.Inject
 class SearchKeywordRemoteDataSource @Inject constructor(
     val firestore: FirebaseFirestore
 ) {
-
     suspend fun callAllKeyword(): List<KeywordCategory> {
         val keywordCategoryList: MutableList<KeywordCategory> = mutableListOf()
 

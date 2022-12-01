@@ -71,10 +71,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="이름"
-                        android:text="@={viewmodel.myName}"
                         android:maxLength="20"
                         android:maxLines="1"
-                        android:nextFocusDown="@+id/et_chat_description" />
+                        android:nextFocusDown="@+id/et_chat_description"
+                        android:text="@={viewmodel.myName}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout

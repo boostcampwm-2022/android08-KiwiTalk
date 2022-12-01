@@ -49,8 +49,8 @@ class LoginActivity : AppCompatActivity() {
             }
         )
 
-        viewModel.loginState.observe(this){
-            if(it){
+        viewModel.loginState.observe(this) {
+            if (it) {
                 showPopUpMessage(LOGIN_SUCCESS)
                 navigateToHome()
             }

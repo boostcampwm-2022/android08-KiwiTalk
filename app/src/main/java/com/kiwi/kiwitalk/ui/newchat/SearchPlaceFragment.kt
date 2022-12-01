@@ -14,11 +14,8 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -99,14 +96,16 @@ class SearchPlaceFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchPlaceBinding.inflate(inflater,container,false)
+        _binding = FragmentSearchPlaceBinding.inflate(inflater, container, false)
 
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.search_map) as SupportMapFragment?
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.search_map) as SupportMapFragment?
         mapFragment?.getMapAsync(mapReadyCallback)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -117,27 +116,36 @@ class SearchPlaceFragment : Fragment() {
             }
         }
 
-        with(binding){
+        with(binding) {
             btnKeywordSearch.setOnClickListener {
                 hideKeyboard()
-                searchLocation(currentLocation?:return@setOnClickListener,etKeywordSearch.text.toString())
+                searchLocation(
+                    currentLocation ?: return@setOnClickListener,
+                    etKeywordSearch.text.toString()
+                )
                 etKeywordSearch.text = null
             }
             btnPlaceSave.setOnClickListener {
-                val address = getAddress(requireContext(),
-                    markerState?.position?.latitude?:return@setOnClickListener,
-                    markerState?.position?.longitude?:return@setOnClickListener
-                    )
+                val address = getAddress(
+                    requireContext(),
+                    markerState?.position?.latitude ?: return@setOnClickListener,
+                    markerState?.position?.longitude ?: return@setOnClickListener
+                )
                 setDialog(address)
             }
         }
         baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_)
-        selectMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_click)
+        selectMarker =
+            changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_click)
     }
 
     private fun isPermitted(): Boolean {
         for (perm in permissions) {
-            if (ContextCompat.checkSelfPermission(requireContext(), perm)  != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    perm
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 return false
             }
         }
@@ -160,12 +168,16 @@ class SearchPlaceFragment : Fragment() {
         }
     }
 
-    private fun searchLocation(location: Location, keyword: String){
+    private fun searchLocation(location: Location, keyword: String) {
         mMap.clear()
-        searchPlaceViewModel.getSearchPlace(location.longitude.toString(),location.latitude.toString(),keyword)
+        searchPlaceViewModel.getSearchPlace(
+            location.longitude.toString(),
+            location.latitude.toString(),
+            keyword
+        )
     }
 
-    private fun resultSearchPlace(placeList: PlaceInfoList){
+    private fun resultSearchPlace(placeList: PlaceInfoList) {
         placeList.list?.forEach { place ->
             val location = LatLng(place.lat.toDouble(), place.lng.toDouble())
 
@@ -206,7 +218,7 @@ class SearchPlaceFragment : Fragment() {
         }
     }
 
-    private fun setMapLongClickListener(){
+    private fun setMapLongClickListener() {
         mMap.setOnMapLongClickListener {
             val markerOptions =
                 MarkerOptions()
@@ -218,7 +230,7 @@ class SearchPlaceFragment : Fragment() {
             generateVibrator(requireContext())
         }
     }
-    
+
     @SuppressLint("MissingPermission")
     private fun checkPermission() {
         if (isPermitted()) {
@@ -235,7 +247,7 @@ class SearchPlaceFragment : Fragment() {
         val geocoder = Geocoder(context, Locale.KOREA)
 
         geocoder.changeLatLngToAddress(lat, lng) {
-            if(it != null){
+            if (it != null) {
                 val currentLocationAddress: String = it.getAddressLine(0).toString()
                 nowAddress = currentLocationAddress
             }
@@ -243,7 +255,7 @@ class SearchPlaceFragment : Fragment() {
         return nowAddress
     }
 
-    private fun setDialog(address: String){
+    private fun setDialog(address: String) {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.dialog_new_chat, null)
         val dialog = AlertDialog.Builder(context)
@@ -251,8 +263,8 @@ class SearchPlaceFragment : Fragment() {
             .show()
 
         val textTitle = view.findViewById<TextView>(R.id.tv_current_address)
-        val buttonConfirm =  view.findViewById<TextView>(R.id.btn_chat_place_save)
-        val buttonClose =  view.findViewById<View>(R.id.btn_chat_place_cancel)
+        val buttonConfirm = view.findViewById<TextView>(R.id.btn_chat_place_save)
+        val buttonClose = view.findViewById<View>(R.id.btn_chat_place_cancel)
         textTitle.text = address
 
         dialog.window?.setGravity(Gravity.TOP)
@@ -272,14 +284,14 @@ class SearchPlaceFragment : Fragment() {
     }
 
     private fun checkAddButtonShowAndHide() {
-        if(markerState != null){
-            val animation = TranslateAnimation(view?.width?.toFloat() ?: return, 0F,0F,0F)
+        if (markerState != null) {
+            val animation = TranslateAnimation(view?.width?.toFloat() ?: return, 0F, 0F, 0F)
             animation.duration = 200
             animation.fillAfter = true
             binding.btnPlaceSave.visibility = View.VISIBLE
             binding.btnPlaceSave.animation = animation
         } else {
-            val animation = TranslateAnimation(0F,view?.width?.toFloat() ?: return, 0F,0F)
+            val animation = TranslateAnimation(0F, view?.width?.toFloat() ?: return, 0F, 0F)
             animation.duration = 200
             animation.fillAfter = true
             binding.btnPlaceSave.visibility = View.GONE
@@ -288,10 +300,11 @@ class SearchPlaceFragment : Fragment() {
     }
 
     private fun hideKeyboard() {
-        val imm  = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+        val imm =
+            requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
-    
+
     override fun onDestroy() {
         _binding = null
         super.onDestroy()

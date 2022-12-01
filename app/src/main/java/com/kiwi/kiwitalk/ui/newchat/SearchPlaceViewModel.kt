@@ -7,7 +7,9 @@ import com.kiwi.domain.model.PlaceInfoList
 import com.kiwi.domain.repository.SearchPlaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.utils.toResult
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +25,7 @@ class SearchPlaceViewModel @Inject constructor(
         viewModelScope.launch {
             searchPlaceRepository.getSearchKeyword(lng, lat, place)
                 .catch {
-                    Log.d("getSearchPlace","getSearchPlace: ${this.toResult()} $it")
+                    Log.d("getSearchPlace", "getSearchPlace: ${this.toResult()} $it")
                 }.collect {
                     _isPlaceList.emit(it)
                 }

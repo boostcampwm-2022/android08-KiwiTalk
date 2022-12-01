@@ -8,7 +8,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kiwi.kiwitalk.AppPreference
-import com.kiwi.kiwitalk.BuildConfig
 import com.kiwi.kiwitalk.Const
 import dagger.Module
 import dagger.Provides

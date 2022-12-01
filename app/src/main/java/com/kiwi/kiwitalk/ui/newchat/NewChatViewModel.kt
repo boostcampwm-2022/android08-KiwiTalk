@@ -52,13 +52,13 @@ class NewChatViewModel @Inject constructor(
         _newChatInfo.value = newChat
     }
 
-    fun setChatId(){
+    fun setChatId() {
         _chatId.value = pref.getString(LOGIN_ID_KEY, EMPTY_STRING)
     }
 
     fun addNewChat(userid: String, currentTime: String, newChat: NewChatInfo) {
         viewModelScope.launch {
-            repository.addChat(userid,currentTime,newChat)
+            repository.addChat(userid, currentTime, newChat)
         }
     }
 }
