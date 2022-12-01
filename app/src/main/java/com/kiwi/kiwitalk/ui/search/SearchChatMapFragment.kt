@@ -79,8 +79,8 @@ class SearchChatMapFragment : Fragment() {
         initMap()
         initToolbar()
         initBottomSheetCallBack()
+        initKeywordRecyclerView()
 
-        /* TODO 마커 클릭으로 바꿔야함 */
         binding.fabCreateChat.setOnClickListener {
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
@@ -231,6 +231,12 @@ class SearchChatMapFragment : Fragment() {
                 else -> false
             }
         }
+    }
+
+    private fun initKeywordRecyclerView() {
+        val adapter = SelectedKeywordAdapter()
+        adapter.submitList(keywordViewModel.selectedKeyword.value)
+        binding.rvSearchChatKeywords.adapter = adapter
     }
 
     override fun onDestroy() {
