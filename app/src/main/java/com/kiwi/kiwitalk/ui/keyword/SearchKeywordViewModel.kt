@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchKeywordViewModel @Inject constructor(
     private val searchKeywordRepository: SearchKeywordRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _allKeywords = MutableLiveData<List<KeywordCategory>>()
     val allKeywords: LiveData<List<KeywordCategory>>
@@ -28,7 +28,11 @@ class SearchKeywordViewModel @Inject constructor(
 
     private var tempSelectedKeywords: List<Keyword>? = null
 
-    fun getAllKeywords(){
+    init {
+        getAllKeywords()
+    }
+
+    private fun getAllKeywords() {
         viewModelScope.launch {
             allKeywords.value ?: searchKeywordRepository.getAllKeyWord()
                 .let {
@@ -39,9 +43,9 @@ class SearchKeywordViewModel @Inject constructor(
         Log.d("FIRESTORE_CALL_KEYWORD", "getKeywords: VM 2")
     }
 
-    fun setSelectedKeywords(text: String){
+    fun setSelectedKeywords(text: String) {
         getKeyword(text)?.let { keyword ->
-            if (_selectedKeywords.value == null){
+            if (_selectedKeywords.value == null) {
                 _selectedKeywords.value = listOf(keyword)
             } else {
                 val mutableSelectedList = _selectedKeywords.value!!.toMutableList()
@@ -61,16 +65,19 @@ class SearchKeywordViewModel @Inject constructor(
         return null
     }
 
-    fun saveBeforeKeywords(){
+    fun saveBeforeKeywords() {
         selectedKeyword.value?.let {
             tempSelectedKeywords = it.toMutableList()
         }
     }
 
-    fun SaveSelectedKeywordOrNot(saveOrNot: Boolean){
-        Log.d("SaveSelected", "SaveSelectedKeywordOrNot: ${saveOrNot} before: $tempSelectedKeywords")
-        if (!saveOrNot){
-                _selectedKeywords.value = tempSelectedKeywords ?: listOf()
+    fun SaveSelectedKeywordOrNot(saveOrNot: Boolean) {
+        Log.d(
+            "SaveSelected",
+            "SaveSelectedKeywordOrNot: ${saveOrNot} before: $tempSelectedKeywords"
+        )
+        if (!saveOrNot) {
+            _selectedKeywords.value = tempSelectedKeywords ?: listOf()
         }
         tempSelectedKeywords = null
     }
