@@ -24,7 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchKeywordFragment : Fragment() {
 
     private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
-    private lateinit var binding: FragmentSearchKeywordBinding
+    private var _binding: FragmentSearchKeywordBinding? = null
+    private val binding get() = _binding!!
     private lateinit var keywordCategoryAdapter: KeywordCategoryAdapter
     private lateinit var selectedKeywordAdapter: SelectedKeywordAdapter
     private val keywordClickListener: (View) -> Unit = { chip ->
@@ -41,8 +42,8 @@ class SearchKeywordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchKeywordBinding.inflate( inflater,container,false)
-        binding.lifecycleOwner = this
+        _binding = FragmentSearchKeywordBinding.inflate( inflater,container,false)
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = searchKeywordViewModel
 
         initToolbar()
@@ -57,6 +58,7 @@ class SearchKeywordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         searchKeywordViewModel.getAllKeywords()
+        searchKeywordViewModel.saveBeforeKeywords()
     }
 
     private fun setObserve(){
@@ -92,6 +94,7 @@ class SearchKeywordFragment : Fragment() {
             setNavigationOnClickListener {
                 try {
                     val navController = this@SearchKeywordFragment.findNavController()
+                    searchKeywordViewModel.SaveSelectedKeywordOrNot(false)
                     navController.popBackStack()
                 } catch (e: Exception){
                     Log.d("NAV_CONTROLLER", "setNavigationOnClickListener: $e")
@@ -104,6 +107,7 @@ class SearchKeywordFragment : Fragment() {
                     R.id.item_select_keyword -> {
                         try {
                             val navController = this@SearchKeywordFragment.findNavController()
+                            searchKeywordViewModel.SaveSelectedKeywordOrNot(true)
                             navController.popBackStack()
                         } catch (e: Exception) {
                             Log.d("NAV_CONTROLLER", "setOnMenuItemClickListener ERROR: $e")
@@ -113,5 +117,11 @@ class SearchKeywordFragment : Fragment() {
                 return@setOnMenuItemClickListener true
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 }

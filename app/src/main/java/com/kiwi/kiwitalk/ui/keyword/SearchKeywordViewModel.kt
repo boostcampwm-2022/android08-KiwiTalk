@@ -26,6 +26,7 @@ class SearchKeywordViewModel @Inject constructor(
     val selectedKeyword: LiveData<List<Keyword>>
         get() = _selectedKeywords
 
+    private var tempSelectedKeywords: List<Keyword>? = null
 
     fun getAllKeywords(){
         viewModelScope.launch {
@@ -58,5 +59,19 @@ class SearchKeywordViewModel @Inject constructor(
             }
         }
         return null
+    }
+
+    fun saveBeforeKeywords(){
+        selectedKeyword.value?.let {
+            tempSelectedKeywords = it.toMutableList()
+        }
+    }
+
+    fun SaveSelectedKeywordOrNot(saveOrNot: Boolean){
+        Log.d("SaveSelected", "SaveSelectedKeywordOrNot: ${saveOrNot} before: $tempSelectedKeywords")
+        if (!saveOrNot){
+                _selectedKeywords.value = tempSelectedKeywords ?: listOf()
+        }
+        tempSelectedKeywords = null
     }
 }
