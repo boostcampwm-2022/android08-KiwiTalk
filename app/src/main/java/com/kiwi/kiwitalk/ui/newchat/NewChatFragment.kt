@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
@@ -18,6 +19,7 @@ import com.kiwi.domain.model.NewChatInfo
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentNewChatBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
+import com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel
 import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.ADDRESS_KEY
 import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.LATLNG_KEY
 import com.kiwi.kiwitalk.ui.setImage
@@ -29,7 +31,7 @@ class NewChatFragment : Fragment() {
     private var _binding: FragmentNewChatBinding? = null
     private val binding get() = checkNotNull(_binding)
     private val newChatViewModel: NewChatViewModel by viewModels()
-
+    private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -100,8 +102,9 @@ class NewChatFragment : Fragment() {
                 })
             }
             btnNewChat.setOnClickListener {
-                if (allCheckNull()) {
-                    newChatViewModel.setNewChat(changeChatInfo())
+                val keywords = searchKeywordViewModel.selectedKeyword.value?.map { it.name }
+                if (allCheckNull() && keywords != null && keywords.isEmpty().not()) {
+                    newChatViewModel.setNewChat(changeChatInfo(keywords))
                 }
             }
             btnChatKeyword.setOnClickListener {
@@ -110,14 +113,14 @@ class NewChatFragment : Fragment() {
         }
     }
 
-    private fun changeChatInfo(): NewChatInfo {
+    private fun changeChatInfo(keywords: List<String>): NewChatInfo {
         with(newChatViewModel) {
             return NewChatInfo(
                 chatImage.value ?: "",
                 binding.etChatName.text.toString(),
                 binding.etChatDescription.text.toString(),
                 binding.etChatMaxPersonnel.text.toString(),
-                listOf("운동", "카페"),
+                keywords,
 
                 address.value ?: "",
 
