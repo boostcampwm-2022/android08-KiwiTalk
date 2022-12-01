@@ -1,6 +1,7 @@
 package com.kiwi.data.mapper
 
-import java.util.Date
+import com.kiwi.data.Const.SPACE
+import java.util.*
 
 object DateFormatter {
     private const val SEC = 60
@@ -29,5 +30,12 @@ object DateFormatter {
             msg = diffTime.toString() + "년 전"
         }
         return msg
+    }
+
+    fun trimAddress(fullAddress: Any?): String {
+        if (fullAddress !is String) return SPACE
+        val addressPart = fullAddress.split(SPACE)
+        val result = addressPart.filter { it.last() in listOf('시', '도', '구', '군', '동', '읍', '면') }
+        return result.joinToString(SPACE)
     }
 }

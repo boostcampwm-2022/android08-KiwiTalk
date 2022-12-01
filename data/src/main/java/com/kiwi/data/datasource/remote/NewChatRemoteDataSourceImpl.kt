@@ -18,7 +18,7 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
         newChatRemote: NewChatRemote
     ) {
         val fireStoreData = hashMapOf(
-            "cid" to userId + currentTime ,
+            "cid" to "messaging:$userId$currentTime",
             "keywords" to newChatRemote.keywords,
             "lat" to newChatRemote.lat,
             "lng" to newChatRemote.lng
