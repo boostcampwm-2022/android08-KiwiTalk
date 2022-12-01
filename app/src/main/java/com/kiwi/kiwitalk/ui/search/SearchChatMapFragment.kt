@@ -21,6 +21,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -31,8 +35,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.mapClickEvents
-import com.kiwi.domain.model.Marker
-import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchChatMapBinding
 import com.kiwi.kiwitalk.model.ClusterMarker
@@ -41,11 +43,12 @@ import com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import com.kiwi.kiwitalk.ui.newchat.NewChatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import io.getstream.chat.android.ui.message.MessageListActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchChatMapFragment : Fragment() {
+class SearchChatMapFragment : Fragment(), ChatDialogAction {
     private var _binding: FragmentSearchChatMapBinding? = null
     val binding get() = _binding!!
     private val chatViewModel: SearchChatMapViewModel by viewModels()
@@ -78,17 +81,60 @@ class SearchChatMapFragment : Fragment() {
         binding.vm = chatViewModel
         initMap()
         initToolbar()
+        initAdapter()
         initBottomSheetCallBack()
         initKeywordRecyclerView()
+        initScreenChange()
+    }
 
+    private fun initAdapter() {
+        val previewAdapter = ChatAdapter(mutableListOf()) {
+            viewModel.updateClickedChat(it)
+        }
+        binding.layoutMarkerInfoPreview.rvPreviewChat.apply {
+            adapter = previewAdapter
+            layoutManager = StaggeredGridLayoutManager(1, RecyclerView.VERTICAL)
+        }
+
+        val detailAdapter = ChatAdapter(mutableListOf()) {
+            viewModel.updateClickedChat(it)
+        }
+        binding.rvDetail.apply {
+            adapter = detailAdapter
+            layoutManager = GridLayoutManager(context, 2)
+        }
+
+        viewModel.placeChatInfo.observe(viewLifecycleOwner) { placeChatInfo ->
+            placeChatInfo.getPopularChat()?.let {
+                previewAdapter.submitList(mutableListOf(it))
+            }
+            detailAdapter.submitList(placeChatInfo.chatList)
+        }
+    }
+
+    private fun initScreenChange() {
         binding.fabCreateChat.setOnClickListener {
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
 
-        val adapter = SelectedKeywordAdapter()
-        binding.layoutMarkerInfoPreview.rvChatKeywords.adapter = adapter
-        chatViewModel.placeChatInfo.observe(viewLifecycleOwner) {
-            adapter.submitList(it.getPopularChat().keywords.map { Keyword(it, 0) }.toMutableList())
+        chatViewModel.clickedChatInfo.observe(viewLifecycleOwner) {
+            if (it != null) {
+                val dialog = ChatJoinDialog(this, it)
+                dialog.show(childFragmentManager, "Chat_Join_Dialog")
+            }
+        }
+    }
+
+    override fun onClickJoinButton(cid: String) {
+        startChat(cid)
+    }
+
+    private fun startChat(cid: String) {
+        lifecycleScope.launch {
+            chatViewModel.appendUserToChat(cid)
+            if (Regex(".+:.+").matches(cid)) {
+                startActivity(MessageListActivity.createIntent(requireContext(), cid))
+            }
         }
     }
 
@@ -157,7 +203,7 @@ class SearchChatMapFragment : Fragment() {
         }
         clusterManager.setOnClusterItemClickListener { item ->
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            chatViewModel.getPlaceInfo(Marker(item.cid, item.x, item.y, item.keywords))
+            chatViewModel.getPlaceInfo(listOf(item.cid))
             false
         }
         clusterManager.setOnClusterClickListener { cluster ->
@@ -165,6 +211,7 @@ class SearchChatMapFragment : Fragment() {
             cluster.items.forEach {
                 Log.d("SearchChatActivity", "forEach: $it")
             }
+            chatViewModel.getPlaceInfo(cluster.items.map { it.cid })
             false
         }
     }
@@ -199,11 +246,11 @@ class SearchChatMapFragment : Fragment() {
                 when (newState) {
                     BottomSheetBehavior.STATE_DRAGGING -> {
                         binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
-                        binding.tvDetail.visibility = View.VISIBLE
+                        binding.rvDetail.visibility = View.VISIBLE
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
-                        binding.tvDetail.visibility = View.GONE
+                        binding.rvDetail.visibility = View.INVISIBLE
                     }
                 }
             }

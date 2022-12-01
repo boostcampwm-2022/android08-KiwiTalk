@@ -5,5 +5,5 @@ object Const {
     const val EMPTY_STRING = ""
 
     const val MAP_KEY_KEYWORD = "keyword"
-    const val MAP_KEY_COUNTRY = "country"
+    const val MAP_KEY_ADDRESS = "address"
 }

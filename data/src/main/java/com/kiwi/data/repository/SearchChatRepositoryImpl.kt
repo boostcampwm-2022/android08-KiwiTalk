@@ -26,10 +26,10 @@ class SearchChatRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getChat(marker: Marker): PlaceChatInfo {
-        val chatList = dataSource.getChat(marker.cid)
-            ?.let { listOf(it) } ?: listOf<ChatInfo>()
+    override suspend fun getPlaceChatList(cidList: List<String>): PlaceChatInfo {
 
+        // TODO : Flow 적용
+        val chatList = dataSource.getChatList(cidList)?:mutableListOf<ChatInfo>()
         return PlaceChatInfo(chatList)
     }
 }
