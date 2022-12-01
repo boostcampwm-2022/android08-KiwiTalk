@@ -58,7 +58,7 @@ class NewChatViewModel @Inject constructor(
 
     fun addNewChat(userid: String, currentTime: String, newChat: NewChatInfo) {
         viewModelScope.launch {
-            repository.addChat(userid,currentTime,newChat)
+            repository.addChatUpload(userid,currentTime,newChat)
         }
     }
 }

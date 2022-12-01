@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import com.kiwi.domain.model.NewChatInfo
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentNewChatBinding
@@ -29,9 +30,6 @@ class NewChatFragment : Fragment() {
     private var _binding: FragmentNewChatBinding? = null
     private val binding get() = checkNotNull(_binding)
     private val newChatViewModel: NewChatViewModel by viewModels()
-
-
-
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -140,7 +138,7 @@ class NewChatFragment : Fragment() {
     private fun EditText.checkMaxMember(): Boolean {
         val cnt = this.text.toString().toInt()
         if(cnt > 100) {
-            Log.d("Member Erro", "최대 인원수를 초과했습니다.")
+            Snackbar.make(this,"최대 인원 수를 초과했습니다.", Snackbar.LENGTH_SHORT).show()
             this.requestFocus()
             return false
         }
@@ -157,6 +155,7 @@ class NewChatFragment : Fragment() {
 
     private fun TextView.checkNull(): Boolean {
         if (this.text.toString() == "") {
+            Snackbar.make(this,"장소를 선택해 주세요", Snackbar.LENGTH_SHORT).show()
             return false
         }
         return true
