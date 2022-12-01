@@ -38,7 +38,7 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
             "name" to newChatRemote.chatName,
             "description" to newChatRemote.chatDescription,
             "address" to newChatRemote.address,
-            "keyword" to newChatRemote.keywords,
+            "keywords" to newChatRemote.keywords,
             "max_member_cnt" to newChatRemote.maxMemberCnt
         )
 
