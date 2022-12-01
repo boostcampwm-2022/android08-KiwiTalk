@@ -9,11 +9,11 @@ import javax.inject.Inject
 class NewChatRepositoryImpl @Inject constructor(
     private val dateSource: NewChatRemoteDataSource
 ): NewChatRepository {
-    override suspend fun addChat(
+    override suspend fun addChatUpload(
         userId: String,
         currentTime: String,
         newChat: NewChatInfo
     ) {
-        dateSource.addChat(userId,currentTime,newChat.toNewChatRemote())
+        dateSource.addChatUpload(userId,currentTime,newChat.toNewChatRemote())
     }
 }
