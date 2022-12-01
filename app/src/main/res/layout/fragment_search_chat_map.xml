@@ -17,25 +17,6 @@
         android:focusable="true"
         tools:context=".ui.search.SearchChatMapFragment">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/searchChat_map_toolbar"
-                style="@style/kiwi.Toolbar"
-                android:layout_width="match_parent"
-                app:menu="@menu/menu_search_chat_map"
-                app:title="채팅방 검색" />
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragment_searchChat_map_container"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_createChat"
             android:layout_width="wrap_content"
@@ -67,21 +48,40 @@
                 android:id="@+id/layout_markerInfo_preview"
                 layout="@layout/view_marker_preview"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/bottomSheet_collapse_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                bind:item="@{vm.placeChatInfo}" />
+                bind:item="@{vm.placeChatInfo}"/>
 
-            <TextView
-                android:id="@+id/tv_detail"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_detail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/green_deep"
-                android:text="@{vm.placeChatInfo.toString()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_markerInfo_preview" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/searchChat_map_toolbar"
+                style="@style/kiwi.Toolbar"
+                android:layout_width="match_parent"
+                app:menu="@menu/menu_search_chat_map"
+                app:title="채팅방 검색" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_searchChat_map_container"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
