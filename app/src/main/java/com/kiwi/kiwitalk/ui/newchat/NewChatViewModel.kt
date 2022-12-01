@@ -8,8 +8,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.kiwi.domain.model.NewChatInfo
 import com.kiwi.domain.repository.NewChatRepository
 import com.kiwi.kiwitalk.AppPreference
-import com.kiwi.kiwitalk.Const.EMPTY_STRING
-import com.kiwi.kiwitalk.Const.LOGIN_ID_KEY
+import com.kiwi.kiwitalk.util.Const.EMPTY_STRING
+import com.kiwi.kiwitalk.util.Const.LOGIN_ID_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

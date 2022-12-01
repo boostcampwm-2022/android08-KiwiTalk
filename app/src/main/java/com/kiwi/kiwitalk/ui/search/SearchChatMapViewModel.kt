@@ -14,7 +14,7 @@ import com.kiwi.domain.model.PlaceChatInfo
 import com.kiwi.domain.model.Keyword
 import com.kiwi.domain.repository.SearchChatRepository
 import com.kiwi.kiwitalk.AppPreference
-import com.kiwi.kiwitalk.Const
+import com.kiwi.kiwitalk.util.Const
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.utils.toResult

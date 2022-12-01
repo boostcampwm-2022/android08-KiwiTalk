@@ -38,12 +38,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.markerClickEvents
 import com.google.maps.android.ktx.myLocationButtonClickEvents
 import com.kiwi.domain.model.PlaceInfoList
-import com.kiwi.kiwitalk.ChangeExpansion.changeLatLngToAddress
-import com.kiwi.kiwitalk.Const.ADDRESS_ERROR
-import com.kiwi.kiwitalk.Const.PERMISSION_CODE
+import com.kiwi.kiwitalk.util.ChangeExpansion.changeLatLngToAddress
+import com.kiwi.kiwitalk.util.Const.ADDRESS_ERROR
+import com.kiwi.kiwitalk.util.Const.PERMISSION_CODE
 import com.kiwi.kiwitalk.R
-import com.kiwi.kiwitalk.Util.changeVectorToBitmapDescriptor
-import com.kiwi.kiwitalk.Util.generateVibrator
+import com.kiwi.kiwitalk.util.Util.changeVectorToBitmapDescriptor
+import com.kiwi.kiwitalk.util.Util.generateVibrator
 import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

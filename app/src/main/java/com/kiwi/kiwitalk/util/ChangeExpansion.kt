@@ -1,10 +1,8 @@
-package com.kiwi.kiwitalk
+package com.kiwi.kiwitalk.util
 
 import android.location.Geocoder
-import android.os.Build
 
 object ChangeExpansion {
-
     fun Geocoder.changeLatLngToAddress(
         latitude: Double,
         longitude: Double,
@@ -18,6 +16,4 @@ object ChangeExpansion {
             address(null)
         }
     }
-
-
 }
