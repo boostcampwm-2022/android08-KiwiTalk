@@ -49,15 +49,6 @@ class ProfileSettingFragment : Fragment() {
         setAdapter()
         setViewModelObserve()
 
-//        profileViewModel.myKeywords.value?.let { list ->
-//            Log.d("INIT SELECT", "onViewCreated: 11")
-//            searchKeywordViewModel.selectedKeyword.value ?: run {
-//                Log.d("INIT SELECT", "onViewCreated: 22")
-//                list.forEach {
-//                    searchKeywordViewModel.setSelectedKeywords(it.name)
-//                }
-//            }
-//        }
     }
 
     fun setListener() {

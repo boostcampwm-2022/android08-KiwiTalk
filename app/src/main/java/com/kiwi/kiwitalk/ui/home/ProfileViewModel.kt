@@ -1,10 +1,9 @@
 package com.kiwi.kiwitalk.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kiwi.domain.model.keyword.Keyword
+import com.kiwi.domain.model.Keyword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
 import javax.inject.Inject
