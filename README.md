@@ -22,9 +22,10 @@
 
 ## 기능, 동작화면
 
-|<img src="https://user-images.githubusercontent.com/67748153/204210238-23f2f2a7-545f-43d7-945d-9887a8b3d789.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204210806-7e363ef6-1362-4da3-bfe3-1064cf155e29.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204210806-7e363ef6-1362-4da3-bfe3-1064cf155e29.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204210834-df4daf31-edcb-4419-8d8c-fe4504e61f03.png" width="180" />|
+
+|<img src="https://user-images.githubusercontent.com/83493143/205109192-7b25e6c9-f4ce-4ee4-b463-742c1eb510d8.gif" width="180" />|<img src="https://user-images.githubusercontent.com/83493143/205112416-3bd93020-4938-4038-a9b6-35e1bea8f0b9.gif" width="180"/>|<img src="https://user-images.githubusercontent.com/83493143/205110695-c3b8590c-561f-4477-ab02-af04c6253d35.gif" width="180" />|<img src="https://user-images.githubusercontent.com/83493143/205107836-fa20fc9d-aa03-4b72-bd51-23f0cc0d6ef2.gif" width="180" />|
 |:--:|:--:|:--:|:--:|
-|로그인|참여중인 채팅방 목록|채팅방 찾기|채팅방 생성|
+|로그인|클러스터 클릭|프로필 설정 & 키워드 등록|채팅방 생성|
 |준비중|준비중|준비중|준비중|
 
 |<img src="https://user-images.githubusercontent.com/67748153/204214163-1a0fa2a1-90c2-40e1-bf60-85f20e92fec9.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204213565-ef1b1be5-796b-4fff-a903-11cf7df6dbda.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204211205-4606e95d-c7c6-4884-a252-941f7861dac1.png" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/204213842-3654f1a7-04e2-40cf-8883-adfb33772de1.png" width="180" />|
