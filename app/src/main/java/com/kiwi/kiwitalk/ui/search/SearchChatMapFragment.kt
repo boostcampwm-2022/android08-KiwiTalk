@@ -83,6 +83,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         initToolbar()
         initAdapter()
         initBottomSheetCallBack()
+        initKeywordRecyclerView()
         initScreenChange()
     }
 
@@ -277,6 +278,12 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
                 else -> false
             }
         }
+    }
+
+    private fun initKeywordRecyclerView() {
+        val adapter = SelectedKeywordAdapter()
+        adapter.submitList(keywordViewModel.selectedKeyword.value)
+        binding.rvSearchChatKeywords.adapter = adapter
     }
 
     override fun onDestroy() {
