@@ -241,7 +241,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
-                        binding.rvDetail.visibility = View.GONE
+                        binding.rvDetail.visibility = View.INVISIBLE
                     }
                 }
             }
