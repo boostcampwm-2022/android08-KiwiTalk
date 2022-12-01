@@ -2,15 +2,14 @@ package com.kiwi.data.datasource.remote
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.kiwi.domain.model.keyword.Keyword
-import com.kiwi.domain.model.keyword.KeywordCategory
+import com.kiwi.domain.model.Keyword
+import com.kiwi.domain.model.KeywordCategory
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class SearchKeywordRemoteDataSource @Inject constructor(
     val firestore: FirebaseFirestore
 ) {
-
     suspend fun callAllKeyword(): List<KeywordCategory> {
         val keywordCategoryList: MutableList<KeywordCategory> = mutableListOf()
 

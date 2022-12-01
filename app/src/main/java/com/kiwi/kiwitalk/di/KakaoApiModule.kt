@@ -1,8 +1,8 @@
 package com.kiwi.kiwitalk.di
 
 import android.util.Log
-import com.kiwi.kiwitalk.Const.BASE_URL
-import com.kiwi.kiwitalk.Const.KAKAO_AUTH
+import com.kiwi.kiwitalk.util.Const.BASE_URL
+import com.kiwi.kiwitalk.util.Const.KAKAO_AUTH
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

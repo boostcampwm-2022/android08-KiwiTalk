@@ -1,14 +1,8 @@
 package com.kiwi.kiwitalk.di
 
 import com.kiwi.data.datasource.remote.*
-import com.kiwi.data.repository.NewChatRepositoryImpl
-import com.kiwi.data.repository.SearchChatRepositoryImpl
-import com.kiwi.data.repository.SearchKeywordRepositoryImpl
-import com.kiwi.data.repository.SearchPlaceRepositoryImpl
-import com.kiwi.domain.repository.NewChatRepository
-import com.kiwi.domain.repository.SearchChatRepository
-import com.kiwi.domain.repository.SearchKeywordRepository
-import com.kiwi.domain.repository.SearchPlaceRepository
+import com.kiwi.data.repository.*
+import com.kiwi.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,4 +39,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsNewChatRepository(newChatRepositoryImpl: NewChatRepositoryImpl): NewChatRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsProfileSettingRepository(profileSettingRepositoryImpl: ProfileSettingRepositoryImpl): ProfileSettingRepository
 }

@@ -2,7 +2,6 @@ package com.kiwi.kiwitalk.ui.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
 import com.kiwi.kiwitalk.R
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -4,7 +4,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-
     <string name="img_chatList_profile_des">채팅방 이미지</string>
     <string name="tv_chatList_empty">참여한 채팅방이 없습니다.</string>
 
@@ -18,6 +17,15 @@
     <string name="chatList_title">채팅방 목록</string>
     <string name="item_chatList_actionToProfileSetting">프로필 수정</string>
     <string name="item_chatList_logout">로그아웃</string>
+    <string name="tv_searchChat_keywords">선택 키워드</string>
+
+    <string name="close_dialog">닫기</string>
+    <string name="dialog_join">입장</string>
+
+    <string name="chat_name">채팅방</string>
+    <string name="chip_keyword">키워드</string>
+    <string name="chip_location">위치</string>
+    <string name="chip_description">설명</string>
 
     <!-- New Chat -->
     <string name="image_add_btn_Description">채팅방 이미지 추가 버튼</string>
@@ -35,5 +43,4 @@
     <string name="et_search_hint">검색어를 입력해 주세요.</string>
     <string name="btn_search_text">검색</string>
     <string name="btn_search_add_description">위치 저장 버튼</string>
-
 </resources>

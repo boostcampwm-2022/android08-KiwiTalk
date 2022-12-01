@@ -12,8 +12,8 @@ import io.getstream.chat.android.client.models.Channel
 object Mapper {
     fun MarkerRemote.toMarker() = Marker(
         cid = cid,
-        x = x,
-        y = y,
+        x = lat,
+        y = lng,
         keywords = keywords
     )
 
@@ -43,14 +43,14 @@ object Mapper {
         description = "채팅방 설명이 없습니다.",
         memberCount = this.memberCount,
         lastMessageAt = this.lastMessageAt?.formatTimeString() ?: "오래전",
-        country = this.extraData[Const.MAP_KEY_COUNTRY]?.toString() ?: Const.EMPTY_STRING
+        address = DateFormatter.trimAddress(this.extraData[Const.MAP_KEY_ADDRESS])
     )
 
     fun NewChatInfo.toNewChatRemote() = NewChatRemote(
         imageUri = this.imageUri,
         chatName = this.chatName,
         chatDescription = this.chatDescription,
-        maxMemberCnt = this.maxMemberCnt,
+        maxMemberCount = this.maxMemberCnt,
         keywords = this.keywords,
         address = this.address,
         lat = this.lat,

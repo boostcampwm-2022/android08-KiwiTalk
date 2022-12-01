@@ -18,7 +18,7 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
         newChatRemote: NewChatRemote
     ) {
         val fireStoreData = hashMapOf(
-            "cid" to userId + currentTime ,
+            "cid" to "messaging:$userId$currentTime",
             "keywords" to newChatRemote.keywords,
             "lat" to newChatRemote.lat,
             "lng" to newChatRemote.lng
@@ -39,7 +39,7 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
             "description" to newChatRemote.chatDescription,
             "address" to newChatRemote.address,
             "keywords" to newChatRemote.keywords,
-            "max_member_cnt" to newChatRemote.maxMemberCnt
+            "max_member_count" to newChatRemote.maxMemberCount
         )
 
         val token = chatClient.devToken(userId) // developer 토큰 생성

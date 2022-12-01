@@ -2,10 +2,11 @@ package com.kiwi.domain.repository
 
 import com.kiwi.domain.model.Marker
 import com.kiwi.domain.model.PlaceChatInfo
+import com.kiwi.domain.model.Keyword
 import kotlinx.coroutines.flow.Flow
 
 interface SearchChatRepository {
-    fun getMarkerList(keywords: List<String>, x: Double, y: Double): Flow<Marker>
+    fun getMarkerList(keywords: List<Keyword>, x: Double, y: Double): Flow<Marker>
 
-    suspend fun getChat(marker: Marker): PlaceChatInfo
+    suspend fun getPlaceChatList(cidList: List<String>): PlaceChatInfo
 }
