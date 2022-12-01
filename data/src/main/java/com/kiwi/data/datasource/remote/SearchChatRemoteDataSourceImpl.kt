@@ -32,7 +32,7 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
             .whereArrayContainsAny("keywords", keyword).get()
             .addOnSuccessListener { querySnapshot ->
                 querySnapshot.toObjects<MarkerRemote>().filter { markerRemote ->
-                    markerRemote.x in x.toRange && markerRemote.y in y.toRange
+                    markerRemote.lat in x.toRange && markerRemote.lng in y.toRange
                 }.forEach { markerRemote ->
                     trySend(markerRemote.toMarker())
                 }

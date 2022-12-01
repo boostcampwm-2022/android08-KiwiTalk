@@ -1,4 +1,4 @@
-package com.kiwi.domain.model.keyword
+package com.kiwi.domain.model
 
 data class Keyword(
     val name: String,

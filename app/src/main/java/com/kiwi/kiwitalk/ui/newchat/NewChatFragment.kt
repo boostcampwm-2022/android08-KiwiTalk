@@ -31,8 +31,6 @@ class NewChatFragment : Fragment() {
     private val newChatViewModel: NewChatViewModel by viewModels()
 
 
-
-
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
@@ -80,7 +78,11 @@ class NewChatFragment : Fragment() {
             }
 
             chatId.observe(viewLifecycleOwner) {
-                addNewChat(it,System.currentTimeMillis().toString(), newChatInfo.value ?: return@observe)
+                addNewChat(
+                    it,
+                    System.currentTimeMillis().toString(),
+                    newChatInfo.value ?: return@observe
+                )
                 val intent = Intent(requireActivity(), HomeActivity::class.java)
                 startActivity(intent)
 
@@ -127,19 +129,19 @@ class NewChatFragment : Fragment() {
 
     private fun allCheckNull(): Boolean {
         with(binding) {
-            if(etChatName.checkNull().not()) return false
-            if(etChatDescription.checkNull().not()) return false
-            if(etChatMaxPersonnel.checkNull().not() || etChatMaxPersonnel.checkMaxMember().not()) {
+            if (etChatName.checkNull().not()) return false
+            if (etChatDescription.checkNull().not()) return false
+            if (etChatMaxPersonnel.checkNull().not() || etChatMaxPersonnel.checkMaxMember().not()) {
                 return false
             }
-            if(tvChatSelectAddress.checkNull().not()) return false
+            if (tvChatSelectAddress.checkNull().not()) return false
         }
         return true
     }
 
     private fun EditText.checkMaxMember(): Boolean {
         val cnt = this.text.toString().toInt()
-        if(cnt > 100) {
+        if (cnt > 100) {
             Log.d("Member Erro", "최대 인원수를 초과했습니다.")
             this.requestFocus()
             return false

@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kiwi.domain.model.keyword.Keyword
-import com.kiwi.domain.model.keyword.KeywordCategory
+import com.kiwi.domain.model.Keyword
+import com.kiwi.domain.model.KeywordCategory
 import com.kiwi.domain.repository.SearchKeywordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

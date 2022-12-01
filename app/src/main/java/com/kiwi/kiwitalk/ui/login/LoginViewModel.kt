@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.kiwi.kiwitalk.AppPreference
-import com.kiwi.kiwitalk.Const
+import com.kiwi.kiwitalk.util.Const
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.User
@@ -59,7 +59,7 @@ class LoginViewModel @Inject constructor(
         pref.setString(Const.LOGIN_URL_KEY, imageUrl)
     }
 
-    fun loginWithLocalToken(){
+    fun loginWithLocalToken() {
         val savedToken = pref.getString(
             Const.LOGIN_ID_KEY, Const.EMPTY_STRING
         )
@@ -74,7 +74,7 @@ class LoginViewModel @Inject constructor(
             val token = chatClient.devToken(user.id)
             if (chatClient.getCurrentUser() == null) {
                 chatClient.connectUser(user, token).enqueue { result ->
-                    _loginState.value =  result.isSuccess
+                    _loginState.value = result.isSuccess
                 }
             } else {
                 Log.d(LOCATION, "user: ${chatClient.getCurrentUser()}")
@@ -86,7 +86,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun isValidToken(token: String): Boolean{
+    private fun isValidToken(token: String): Boolean {
         return tokenRegex.matches(token)
     }
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.kiwi.domain.model.ChatInfo
-import com.kiwi.domain.model.keyword.Keyword
+import com.kiwi.domain.model.Keyword
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.DialogJoinChatBinding
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter

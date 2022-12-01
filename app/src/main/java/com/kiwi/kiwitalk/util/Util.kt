@@ -1,4 +1,4 @@
-package com.kiwi.kiwitalk
+package com.kiwi.kiwitalk.util
 
 import android.content.Context
 import android.graphics.Bitmap

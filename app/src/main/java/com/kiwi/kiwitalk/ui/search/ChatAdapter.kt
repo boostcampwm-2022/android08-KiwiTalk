@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kiwi.domain.model.ChatInfo
-import com.kiwi.domain.model.keyword.Keyword
+import com.kiwi.domain.model.Keyword
 import com.kiwi.kiwitalk.databinding.ItemChatListNoImageBinding
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 

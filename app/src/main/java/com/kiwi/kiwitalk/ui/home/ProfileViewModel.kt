@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.kiwi.domain.model.keyword.Keyword
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
-import io.getstream.chat.android.client.models.User
 import javax.inject.Inject
 
 

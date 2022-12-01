@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class NewChatActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityNewChatBinding
+    private lateinit var binding: ActivityNewChatBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
