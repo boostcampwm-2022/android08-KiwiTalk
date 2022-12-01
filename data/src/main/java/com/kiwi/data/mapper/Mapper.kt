@@ -43,7 +43,7 @@ object Mapper {
         description = "채팅방 설명이 없습니다.",
         memberCount = this.memberCount,
         lastMessageAt = this.lastMessageAt?.formatTimeString() ?: "오래전",
-        address = this.extraData[Const.MAP_KEY_ADDRESS]?.toString() ?: Const.EMPTY_STRING
+        address = DateFormatter.trimAddress(this.extraData[Const.MAP_KEY_ADDRESS])
     )
 
     fun NewChatInfo.toNewChatRemote() = NewChatRemote(
