@@ -39,13 +39,11 @@ class SearchChatMapViewModel @Inject constructor(
     private val _location = MutableLiveData<Location>()
     val location: LiveData<Location> = _location
 
-    val previewAdapter = ChatAdapter(mutableListOf()) {
-        clickedChatCid.value = it
-    }
+    private val _clickedChatInfo = MutableLiveData<ChatInfo>()
+    val clickedChatInfo: LiveData<ChatInfo> get() = _clickedChatInfo
 
-    val clickedChatCid = MutableLiveData<ChatInfo>()
-    val detailAdapter = ChatAdapter(placeChatInfo.value?.chatList) {
-        clickedChatCid.value = it
+    fun updateClickedChat(chatInfo: ChatInfo) {
+        _clickedChatInfo.value = chatInfo
     }
 
     fun appendUserToChat(cid: String, userId: String = "") {

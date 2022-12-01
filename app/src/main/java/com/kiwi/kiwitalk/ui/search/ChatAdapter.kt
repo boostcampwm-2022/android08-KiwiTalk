@@ -9,7 +9,7 @@ import com.kiwi.kiwitalk.databinding.ItemChatListNoImageBinding
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 
 class ChatAdapter(
-    var chatList: List<ChatInfo>?,
+    private var chatList: List<ChatInfo>?,
     private val chatClickListener: (ChatInfo) -> Unit
 ) : RecyclerView.Adapter<ChatAdapter.ChatInfoViewHolder>() {
 

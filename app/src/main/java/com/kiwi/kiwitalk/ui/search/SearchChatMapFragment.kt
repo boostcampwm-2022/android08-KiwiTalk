@@ -22,6 +22,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,8 +34,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.mapClickEvents
-import com.kiwi.domain.model.Marker
-import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchChatMapBinding
 import com.kiwi.kiwitalk.model.ClusterMarker
@@ -78,29 +78,49 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         initMap()
         initToolbar()
         initAdapter()
+        initBottomSheetCallBack()
+        initScreenChange()
 
         viewModel.getMarkerList(37.0, 127.0)
-        initBottomSheetCallBack()
 
-        binding.fabCreateChat.setOnClickListener {
-            startActivity(Intent(requireContext(), NewChatActivity::class.java))
-        }
     }
 
     private fun initAdapter() {
-        viewModel.clickedChatCid.observe(viewLifecycleOwner) {
+        val previewAdapter = ChatAdapter(mutableListOf()) {
+            viewModel.updateClickedChat(it)
+        }
+        binding.layoutMarkerInfoPreview.rvPreviewChat.apply {
+            adapter = previewAdapter
+            layoutManager = StaggeredGridLayoutManager(1, RecyclerView.VERTICAL)
+        }
+
+        val detailAdapter = ChatAdapter(mutableListOf()) {
+            viewModel.updateClickedChat(it)
+        }
+        binding.rvDetail.apply {
+            adapter = detailAdapter
+            layoutManager = GridLayoutManager(context, 2)
+        }
+
+        viewModel.placeChatInfo.observe(viewLifecycleOwner) { placeChatInfo ->
+            placeChatInfo.getPopularChat()?.let {
+                previewAdapter.submitList(mutableListOf(it))
+            }
+            detailAdapter.submitList(placeChatInfo.chatList)
+        }
+    }
+
+    private fun initScreenChange() {
+        binding.fabCreateChat.setOnClickListener {
+            startActivity(Intent(requireContext(), NewChatActivity::class.java))
+        }
+
+        viewModel.clickedChatInfo.observe(viewLifecycleOwner) {
             if (it != null) {
                 val dialog = ChatJoinDialog(this, it)
                 dialog.show(childFragmentManager, "Chat_Join_Dialog")
             }
         }
-        viewModel.placeChatInfo.observe(viewLifecycleOwner) { placeChatInfo ->
-            viewModel.detailAdapter.submitList(placeChatInfo.chatList)
-            placeChatInfo.getPopularChat()?.let {
-                viewModel.previewAdapter.submitList(mutableListOf(it))
-            }
-        }
-        binding.rvDetail.layoutManager = GridLayoutManager(context, 2)
     }
 
     override fun onClickJoinButton(cid: String) {

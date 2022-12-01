@@ -8,10 +8,6 @@
         <variable
             name="item"
             type="com.kiwi.domain.model.PlaceChatInfo" />
-
-        <variable
-            name="adapter"
-            type="com.kiwi.kiwitalk.ui.search.ChatAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,12 +17,10 @@
         android:padding="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/card_chat"
+            android:id="@+id/rv_preview_chat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adapter="@{adapter}"
             android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,8 +33,8 @@
             android:text="@{item.popularChat.address}"
             android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/card_chat"
-            app:layout_constraintTop_toBottomOf="@id/card_chat"
+            app:layout_constraintStart_toStartOf="@id/rv_preview_chat"
+            app:layout_constraintTop_toBottomOf="@id/rv_preview_chat"
             tools:text="청주시 청원구" />
 
         <TextView
@@ -52,7 +46,7 @@
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_chat"
+            app:layout_constraintTop_toBottomOf="@id/rv_preview_chat"
             tools:text="현재 채팅방 수 : 5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
