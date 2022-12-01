@@ -14,11 +14,8 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -212,8 +209,9 @@ class SearchPlaceFragment : Fragment() {
                 MarkerOptions()
                     .position(it)
                     .icon(baseMarker)
-
             mMap.clear()
+            markerState = null
+            checkAddButtonShowAndHide()
             mMap.addMarker(markerOptions)
             generateVibrator(requireContext())
         }
@@ -302,4 +300,3 @@ class SearchPlaceFragment : Fragment() {
         const val LATLNG_KEY = "LatLng"
     }
 }
-
