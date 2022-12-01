@@ -224,8 +224,9 @@ class SearchPlaceFragment : Fragment() {
                 MarkerOptions()
                     .position(it)
                     .icon(baseMarker)
-
             mMap.clear()
+            markerState = null
+            checkAddButtonShowAndHide()
             mMap.addMarker(markerOptions)
             generateVibrator(requireContext())
         }
@@ -315,4 +316,3 @@ class SearchPlaceFragment : Fragment() {
         const val LATLNG_KEY = "LatLng"
     }
 }
-
