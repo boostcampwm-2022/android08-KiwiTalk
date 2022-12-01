@@ -18,6 +18,7 @@
         android:id="@+id/rv_keywordCategory_keywordList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_keyword"/>
+        tools:listitem="@layout/item_keyword"
+        android:layout_marginBottom="16dp"/>
 
 </LinearLayout>

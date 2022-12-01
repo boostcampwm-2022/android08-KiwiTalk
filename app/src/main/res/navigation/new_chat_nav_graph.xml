@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
+    android:id="@+id/new_cht_nav_graph"
     app:startDestination="@id/newChatFragment"
     >
     <fragment
@@ -19,5 +19,12 @@
         <action
             android:id="@+id/action_newChatFragment_to_searchPlaceFragment"
             app:destination="@id/searchPlaceFragment" />
+        <action
+            android:id="@+id/action_newChatFragment_to_searchKeywordFragment"
+            app:destination="@id/searchKeywordFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/searchKeywordFragment"
+        android:name="com.kiwi.kiwitalk.ui.keyword.SearchKeywordFragment"
+        android:label="SearchKeywordFragment" />
 </navigation>
