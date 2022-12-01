@@ -2,12 +2,15 @@ package com.kiwi.kiwitalk.ui.search
 
 import android.location.Location
 import android.util.Log
+import androidx.core.location.component1
+import androidx.core.location.component2
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kiwi.domain.model.Marker
 import com.kiwi.domain.model.PlaceChatInfo
+import com.kiwi.domain.model.keyword.Keyword
 import com.kiwi.domain.repository.SearchChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.utils.toResult
@@ -27,9 +30,6 @@ class SearchChatMapViewModel @Inject constructor(
     private val _placeChatInfo = MutableLiveData<PlaceChatInfo>()
     val placeChatInfo: LiveData<PlaceChatInfo> = _placeChatInfo
 
-    private val _keywords = MutableLiveData<List<String>>(listOf("축구", "카페"))
-    val keywords: LiveData<List<String>> = _keywords
-
     private val _location = MutableLiveData<Location>()
     val location: LiveData<Location> = _location
 
@@ -39,10 +39,11 @@ class SearchChatMapViewModel @Inject constructor(
         }
     }
 
-    fun getMarkerList(x: Double, y: Double) {
-        val keywords = keywords.value ?: return
+    fun getMarkerList(keywords: List<Keyword>?) {
+        if (keywords.isNullOrEmpty()) return
+        val (lat, lng) = location.value ?: return
         viewModelScope.launch {
-            searchChatRepository.getMarkerList(keywords, x, y)
+            searchChatRepository.getMarkerList(keywords, lat, lng)
                 .catch {
                     Log.d("SearchChatViewModel", "getMarkerList: ${this.toResult()} $it")
                 }.collect {
