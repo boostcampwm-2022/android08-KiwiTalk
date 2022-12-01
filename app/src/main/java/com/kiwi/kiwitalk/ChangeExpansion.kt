@@ -4,7 +4,7 @@ import android.location.Geocoder
 import android.os.Build
 
 object ChangeExpansion {
-    @Suppress("DEPRECATION")
+
     fun Geocoder.changeLatLngToAddress(
         latitude: Double,
         longitude: Double,
@@ -15,10 +15,14 @@ object ChangeExpansion {
             return
         }
         try {
+            @Suppress("DEPRECATION")
             address(getFromLocation(latitude, longitude, 1)?.firstOrNull())
         } catch(e: Exception) {
             //will catch if there is an internet problem
             address(null)
         }
     }
+
+
+
 }

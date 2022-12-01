@@ -3,13 +3,11 @@ package com.kiwi.kiwitalk.ui.newchat
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kiwi.domain.model.PlaceList
+import com.kiwi.domain.model.PlaceInfoList
 import com.kiwi.domain.repository.SearchPlaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.utils.toResult
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,8 +16,8 @@ class SearchPlaceViewModel @Inject constructor(
     private val searchPlaceRepository: SearchPlaceRepository
 ) : ViewModel() {
 
-    private val _isPlaceList = MutableSharedFlow<PlaceList>()
-    val isPlaceList: SharedFlow<PlaceList> = _isPlaceList
+    private val _isPlaceList = MutableStateFlow(PlaceInfoList(null))
+    val isPlaceList: StateFlow<PlaceInfoList> = _isPlaceList
 
     fun getSearchPlace(lng: String, lat: String, place: String) {
         viewModelScope.launch {

@@ -31,6 +31,7 @@
             android:id="@+id/tv_searchKeyword_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="선택된 키워드"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -43,6 +44,7 @@
             android:id="@+id/sv_searchKeyword_selectedKeywordList"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_searchKeyword_selected"
@@ -59,17 +61,25 @@
         </ScrollView>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_searchKeyword_keywordCategoryList"
+        <ScrollView
+            android:id="@+id/sv_searchKeyword_keywordCategoryListScroll"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@id/sv_searchKeyword_selectedKeywordList"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_keywordcategory" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_searchKeyword_keywordCategoryList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_keywordcategory" />
+        </ScrollView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

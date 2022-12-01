@@ -2,6 +2,7 @@ package com.kiwi.kiwitalk.ui.newchat
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
-import com.kiwi.domain.model.NewChat
+import com.kiwi.domain.model.NewChatInfo
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentNewChatBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
@@ -28,6 +29,9 @@ class NewChatFragment : Fragment() {
     private var _binding: FragmentNewChatBinding? = null
     private val binding get() = checkNotNull(_binding)
     private val newChatViewModel: NewChatViewModel by viewModels()
+
+
+
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -62,21 +66,21 @@ class NewChatFragment : Fragment() {
             }
 
         with(newChatViewModel) {
-            isAddress.observe(viewLifecycleOwner) {
+            address.observe(viewLifecycleOwner) {
                 binding.tvChatSelectAddress.visibility = View.VISIBLE
                 binding.tvChatSelectAddress.text = it
             }
 
-            isChatImage.observe(viewLifecycleOwner) {
+            chatImage.observe(viewLifecycleOwner) {
                 setImage(binding.ivChatImage, it)
             }
 
-            isNewChatInfo.observe(viewLifecycleOwner) {
+            newChatInfo.observe(viewLifecycleOwner) {
                 newChatViewModel.setChatId()
             }
 
-            isChatId.observe(viewLifecycleOwner) {
-                addNewChat(it,System.currentTimeMillis().toString(), isNewChatInfo.value ?: return@observe)
+            chatId.observe(viewLifecycleOwner) {
+                addNewChat(it,System.currentTimeMillis().toString(), newChatInfo.value ?: return@observe)
                 val intent = Intent(requireActivity(), HomeActivity::class.java)
                 startActivity(intent)
 
@@ -85,8 +89,7 @@ class NewChatFragment : Fragment() {
         }
 
         with(binding) {
-
-            btcChatAddress.setOnClickListener {
+            btnChatAddress.setOnClickListener {
                 findNavController().navigate(R.id.action_newChatFragment_to_searchPlaceFragment)
             }
             btnChatAddImage.setOnClickListener {
@@ -94,36 +97,52 @@ class NewChatFragment : Fragment() {
                     type = "image/*"
                 })
             }
-
             btnNewChat.setOnClickListener {
                 if (allCheckNull()) {
                     newChatViewModel.setNewChat(changeChatInfo())
                 }
             }
+            btnChatKeyword.setOnClickListener {
+                findNavController().navigate(R.id.action_newChatFragment_to_searchKeywordFragment)
+            }
         }
     }
 
-    private fun changeChatInfo(): NewChat {
+    private fun changeChatInfo(): NewChatInfo {
         with(newChatViewModel) {
-            return NewChat(
-                isChatImage.value ?: "",
+            return NewChatInfo(
+                chatImage.value ?: "",
                 binding.etChatName.text.toString(),
                 binding.etChatDescription.text.toString(),
                 binding.etChatMaxPersonnel.text.toString(),
                 listOf("운동", "카페"),
-                isAddress.value ?: "",
-                isLatLng.value?.latitude ?: 0.0,
-                isLatLng.value?.longitude ?: 0.0
+
+                address.value ?: "",
+
+                latLng.value?.latitude ?: 0.0,
+                latLng.value?.longitude ?: 0.0
             )
         }
     }
 
     private fun allCheckNull(): Boolean {
         with(binding) {
-            if(etChatName.checkNull()) return false
-            if(etChatDescription.checkNull()) return false
-            if(etChatMaxPersonnel.checkNull()) return false
-            if(tvChatSelectAddress.checkNull()) return false
+            if(etChatName.checkNull().not()) return false
+            if(etChatDescription.checkNull().not()) return false
+            if(etChatMaxPersonnel.checkNull().not() || etChatMaxPersonnel.checkMaxMember().not()) {
+                return false
+            }
+            if(tvChatSelectAddress.checkNull().not()) return false
+        }
+        return true
+    }
+
+    private fun EditText.checkMaxMember(): Boolean {
+        val cnt = this.text.toString().toInt()
+        if(cnt > 100) {
+            Log.d("Member Erro", "최대 인원수를 초과했습니다.")
+            this.requestFocus()
+            return false
         }
         return true
     }
@@ -131,16 +150,16 @@ class NewChatFragment : Fragment() {
     private fun EditText.checkNull(): Boolean {
         if (this.text.toString() == "") {
             this.requestFocus()
-            return true
+            return false
         }
-        return false
+        return true
     }
 
     private fun TextView.checkNull(): Boolean {
         if (this.text.toString() == "") {
-            return true
+            return false
         }
-        return false
+        return true
     }
 
     override fun onDestroy() {

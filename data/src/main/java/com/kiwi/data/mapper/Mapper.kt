@@ -17,15 +17,15 @@ object Mapper {
         keywords = keywords
     )
 
-    fun PlaceListRemote.toPlaceList(): PlaceList {
-        val result = mutableListOf<Place>()
+    fun PlaceListRemote.toPlaceList(): PlaceInfoList {
+        val result = mutableListOf<PlaceInfo>()
         documents.mapIndexed { index, placeRemote ->
             result.add(index, placeRemote.toPlace())
         }
-        return PlaceList(list = result)
+        return PlaceInfoList(list = result)
     }
 
-    fun PlaceRemote.toPlace() = Place(
+    fun PlaceRemote.toPlace() = PlaceInfo(
         placeName = place_name,
         addressName = address_name,
         roadAddressName = road_address_name,
@@ -46,11 +46,11 @@ object Mapper {
         address = this.extraData[Const.MAP_KEY_ADDRESS]?.toString() ?: Const.EMPTY_STRING
     )
 
-    fun NewChat.toNewChatRemote() = NewChatRemote(
+    fun NewChatInfo.toNewChatRemote() = NewChatRemote(
         imageUri = this.imageUri,
         chatName = this.chatName,
         chatDescription = this.chatDescription,
-        maxPersonnel = this.maxPersonnel,
+        maxMemberCnt = this.maxMemberCnt,
         keywords = this.keywords,
         address = this.address,
         lat = this.lat,

@@ -24,16 +24,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchKeywordFragment : Fragment() {
 
     private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
-    private lateinit var binding: FragmentSearchKeywordBinding
+    private var _binding: FragmentSearchKeywordBinding? = null
+    private val binding get() = _binding!!
     private lateinit var keywordCategoryAdapter: KeywordCategoryAdapter
     private lateinit var selectedKeywordAdapter: SelectedKeywordAdapter
     private val keywordClickListener: (View) -> Unit = { chip ->
         Log.d("KEYWORD_CLICK", "clicked!: ")
-        if (selectedKeywordAdapter.itemCount<5 || !(chip as Chip).isChecked){
+        if (selectedKeywordAdapter.itemCount < 5 || !(chip as Chip).isChecked) {
             searchKeywordViewModel.setSelectedKeywords((chip as Chip).text.toString())
         } else {
             chip.isChecked = false
-            Snackbar.make(binding.root,"최대 5개 까지 선택 가능합니다",Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "최대 5개 까지 선택 가능합니다", Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -41,8 +42,8 @@ class SearchKeywordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchKeywordBinding.inflate( inflater,container,false)
-        binding.lifecycleOwner = this
+        _binding = FragmentSearchKeywordBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = searchKeywordViewModel
 
         initToolbar()
@@ -56,16 +57,16 @@ class SearchKeywordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchKeywordViewModel.getAllKeywords()
+        searchKeywordViewModel.saveBeforeKeywords()
     }
 
-    private fun setObserve(){
-        searchKeywordViewModel.allKeywords.observe(viewLifecycleOwner){ list ->
+    private fun setObserve() {
+        searchKeywordViewModel.allKeywords.observe(viewLifecycleOwner) { list ->
             keywordCategoryAdapter.keywordCategoryList = list
             keywordCategoryAdapter.notifyDataSetChanged()
         }
 
-        searchKeywordViewModel.selectedKeyword.observe(viewLifecycleOwner){ list ->
+        searchKeywordViewModel.selectedKeyword.observe(viewLifecycleOwner) { list ->
             selectedKeywordAdapter.submitList(list)
         }
     }
@@ -83,27 +84,29 @@ class SearchKeywordFragment : Fragment() {
         binding.rvSearchKeywordSelectedKeywordList.adapter = selectedKeywordAdapter
     }
 
-    private fun initToolbar(){
+    private fun initToolbar() {
         binding.tbSearchKeywordTitle.inflateMenu(R.menu.menu_search_keyword_toolbar)
     }
 
-    private fun setListener(){
-        with(binding.tbSearchKeywordTitle){
+    private fun setListener() {
+        with(binding.tbSearchKeywordTitle) {
             setNavigationOnClickListener {
                 try {
                     val navController = this@SearchKeywordFragment.findNavController()
+                    searchKeywordViewModel.SaveSelectedKeywordOrNot(false)
                     navController.popBackStack()
-                } catch (e: Exception){
+                } catch (e: Exception) {
                     Log.d("NAV_CONTROLLER", "setNavigationOnClickListener: $e")
                 }
             }
 
             setOnMenuItemClickListener {
                 Log.d("NAV_CONTROLLER", "setOnMenuItemClickListener TRY: ")
-                when(it.itemId){
+                when (it.itemId) {
                     R.id.item_select_keyword -> {
                         try {
                             val navController = this@SearchKeywordFragment.findNavController()
+                            searchKeywordViewModel.SaveSelectedKeywordOrNot(true)
                             navController.popBackStack()
                         } catch (e: Exception) {
                             Log.d("NAV_CONTROLLER", "setOnMenuItemClickListener ERROR: $e")
@@ -113,5 +116,11 @@ class SearchKeywordFragment : Fragment() {
                 return@setOnMenuItemClickListener true
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 }

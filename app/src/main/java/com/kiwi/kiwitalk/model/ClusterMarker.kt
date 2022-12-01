@@ -3,7 +3,6 @@ package com.kiwi.kiwitalk.model
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import com.kiwi.domain.model.Marker
-import kotlin.random.Random
 
 data class ClusterMarker(
     val x: Double,
@@ -24,7 +23,7 @@ data class ClusterMarker(
 
     companion object {
         fun Marker.toClusterMarker(): ClusterMarker = ClusterMarker(
-            x = this.x + Random.nextDouble(0.1),
+            x = this.x,
             y = this.y,
             markerSnippet = cid,
             markerTitle = toString(),
