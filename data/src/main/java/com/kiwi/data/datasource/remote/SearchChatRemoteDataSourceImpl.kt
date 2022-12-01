@@ -42,30 +42,24 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
         awaitClose()
     }
 
-    override suspend fun getChat(cid: String): ChatInfo? {
+    override suspend fun getChatList(cidList: List<String>): List<ChatInfo>? {
         val request = QueryChannelsRequest(
             filter = Filters.and(
-                Filters.eq("cid", cid),
+                Filters.`in`("cid", cidList)
             ),
             offset = 0,
-            limit = 10,
-            querySort = QuerySortByField.descByName("member_count")
+            limit = cidList.size,
+            querySort = QuerySortByField.descByName("memberCount")
         ).apply {
             watch = true // if true returns the Channel state
-            state = true // if true listen to changes to this Channel in real time.
-            limit = ONE  // The number of channels to return (max is 30)
+            state = false // if true listen to changes to this Channel in real time.
+            limit = cidList.size
         }
 
-        //val user = User(id = "kimgyeon2", name = "")
-        //chatClient.devToken(user.id)
-
-        Log.d(TAG, chatClient.getCurrentUser().toString())
-
-        /* await는 실패하면 터진다. 코루틴 Result 보기싫다고 빼면 안된다. await 동작 잘 보자 */
         val result = chatClient.queryChannels(request).await()
         return if (result.isSuccess) {
             Log.d(TAG, result.toString())
-            result.data().first().toChatInfo()
+            result.data().map { it.toChatInfo() }
         } else {
             Log.d(TAG, result.toString())
             null

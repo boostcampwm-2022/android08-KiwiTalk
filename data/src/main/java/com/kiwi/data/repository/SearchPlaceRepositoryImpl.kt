@@ -2,7 +2,7 @@ package com.kiwi.data.repository
 
 import com.kiwi.data.datasource.remote.SearchPlaceRemoteDataSource
 import com.kiwi.data.mapper.Mapper.toPlaceList
-import com.kiwi.domain.model.PlaceList
+import com.kiwi.domain.model.PlaceInfoList
 import com.kiwi.domain.repository.SearchPlaceRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,7 +15,7 @@ class SearchPlaceRepositoryImpl @Inject constructor(
         lng: String,
         lat: String,
         place: String
-    ): Flow<PlaceList> = flow {
+    ): Flow<PlaceInfoList> = flow {
         dataSource.getSearchKeyword(lng, lat, place).collect {
             emit(it.toPlaceList())
         }

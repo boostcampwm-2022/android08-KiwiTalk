@@ -11,37 +11,35 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val chatClient: ChatClient,
 ): NewChatRemoteDataSource {
-    override suspend fun addFireBaseChat(cid: String, newChatRemote: NewChatRemote) {
 
-        val chat = hashMapOf(
-            "cid" to cid,
-            "keyword" to newChatRemote.keywords,
+    override suspend fun addChat(
+        userId: String,
+        currentTime: String,
+        newChatRemote: NewChatRemote
+    ) {
+        val fireStoreData = hashMapOf(
+            "cid" to userId + currentTime ,
+            "keywords" to newChatRemote.keywords,
             "lat" to newChatRemote.lat,
             "lng" to newChatRemote.lng
         )
 
-        firestore.collection("chat_list").document().set(chat)
+        firestore.collection("chat_list").document().set(fireStoreData)
             .addOnSuccessListener {
                 Log.d("addFireBaseChat", "DocumentSnapshot successfully written!")
             }
             .addOnFailureListener {
                 Log.d("addFireBaseChat", "Error writing document")
             }
-    }
 
-    override suspend fun addStreamChat(
-        userId: String,
-        currentTime: String,
-        newChatRemote: NewChatRemote
-    ) {
 
-        val chat = hashMapOf(
+        val streamData = hashMapOf(
             "image" to newChatRemote.imageUri,
             "name" to newChatRemote.chatName,
             "description" to newChatRemote.chatDescription,
             "address" to newChatRemote.address,
-            "keyword" to newChatRemote.keywords,
-            "max_personnel" to newChatRemote.maxPersonnel
+            "keywords" to newChatRemote.keywords,
+            "max_member_cnt" to newChatRemote.maxMemberCnt
         )
 
         val token = chatClient.devToken(userId) // developer 토큰 생성
@@ -55,7 +53,7 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
                     channelType = "messaging",
                     channelId = userId + currentTime,
                     memberIds = listOf(userId),
-                    extraData = chat
+                    extraData = streamData
                 ).enqueue()
             }
         }

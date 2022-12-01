@@ -1,10 +1,7 @@
 package com.kiwi.domain.repository
 
-import com.kiwi.domain.model.NewChat
+import com.kiwi.domain.model.NewChatInfo
 
 interface NewChatRepository {
-
-    suspend fun addFireBaseChat(cid:String, newChat: NewChat)
-
-    suspend fun addStreamChat(userId: String, currentTime: String, newChat: NewChat)
+    suspend fun addChat(userId: String, currentTime: String, newChat: NewChatInfo)
 }
