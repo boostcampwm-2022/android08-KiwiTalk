@@ -285,13 +285,9 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         binding.rvSearchChatKeywords.adapter = adapter
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
+        bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
         _binding = null
     }
 
