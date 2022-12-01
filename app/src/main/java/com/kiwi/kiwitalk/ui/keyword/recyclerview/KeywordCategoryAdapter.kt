@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.kiwi.domain.model.keyword.Keyword
-import com.kiwi.domain.model.keyword.KeywordCategory
+import com.kiwi.domain.model.Keyword
+import com.kiwi.domain.model.KeywordCategory
 import com.kiwi.kiwitalk.databinding.ItemKeywordcategoryBinding
 
 class KeywordCategoryAdapter(

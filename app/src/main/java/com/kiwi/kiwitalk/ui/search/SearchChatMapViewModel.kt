@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.kiwi.domain.model.ChatInfo
 import com.kiwi.domain.model.Marker
 import com.kiwi.domain.model.PlaceChatInfo
-import com.kiwi.domain.model.keyword.Keyword
+import com.kiwi.domain.model.Keyword
 import com.kiwi.domain.repository.SearchChatRepository
 import com.kiwi.kiwitalk.AppPreference
 import com.kiwi.kiwitalk.Const

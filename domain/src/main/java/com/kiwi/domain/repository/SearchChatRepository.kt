@@ -2,7 +2,7 @@ package com.kiwi.domain.repository
 
 import com.kiwi.domain.model.Marker
 import com.kiwi.domain.model.PlaceChatInfo
-import com.kiwi.domain.model.keyword.Keyword
+import com.kiwi.domain.model.Keyword
 import kotlinx.coroutines.flow.Flow
 
 interface SearchChatRepository {

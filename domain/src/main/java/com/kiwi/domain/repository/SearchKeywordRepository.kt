@@ -1,6 +1,6 @@
 package com.kiwi.domain.repository
 
-import com.kiwi.domain.model.keyword.KeywordCategory
+import com.kiwi.domain.model.KeywordCategory
 
 interface SearchKeywordRepository {
 
