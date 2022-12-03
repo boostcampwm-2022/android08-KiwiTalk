@@ -22,5 +22,16 @@
         <action
             android:id="@+id/action_profileSettingFragment_to_chatListFragment"
             app:destination="@id/chatListFragment" />
+        <action
+            android:id="@+id/action_profileSettingFragment_to_searchKeywordFragment"
+            app:destination="@id/searchKeywordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchKeywordFragment"
+        android:name="com.kiwi.kiwitalk.ui.keyword.SearchKeywordFragment"
+        android:label="SearchKeywordFragment" >
+        <action
+            android:id="@+id/action_searchKeywordFragment_to_profileSettingFragment"
+            app:destination="@id/profileSettingFragment" />
     </fragment>
 </navigation>
