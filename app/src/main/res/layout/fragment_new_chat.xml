@@ -1,53 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.newchat.NewChatFragment"
-    >
+    tools:context=".ui.newchat.NewChatFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        >
+        android:padding="20dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_chat_image"
             android:layout_width="230dp"
             android:layout_height="230dp"
-            app:strokeWidth="3dp"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerCut"
-            android:src="@drawable/ic_profile_base_image"
+            android:src="@drawable/logo_splash_transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerCut"
+            app:strokeWidth="3dp" />
 
         <ImageButton
             android:id="@+id/btn_chat_add_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_photo"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
             android:background="@android:color/transparent"
+            android:contentDescription="@string/image_add_btn_Description"
+            android:src="@drawable/ic_add_photo"
             app:layout_constraintBottom_toBottomOf="@+id/iv_chat_image"
-            app:layout_constraintEnd_toEndOf="@+id/iv_chat_image"
-            android:contentDescription="TODO" />
+            app:layout_constraintEnd_toEndOf="@+id/iv_chat_image" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_chat_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             app:counterEnabled="true"
             app:counterMaxLength="20"
-            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_chat_image"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/iv_chat_image">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_chat_name"
@@ -56,30 +53,28 @@
                 android:hint="@string/text_chat_name"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:nextFocusDown="@+id/et_chat_description"
-                 />
+                android:nextFocusDown="@+id/et_chat_description" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_chat_description"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:counterEnabled="true"
-            app:counterMaxLength="50"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_chat_name"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/til_chat_name">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_chat_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="50"
-                android:nextFocusDown="@+id/et_chat_max_personnel"
                 android:hint="@string/text_chat_description"
-                />
+                android:maxLength="50"
+                android:nextFocusDown="@+id/et_chat_max_personnel" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -90,17 +85,16 @@
             android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_chat_description"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/til_chat_description">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_chat_max_personnel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:inputType="number"
-                android:hint="@string/text_chat_max_personnel"
+                android:hint="@string/text_chat_max_number_count_hint"
                 android:imeOptions="actionDone"
-                />
+                android:inputType="number"
+                android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -108,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="최대 설정 가능한 인원은 100명입니다"
+            android:text="@string/text_chat_max_number_count"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_chat_max_personnel" />
 
@@ -129,11 +123,11 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_baseline_search_24"
-            android:text="키워드 검색"
+            android:text="@string/text_chat_keyword_search"
+            app:icon="@drawable/ic_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text"/> >
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text" />
 
         <TextView
             android:id="@+id/tv_chat_address_text"
@@ -143,7 +137,7 @@
             android:text="@string/text_chat_place"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_chat_keyword"/>
+            app:layout_constraintTop_toBottomOf="@+id/btn_chat_keyword" />
 
         <TextView
             android:id="@+id/tv_chat_select_address"
@@ -155,23 +149,23 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_chat_address_text" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btc_chat_address"
+            android:id="@+id/btn_chat_address"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_baseline_search_24"
-            android:text="주소 검색"
+            android:text="@string/text_chat_place_search"
+            app:icon="@drawable/ic_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat_select_address"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat_select_address" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_new_chat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="채팅방 생성"
             android:layout_marginTop="15dp"
+            android:text="@string/text_chat_add"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btc_chat_address" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_chat_address" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

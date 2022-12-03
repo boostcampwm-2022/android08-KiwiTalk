@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/chatListFragment">
+
+    <fragment
+        android:id="@+id/chatListFragment"
+        android:name="com.kiwi.kiwitalk.ui.home.ChatListFragment"
+        android:label="채팅방 목록"
+        tools:layout="@layout/fragment_chat_list">
+        <action
+            android:id="@+id/action_chatListFragment_to_profileSettingFragment"
+            app:destination="@id/profileSettingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileSettingFragment"
+        android:name="com.kiwi.kiwitalk.ui.home.ProfileSettingFragment"
+        android:label="프로필 설정"
+        tools:layout="@layout/fragment_profile_setting">
+        <action
+            android:id="@+id/action_profileSettingFragment_to_chatListFragment"
+            app:destination="@id/chatListFragment" />
+        <action
+            android:id="@+id/action_profileSettingFragment_to_searchKeywordFragment"
+            app:destination="@id/searchKeywordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchKeywordFragment"
+        android:name="com.kiwi.kiwitalk.ui.keyword.SearchKeywordFragment"
+        android:label="SearchKeywordFragment" >
+        <action
+            android:id="@+id/action_searchKeywordFragment_to_profileSettingFragment"
+            app:destination="@id/profileSettingFragment" />
+    </fragment>
+</navigation>

@@ -3,30 +3,32 @@ package com.kiwi.kiwitalk.model
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import com.kiwi.domain.model.Marker
-import kotlin.random.Random
 
 data class ClusterMarker(
     val x: Double,
     val y: Double,
-    private val _snippet: String?,
-    private val _title: String?,
-    val keywords: List<String>
+    private val markerSnippet: String?,
+    private val markerTitle: String?,
+    val keywords: List<String>,
+    val cid: String
 ) : ClusterItem {
-    constructor(latLng: LatLng, snippet: String?, title: String?, keywords: List<String>) :
-            this(latLng.latitude, latLng.longitude, snippet, title, keywords)
+    constructor(
+        latLng: LatLng, snippet: String?, title: String?, keywords: List<String>, cid: String
+    ) : this(latLng.latitude, latLng.longitude, snippet, title, keywords, cid)
 
-    private val _latLng = LatLng(x, y)
-    override fun getPosition(): LatLng = _latLng
-    override fun getSnippet(): String? = _snippet
-    override fun getTitle(): String? = _title
+    private val latLng get() = LatLng(x, y)
+    override fun getPosition(): LatLng = latLng
+    override fun getSnippet(): String? = markerSnippet
+    override fun getTitle(): String? = markerTitle
 
     companion object {
         fun Marker.toClusterMarker(): ClusterMarker = ClusterMarker(
-            x = this.x + Random.nextDouble(0.1),
+            x = this.x,
             y = this.y,
-            _snippet = cid,
-            _title = toString(),
+            markerSnippet = cid,
+            markerTitle = toString(),
             keywords = keywords,
+            cid = cid
         )
     }
 }

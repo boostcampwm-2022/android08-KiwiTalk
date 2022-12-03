@@ -8,14 +8,12 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.kiwi.kiwitalk.AppPreference
-import com.kiwi.kiwitalk.Const
+import com.kiwi.kiwitalk.util.Const
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.User
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -29,12 +27,11 @@ class LoginViewModel @Inject constructor(
     var isNetworkConnect: Boolean = false
     var isReady: Boolean = false
 
-    private val _idToken = MutableLiveData<String>()
-    val userId: LiveData<String> = _idToken
+    private val _loginState = MutableLiveData<Boolean>(false)
+    val loginState: LiveData<Boolean> = _loginState
 
     init {
         isNetworkConnect = checkNetworkState()
-        loadLoginHistory()
         isReady = true
     }
 
@@ -54,33 +51,20 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
-    private fun loadLoginHistory() {
-        val savedToken = pref.getString(
-            Const.LOGIN_ID_KEY, Const.EMPTY_STRING
-        )
-        if (savedToken != Const.EMPTY_STRING) {
-            _idToken.value = savedToken
-            loginWithLocalToken()
-        }
-        Log.d("k001", "저장된 토큰 값 : $savedToken")
-        /* 기타 토큰 유효성 검사 추가 */
-    }
-
     fun saveToken(id: String, name: String, imageUrl: String) {
         /* pref에는 token만 넣기 */
         Log.d(LOCATION, "로그인 정보 저장 - token size : ${id.length}")
         pref.setString(Const.LOGIN_ID_KEY, id)
         pref.setString(Const.LOGIN_NAME_KEY, name)
         pref.setString(Const.LOGIN_URL_KEY, imageUrl)
-        _idToken.value = id
     }
 
     fun loginWithLocalToken() {
         val savedToken = pref.getString(
             Const.LOGIN_ID_KEY, Const.EMPTY_STRING
         )
-        if (savedToken != Const.EMPTY_STRING) {
+
+        if (isValidToken(savedToken)) {
             val user = User(
                 id = pref.getString(Const.LOGIN_ID_KEY, Const.EMPTY_STRING),
                 name = pref.getString(Const.LOGIN_NAME_KEY, Const.EMPTY_STRING),
@@ -90,16 +74,24 @@ class LoginViewModel @Inject constructor(
             val token = chatClient.devToken(user.id)
             if (chatClient.getCurrentUser() == null) {
                 chatClient.connectUser(user, token).enqueue { result ->
-                    Log.d(LOCATION, "result is ${result.isSuccess}: $result")
+                    _loginState.value = result.isSuccess
                 }
             } else {
                 Log.d(LOCATION, "user: ${chatClient.getCurrentUser()}")
+                _loginState.value = true
             }
+        } else {
+            pref.setString(Const.LOGIN_ID_KEY, Const.EMPTY_STRING)
+            _loginState.value = false
         }
-        Log.d("k001", "저장된 토큰 값 : $savedToken")
     }
 
-    companion object{
+    private fun isValidToken(token: String): Boolean {
+        return tokenRegex.matches(token)
+    }
+
+    companion object {
         private const val LOCATION = "k001"
+        private val tokenRegex = Regex("[0-9,a-z]{1,21}")
     }
 }

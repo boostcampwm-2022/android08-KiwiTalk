@@ -3,16 +3,6 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="text_chat_name">채팅방 이름</string>
-    <string name="et_chat_name_hint">채팅방 이름을 입력하세요.</string>
-    <string name="text_chat_description">채팅방 설명</string>
-    <string name="et_chat_description_hint">채팅방 설명을 입력하세요.</string>
-    <string name="text_chat_max_personnel">최대 인원 설정</string>
-    <string name="et_chat_max_personnel_hint">채팅방의 최대 인원을 설정해주세요.</string>
-    <string name="text_chat_keyword">키워드 등록</string>
-    <string name="et_chat_keyword_hint">키워드를 등록해 주세요.</string>
-    <string name="text_chat_place">장소 등록</string>
-    <string name="btn_chat_place">장소를 등록해 주세요.</string>
 
     <string name="img_chatList_profile_des">채팅방 이미지</string>
     <string name="tv_chatList_empty">참여한 채팅방이 없습니다.</string>
@@ -23,4 +13,34 @@
     <string name="ic_chatlist_searchchat_des">채팅방 찾기</string>
     <string name="new_chat_description">새로운 채팅방 생성</string>
     <string name="chat_number">현재 채팅방 수 : %d</string>
+
+    <string name="chatList_title">채팅방 목록</string>
+    <string name="item_chatList_actionToProfileSetting">프로필 수정</string>
+    <string name="item_chatList_logout">로그아웃</string>
+    <string name="tv_searchChat_keywords">선택 키워드</string>
+
+    <string name="close_dialog">닫기</string>
+    <string name="dialog_join">입장</string>
+
+    <string name="chat_name">채팅방</string>
+    <string name="chip_keyword">키워드</string>
+    <string name="chip_location">위치</string>
+    <string name="chip_description">설명</string>
+
+    <!-- New Chat -->
+    <string name="image_add_btn_Description">채팅방 이미지 추가 버튼</string>
+    <string name="text_chat_name">채팅방 이름</string>
+    <string name="text_chat_description">채팅방 설명</string>
+    <string name="text_chat_max_number_count_hint">최대 인원 설정</string>
+    <string name="text_chat_max_number_count">최대 설정 가능한 인원은 100명입니다</string>
+    <string name="text_chat_keyword">키워드 등록</string>
+    <string name="text_chat_keyword_search">키워드 검색</string>
+    <string name="text_chat_place">장소 등록</string>
+    <string name="text_chat_place_search">장소 검색</string>
+    <string name="text_chat_add">채팅방 생성</string>
+
+    <!-- Search Place -->
+    <string name="et_search_hint">검색어를 입력해 주세요.</string>
+    <string name="btn_search_text">검색</string>
+    <string name="btn_search_add_description">위치 저장 버튼</string>
 </resources>

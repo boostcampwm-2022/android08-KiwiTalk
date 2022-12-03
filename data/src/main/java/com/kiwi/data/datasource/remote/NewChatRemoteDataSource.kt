@@ -5,8 +5,5 @@ import com.kiwi.data.model.remote.NewChatRemote
 import kotlinx.coroutines.flow.Flow
 
 interface NewChatRemoteDataSource {
-
-    suspend fun addFireBaseChat(newChatRemote: NewChatRemote)
-
-    suspend fun addStreamChat(newChatRemote: NewChatRemote)
+    suspend fun addChatUpload(userId: String, currentTime: String, newChatRemote: NewChatRemote)
 }

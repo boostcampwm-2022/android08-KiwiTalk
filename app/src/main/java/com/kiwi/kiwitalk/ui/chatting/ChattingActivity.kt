@@ -1,7 +1,7 @@
 package com.kiwi.kiwitalk.ui.chatting
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.kiwi.kiwitalk.R
 
 class ChattingActivity : AppCompatActivity() {

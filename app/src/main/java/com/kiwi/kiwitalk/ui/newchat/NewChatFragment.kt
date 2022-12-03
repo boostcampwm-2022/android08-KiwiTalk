@@ -11,18 +11,20 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
-import com.kiwi.domain.model.NewChat
+import com.google.android.material.snackbar.Snackbar
+import com.kiwi.domain.model.NewChatInfo
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentNewChatBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
+import com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel
 import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.ADDRESS_KEY
 import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.LATLNG_KEY
 import com.kiwi.kiwitalk.ui.setImage
 import dagger.hilt.android.AndroidEntryPoint
-import org.w3c.dom.Text
 
 @AndroidEntryPoint
 class NewChatFragment : Fragment() {
@@ -30,9 +32,8 @@ class NewChatFragment : Fragment() {
     private var _binding: FragmentNewChatBinding? = null
     private val binding get() = checkNotNull(_binding)
     private val newChatViewModel: NewChatViewModel by viewModels()
-//    private val searchPlaceViewModel: SearchPlaceViewModel by navGraphViewModels(R.id.nav_graph) {
-//        defaultViewModelProviderFactory
-//    }
+    private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
+
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -44,26 +45,17 @@ class NewChatFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("NewChatFragment", "onCreate")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("NewChatFragment", "onCreateView")
         _binding = FragmentNewChatBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("NewChatFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-
-
 
         findNavController().currentBackStackEntry
             ?.savedStateHandle?.apply {
@@ -72,62 +64,92 @@ class NewChatFragment : Fragment() {
                 }
                 getLiveData<LatLng>(LATLNG_KEY).observe(viewLifecycleOwner) {
                     newChatViewModel.setLatLng(it)
-
                 }
             }
 
-        newChatViewModel.isAddress.observe(viewLifecycleOwner) {
-            binding.tvChatSelectAddress.visibility = View.VISIBLE
-            binding.tvChatSelectAddress.text = it
+        with(newChatViewModel) {
+            address.observe(viewLifecycleOwner) {
+                binding.tvChatSelectAddress.visibility = View.VISIBLE
+                binding.tvChatSelectAddress.text = it
+            }
+
+            chatImage.observe(viewLifecycleOwner) {
+                setImage(binding.ivChatImage, it)
+            }
+
+            newChatInfo.observe(viewLifecycleOwner) {
+                newChatViewModel.setChatId()
+            }
+
+            chatId.observe(viewLifecycleOwner) {
+                addNewChat(
+                    it,
+                    System.currentTimeMillis().toString(),
+                    newChatInfo.value ?: return@observe
+                )
+                val intent = Intent(requireActivity(), HomeActivity::class.java)
+                startActivity(intent)
+
+                requireActivity().finish()
+            }
         }
 
-        newChatViewModel.isChatImage.observe(viewLifecycleOwner) {
-            setImage(binding.ivChatImage, it)
-        }
-
-        newChatViewModel.isNewChatInfo.observe(viewLifecycleOwner) {
-            newChatViewModel.addNewChat(it)
-             val intent = Intent(requireActivity(), HomeActivity::class.java)
-              startActivity(intent)
-        }
-
-        binding.btcChatAddress.setOnClickListener {
-            findNavController().navigate(R.id.action_newChatFragment_to_searchPlaceFragment)
-        }
-        binding.btnChatAddImage.setOnClickListener {
-            activityResultLauncher.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
-                type = "image/*"
-            })
-        }
-
-        binding.btnNewChat.setOnClickListener {
-            if (allCheckNull()) {
-                newChatViewModel.setNewChat(changeChatInfo())
+        with(binding) {
+            btnChatAddress.setOnClickListener {
+                findNavController().navigate(R.id.action_newChatFragment_to_searchPlaceFragment)
+            }
+            btnChatAddImage.setOnClickListener {
+                activityResultLauncher.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
+                    type = "image/*"
+                })
+            }
+            btnNewChat.setOnClickListener {
+                val keywords = searchKeywordViewModel.selectedKeyword.value?.map { it.name }
+                if (allCheckNull() && keywords != null && keywords.isEmpty().not()) {
+                    newChatViewModel.setNewChat(changeChatInfo(keywords))
+                }
+            }
+            btnChatKeyword.setOnClickListener {
+                findNavController().navigate(R.id.action_newChatFragment_to_searchKeywordFragment)
             }
         }
     }
 
-    private fun changeChatInfo(): NewChat {
+    private fun changeChatInfo(keywords: List<String>): NewChatInfo {
         with(newChatViewModel) {
-            return NewChat(
-                isChatImage.value,
+            return NewChatInfo(
+                chatImage.value ?: "",
                 binding.etChatName.text.toString(),
                 binding.etChatDescription.text.toString(),
                 binding.etChatMaxPersonnel.text.toString(),
-                listOf("운동", "카페"),
-                isAddress.value ?: "",
-                isLatLng.value?.latitude ?: 0.0,
-                isLatLng.value?.longitude ?: 0.0
+                keywords,
+
+                address.value ?: "",
+
+                latLng.value?.latitude ?: 0.0,
+                latLng.value?.longitude ?: 0.0
             )
         }
     }
 
     private fun allCheckNull(): Boolean {
         with(binding) {
-            if(etChatName.checkNull()) return false
-            if(etChatDescription.checkNull()) return false
-            if(etChatMaxPersonnel.checkNull()) return false
-            if(tvChatSelectAddress.checkNull()) return false
+            if (etChatName.checkNull().not()) return false
+            if (etChatDescription.checkNull().not()) return false
+            if (etChatMaxPersonnel.checkNull().not() || etChatMaxPersonnel.checkMaxMember().not()) {
+                return false
+            }
+            if (tvChatSelectAddress.checkNull().not()) return false
+        }
+        return true
+    }
+
+    private fun EditText.checkMaxMember(): Boolean {
+        val cnt = this.text.toString().toInt()
+        if(cnt > 100) {
+            Snackbar.make(this,"최대 인원 수를 초과했습니다.", Snackbar.LENGTH_SHORT).show()
+            this.requestFocus()
+            return false
         }
         return true
     }
@@ -135,16 +157,17 @@ class NewChatFragment : Fragment() {
     private fun EditText.checkNull(): Boolean {
         if (this.text.toString() == "") {
             this.requestFocus()
-            return true
+            return false
         }
-        return false
+        return true
     }
 
     private fun TextView.checkNull(): Boolean {
         if (this.text.toString() == "") {
-            return true
+            Snackbar.make(this,"장소를 선택해 주세요", Snackbar.LENGTH_SHORT).show()
+            return false
         }
-        return false
+        return true
     }
 
     override fun onDestroy() {

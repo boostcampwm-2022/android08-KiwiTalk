@@ -15,7 +15,7 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.material.snackbar.Snackbar
-import com.kiwi.kiwitalk.Const
+import com.kiwi.kiwitalk.util.Const
 import com.kiwi.kiwitalk.databinding.ActivityLoginBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +49,13 @@ class LoginActivity : AppCompatActivity() {
             }
         )
 
-        skipLoginWhenTokenExist(viewModel.userId.value)
+        viewModel.loginState.observe(this) {
+            if (it) {
+                showPopUpMessage(LOGIN_SUCCESS)
+                navigateToHome()
+            }
+        }
+        viewModel.loginWithLocalToken()
 
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -61,13 +67,6 @@ class LoginActivity : AppCompatActivity() {
         binding.btnGoogleSignup.setOnClickListener {
             val intent = viewModel.googleApiClient.signInIntent
             activityResultLauncher.launch(intent)
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun skipLoginWhenTokenExist(token: String?) {
-        if (!token.isNullOrEmpty()) {
-            loginWithLocalToken()
         }
     }
 
@@ -93,16 +92,9 @@ class LoginActivity : AppCompatActivity() {
             Log.d(TAG, e.toString())
         }
 
-        if (!viewModel.userId.value.isNullOrEmpty()) {
-            loginWithLocalToken()
+        if (viewModel.loginState.value == false) {
+            viewModel.loginWithLocalToken()
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun loginWithLocalToken() {
-        viewModel.loginWithLocalToken()
-        showPopUpMessage(LOGIN_SUCCESS)
-        navigateToHome()
     }
 
     private fun navigateToHome() {
