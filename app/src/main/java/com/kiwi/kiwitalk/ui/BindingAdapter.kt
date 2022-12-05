@@ -5,7 +5,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.kiwi.data.Const
 import com.kiwi.kiwitalk.R
+import java.util.*
 
 @BindingAdapter("loadImageByUri")
 fun setImage(imageView: ImageView, uri: String?) {
@@ -30,5 +32,16 @@ fun setUnreadCount(textView: TextView, count: Int?) {
             textView.visibility = View.VISIBLE
             textView.text = textView.context.getText(R.string.tv_chatList_unreadCountMax)
         }
+    }
+}
+
+@BindingAdapter("setAddress")
+fun setTrimAddress(textView: TextView, fullAddress: Any?) {
+    textView.text = if (fullAddress !is String) {
+        Const.SPACE
+    } else {
+        fullAddress.split(Const.SPACE)
+            .filter { it.last() in listOf('시', '도', '구', '군', '동', '읍', '면') }
+            .joinToString(Const.SPACE)
     }
 }
