@@ -39,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:text="@{chat.name}"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="17sp"
@@ -53,12 +54,14 @@
                 android:textColor="?attr/colorOnPrimary"
                 tools:text="서울특별시 강남구" />
 
-            <TextView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tv_rvChatList_keyword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chat.extraData.getOrDefault(Const.CHAT_KEYWORDS, @string/tv_itemChatList_keyword_default).toString()}"
-                tools:text="축구, 농구, 운동" />
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_keyword" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
