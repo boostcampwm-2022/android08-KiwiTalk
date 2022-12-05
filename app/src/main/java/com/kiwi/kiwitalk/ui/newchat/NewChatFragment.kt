@@ -2,7 +2,6 @@ package com.kiwi.kiwitalk.ui.newchat
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.kiwi.domain.model.NewChatInfo
+import com.kiwi.kiwitalk.NetworkStateManager
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentNewChatBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
@@ -34,6 +33,7 @@ class NewChatFragment : Fragment() {
     private val binding get() = checkNotNull(_binding)
     private val newChatViewModel: NewChatViewModel by viewModels()
     private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
+    private lateinit var networkConnectionState: NetworkStateManager
 
 
     private val activityResultLauncher = registerForActivityResult(
@@ -57,6 +57,8 @@ class NewChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        networkConnectionState = NetworkStateManager(requireContext())
+        networkConnectionState.register()
 
         findNavController().currentBackStackEntry
             ?.savedStateHandle?.apply {
@@ -185,6 +187,7 @@ class NewChatFragment : Fragment() {
 
     override fun onDestroy() {
         _binding = null
+        networkConnectionState.unregister()
         super.onDestroy()
     }
 }
