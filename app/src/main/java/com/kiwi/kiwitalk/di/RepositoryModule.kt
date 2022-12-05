@@ -47,4 +47,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindExitChatDataSource(exitChatRemoteDataSourceImpl: ExitChatRemoteDataSourceImpl): ExitChatRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindExitChatRepository(exitChatRepositoryImpl: ExitChatRepositoryImpl): ExitChatRepository
 }
