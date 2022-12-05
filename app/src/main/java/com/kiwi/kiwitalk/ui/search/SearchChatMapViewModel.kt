@@ -82,6 +82,7 @@ class SearchChatMapViewModel @Inject constructor(
         }
     }
 
+
     fun setDeviceLocation(newLocation: Location) {
         _location.value = newLocation
     }

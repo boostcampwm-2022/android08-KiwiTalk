@@ -38,13 +38,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.markerClickEvents
 import com.google.maps.android.ktx.myLocationButtonClickEvents
 import com.kiwi.domain.model.PlaceInfoList
+import com.kiwi.kiwitalk.R
+import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
 import com.kiwi.kiwitalk.util.ChangeExpansion.changeLatLngToAddress
 import com.kiwi.kiwitalk.util.Const.ADDRESS_ERROR
 import com.kiwi.kiwitalk.util.Const.PERMISSION_CODE
-import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.util.Util.changeVectorToBitmapDescriptor
 import com.kiwi.kiwitalk.util.Util.generateVibrator
-import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -123,6 +123,7 @@ class SearchPlaceFragment : Fragment() {
                     currentLocation ?: return@setOnClickListener,
                     etKeywordSearch.text.toString()
                 )
+                mMap.clear()
                 etKeywordSearch.text = null
             }
             btnPlaceSave.setOnClickListener {
@@ -176,7 +177,6 @@ class SearchPlaceFragment : Fragment() {
     }
 
     private fun searchLocation(location: Location, keyword: String) {
-        mMap.clear()
         searchPlaceViewModel.getSearchPlace(
             location.longitude.toString(),
             location.latitude.toString(),
@@ -209,7 +209,7 @@ class SearchPlaceFragment : Fragment() {
                     it.setIcon(selectMarker)
                     it
                 }
-                checkAddButtonShowAndHide()
+                changeAddButtonShowAndHide()
                 it.showInfoWindow()
             }
         }
@@ -220,7 +220,7 @@ class SearchPlaceFragment : Fragment() {
             if (markerState != null) {
                 markerState?.setIcon(baseMarker)
                 markerState = null
-                checkAddButtonShowAndHide()
+                changeAddButtonShowAndHide()
             }
         }
     }
@@ -233,7 +233,7 @@ class SearchPlaceFragment : Fragment() {
                     .icon(baseMarker)
             mMap.clear()
             markerState = null
-            checkAddButtonShowAndHide()
+            changeAddButtonShowAndHide()
             mMap.addMarker(markerOptions)
             generateVibrator(requireContext())
         }
@@ -291,7 +291,7 @@ class SearchPlaceFragment : Fragment() {
         }
     }
 
-    private fun checkAddButtonShowAndHide() {
+    private fun changeAddButtonShowAndHide() {
         if (markerState != null) {
             val animation = TranslateAnimation(view?.width?.toFloat() ?: return, 0F, 0F, 0F)
             animation.duration = 200

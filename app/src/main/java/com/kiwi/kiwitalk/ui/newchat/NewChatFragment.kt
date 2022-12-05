@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
@@ -103,12 +104,6 @@ class NewChatFragment : Fragment() {
                     type = "image/*"
                 })
             }
-            btnNewChat.setOnClickListener {
-                val keywords = searchKeywordViewModel.selectedKeyword.value?.map { it.name }
-                if (allCheckNull() && keywords != null && keywords.isEmpty().not()) {
-                    newChatViewModel.setNewChat(changeChatInfo(keywords))
-                }
-            }
             btnChatKeyword.setOnClickListener {
                 findNavController().navigate(R.id.action_newChatFragment_to_searchKeywordFragment)
             }
@@ -143,9 +138,7 @@ class NewChatFragment : Fragment() {
                 binding.etChatDescription.text.toString(),
                 binding.etChatMaxPersonnel.text.toString(),
                 keywords,
-
                 address.value ?: "",
-
                 latLng.value?.latitude ?: 0.0,
                 latLng.value?.longitude ?: 0.0
             )
