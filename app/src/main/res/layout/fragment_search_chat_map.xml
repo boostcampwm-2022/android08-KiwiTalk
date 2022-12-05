@@ -17,6 +17,45 @@
         tools:context=".ui.search.SearchChatMapFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_bottomSheet"
+            style="@style/Widget.MaterialComponents.BottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:clickable="true"
+            android:elevation="7dp"
+            android:focusable="true"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="@dimen/bottomSheet_collapse_size"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <!-- Drag handle for accessibility -->
+            <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+                android:id="@+id/drag_handle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/layout_markerInfo_preview"
+                layout="@layout/view_marker_preview"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/bottomSheet_collapse_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:item="@{vm.placeChatInfo}" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_markerInfo_preview" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -72,42 +111,5 @@
             android:contentDescription="@string/new_chat_description"
             android:src="@drawable/ic_search_chat_new_chat" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_bottomSheet"
-            style="@style/Widget.MaterialComponents.BottomSheet"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:clickable="true"
-            android:elevation="7dp"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="@dimen/bottomSheet_collapse_size"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-            <!-- Drag handle for accessibility -->
-            <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-                android:id="@+id/drag_handle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <include
-                android:id="@+id/layout_markerInfo_preview"
-                layout="@layout/view_marker_preview"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/bottomSheet_collapse_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                bind:item="@{vm.placeChatInfo}" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_markerInfo_preview" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
