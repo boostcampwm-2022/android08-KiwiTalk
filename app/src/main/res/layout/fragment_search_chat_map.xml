@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.search.SearchChatMapFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/layout_bottomSheet"
             style="@style/Widget.MaterialComponents.BottomSheet"
             android:layout_width="match_parent"
@@ -39,21 +39,29 @@
             <include
                 android:id="@+id/layout_markerInfo_preview"
                 layout="@layout/view_marker_preview"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/bottomSheet_collapse_size"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 bind:item="@{vm.placeChatInfo}" />
+
+            <TextView
+                android:id="@+id/tv_tmp_chatDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/medium_margin"
+                android:text="채팅방 더보기"
+                android:textSize="30sp"
+                android:visibility="invisible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_markerInfo_preview" />
+                android:layout_gravity="bottom"
+                app:layout_anchor="@id/tv_tmp_chatDetail"
+                app:layout_anchorGravity="bottom" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
