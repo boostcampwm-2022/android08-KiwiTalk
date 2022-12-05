@@ -40,6 +40,9 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:text="@{chat.name}"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="17sp"
+                android:textStyle="bold"
                 tools:text="방 제목" />
 
             <TextView
@@ -47,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{chat.extraData.getOrDefault(Const.CHAT_ADDRESS, @string/tv_itemChatList_country_default).toString()}"
+                android:textColor="?attr/colorOnPrimary"
                 tools:text="서울특별시 강남구" />
 
             <TextView
