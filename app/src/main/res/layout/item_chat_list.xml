@@ -63,12 +63,26 @@
                 tools:itemCount="5"
                 tools:listitem="@layout/item_keyword" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
+            <com.google.android.material.circularreveal.CircularRevealFrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorOnPrimary"
-                app:setDateOfLastMassage="@{chat.lastMessageAt}"
-                tools:text="5시간 전" />
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnPrimary"
+                    app:setDateOfLastMassage="@{chat.lastMessageAt}"
+                    tools:text="5시간 전" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:textColor="?attr/colorOnPrimary"
+                    app:setChatMemberCount="@{chat}"
+                    tools:text="15 / 50" />
+            </com.google.android.material.circularreveal.CircularRevealFrameLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

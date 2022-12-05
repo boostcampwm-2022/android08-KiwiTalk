@@ -7,6 +7,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.kiwi.data.Const
 import com.kiwi.kiwitalk.R
+import io.getstream.chat.android.client.models.Channel
 import java.util.*
 
 @BindingAdapter("loadImageByUri")
@@ -70,4 +71,12 @@ fun setDateOfLastMassage(textView: TextView, lastDate: Date?) {
     } else {
         "${diffTime}년 전"
     }
+}
+
+@BindingAdapter("setChatMemberCount")
+fun setChatMemberCount(textView: TextView, chat: Channel) {
+    val now = chat.memberCount
+    val max = (chat.extraData["max_member_count"] as? String ?: "0").toInt()
+    textView.text =
+        textView.context.resources.getString(R.string.tv_chatList_member_count, now, max)
 }
