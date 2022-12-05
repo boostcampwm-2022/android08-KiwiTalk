@@ -13,12 +13,10 @@ import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentChatListBinding
 import com.kiwi.kiwitalk.ui.search.SearchChatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.Channel
 import io.getstream.chat.android.ui.channel.list.viewmodel.ChannelListViewModel
 import io.getstream.chat.android.ui.channel.list.viewmodel.factory.ChannelListViewModelFactory
 import io.getstream.chat.android.ui.message.MessageListActivity
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChatListFragment : Fragment() {
@@ -26,8 +24,6 @@ class ChatListFragment : Fragment() {
             by viewModels { ChannelListViewModelFactory() }
     private val chatListViewModel: ChatListViewModel by viewModels()
 
-    @Inject
-    lateinit var client: ChatClient // 임시
     private var _binding: FragmentChatListBinding? = null
     private val binding get() = _binding!!
 
