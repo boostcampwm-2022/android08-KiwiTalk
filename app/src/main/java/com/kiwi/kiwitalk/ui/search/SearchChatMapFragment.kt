@@ -262,6 +262,14 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
+    private fun showBottomSheetDetail() {
+        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
+    }
+
+    private fun showBottomSheetPreview() {
+        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+    }
+
     private fun initToolbar() {
         binding.searchChatMapToolbar.setNavigationOnClickListener {
             activity?.finish()
