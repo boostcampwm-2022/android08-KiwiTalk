@@ -19,6 +19,7 @@
     <string name="item_chatList_logout">로그아웃</string>
     <string name="tv_searchChat_keywords">선택 키워드</string>
     <string name="tv_chatList_unreadCountMax">999+</string>
+    <string name="tv_chatList_member_count">%1$d / %2$d</string>
 
     <string name="close_dialog">닫기</string>
     <string name="dialog_join">입장</string>

@@ -45,3 +45,29 @@ fun setTrimAddress(textView: TextView, fullAddress: Any?) {
             .joinToString(Const.SPACE)
     }
 }
+
+@BindingAdapter("setDateOfLastMassage")
+fun setDateOfLastMassage(textView: TextView, lastDate: Date?) {
+    val regTime = lastDate?.time
+    val curTime = System.currentTimeMillis()
+
+    if (regTime == null) {
+        textView.text = "방금 전"
+        return
+    }
+
+    var diffTime = (curTime - regTime) / 1000
+    textView.text = if (diffTime < com.kiwi.kiwitalk.util.Const.SEC) {
+        "알 수 없음"
+    } else if (com.kiwi.kiwitalk.util.Const.SEC.let { diffTime /= it; diffTime } < com.kiwi.kiwitalk.util.Const.MIN) {
+        "${diffTime}분 전"
+    } else if (com.kiwi.kiwitalk.util.Const.MIN.let { diffTime /= it; diffTime } < com.kiwi.kiwitalk.util.Const.HOUR) {
+        "${diffTime}시간 전"
+    } else if (com.kiwi.kiwitalk.util.Const.HOUR.let { diffTime /= it; diffTime } < com.kiwi.kiwitalk.util.Const.DAY) {
+        "${diffTime}일 전"
+    } else if (com.kiwi.kiwitalk.util.Const.DAY.let { diffTime /= it; diffTime } < com.kiwi.kiwitalk.util.Const.MONTH) {
+        "${diffTime}달 전"
+    } else {
+        "${diffTime}년 전"
+    }
+}
