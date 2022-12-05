@@ -66,9 +66,7 @@ class ChatListFragment : Fragment() {
                 adapter.submitList(it.channels)
             }
         }
-        binding.rvChatList.apply {
-            this.adapter = adapter
-        }
+        binding.rvChatList.adapter = adapter
     }
 
     private fun initToolbar() {
