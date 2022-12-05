@@ -22,8 +22,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChatListFragment : Fragment() {
-    private val chatListViewModel: ChannelListViewModel
+    private val channelListViewModel: ChannelListViewModel
             by viewModels { ChannelListViewModelFactory() }
+    private val chatListViewModel: ChatListViewModel by viewModels()
 
     @Inject
     lateinit var client: ChatClient // 임시
@@ -49,14 +50,17 @@ class ChatListFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        val adapter = ChatListViewAdapter()
-        adapter.onClickListener = object : ChatListViewAdapter.OnChatClickListener {
+        val adapter = ChatListViewAdapter(object : ChatListViewAdapter.OnChatClickListener {
             override fun onChatClick(channel: Channel) {
                 startActivity(MessageListActivity.createIntent(requireContext(), channel.cid))
             }
-        }
 
-        chatListViewModel.state.observe(viewLifecycleOwner) {
+            override fun onChatLongClick(channel: Channel) {
+                chatListViewModel.exitChat(channel.cid)
+            }
+        })
+
+        channelListViewModel.state.observe(viewLifecycleOwner) {
             if (it.channels.isEmpty()) {
                 binding.tvChatListEmpty.visibility = View.VISIBLE
                 binding.rvChatList.visibility = View.INVISIBLE

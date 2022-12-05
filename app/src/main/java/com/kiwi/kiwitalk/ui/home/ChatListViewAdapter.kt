@@ -11,8 +11,8 @@ import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import com.kiwi.kiwitalk.util.Const
 import io.getstream.chat.android.client.models.Channel
 
-class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDiffUtil) {
-    lateinit var onClickListener: OnChatClickListener
+class ChatListViewAdapter(private val onClickListener: OnChatClickListener) :
+    ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ChatViewHolder(
@@ -30,6 +30,10 @@ class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDi
                 holder.bind(getItem(position))
                 holder.itemView.setOnClickListener {
                     onClickListener.onChatClick(getItem(position))
+                }
+                holder.itemView.setOnLongClickListener {
+                    onClickListener.onChatLongClick(getItem(position))
+                    true
                 }
             }
         }
@@ -49,6 +53,8 @@ class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDi
 
     interface OnChatClickListener {
         fun onChatClick(channel: Channel)
+
+        fun onChatLongClick(channel: Channel)
     }
 
     companion object {
