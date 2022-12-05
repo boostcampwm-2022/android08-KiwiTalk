@@ -137,6 +137,13 @@ class SearchPlaceFragment : Fragment() {
         baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_)
         selectMarker =
             changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_click)
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        binding.searchPlaceMapToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun isPermitted(): Boolean {

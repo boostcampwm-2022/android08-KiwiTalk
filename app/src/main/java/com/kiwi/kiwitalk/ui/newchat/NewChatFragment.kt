@@ -113,6 +113,26 @@ class NewChatFragment : Fragment() {
                 findNavController().navigate(R.id.action_newChatFragment_to_searchKeywordFragment)
             }
         }
+
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        binding.newChatMapToolbar.setNavigationOnClickListener {
+            activity?.finish()
+        }
+        binding.newChatMapToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_action_new_chat_save -> {
+                    val keywords = searchKeywordViewModel.selectedKeyword.value?.map { keyword ->  keyword.name }
+                    if (allCheckNull() && keywords != null && keywords.isEmpty().not()) {
+                        newChatViewModel.setNewChat(changeChatInfo(keywords))
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun changeChatInfo(keywords: List<String>): NewChatInfo {
