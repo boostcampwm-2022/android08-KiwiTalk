@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -52,7 +53,7 @@ class ChatListFragment : Fragment() {
             }
 
             override fun onChatLongClick(channel: Channel) {
-                chatListViewModel.exitChat(channel.cid)
+                showExitChatDialog(channel.cid)
             }
         })
 
@@ -89,5 +90,18 @@ class ChatListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun showExitChatDialog(cid: String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("채팅방 나가기")
+            .setMessage("채팅방을 나가시겠습니까?")
+            .setPositiveButton("확인") { _, _ ->
+                chatListViewModel.exitChat(cid)
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+            }.create()
+            .show()
     }
 }
