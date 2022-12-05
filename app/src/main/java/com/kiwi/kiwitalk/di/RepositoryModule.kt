@@ -43,4 +43,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsProfileSettingRepository(profileSettingRepositoryImpl: ProfileSettingRepositoryImpl): ProfileSettingRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindExitChatDataSource(exitChatRemoteDataSourceImpl: ExitChatRemoteDataSourceImpl): ExitChatRemoteDataSource
 }
