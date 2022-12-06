@@ -6,7 +6,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.AssetManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -31,10 +33,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.maps.android.ktx.markerClickEvents
 import com.google.maps.android.ktx.myLocationButtonClickEvents
 import com.kiwi.domain.model.PlaceInfoList
@@ -75,7 +74,10 @@ class SearchPlaceFragment : Fragment() {
 
     private val mapReadyCallback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
-       // MapStyleOptions.loadRawResourceStyle(requireContext(),R.)
+        val styleOption = resources.assets.open("map_style.json").reader().readText()
+        val mapStyleOptions = MapStyleOptions(styleOption)
+        mMap.setMapStyle(mapStyleOptions)
+
 
         mMap.setMinZoomPreference(5.0F)
         mMap.setMaxZoomPreference(20.0F)
@@ -138,7 +140,7 @@ class SearchPlaceFragment : Fragment() {
                     markerState?.position?.latitude ?: return@setOnClickListener,
                     markerState?.position?.longitude ?: return@setOnClickListener
                 )
-                setDialog(address)
+                placeShowDialog(address)
             }
         }
         baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_)
@@ -266,32 +268,22 @@ class SearchPlaceFragment : Fragment() {
         return nowAddress
     }
 
-    private fun setDialog(address: String) {
-        val layoutInflater = LayoutInflater.from(context)
-        val view = layoutInflater.inflate(R.layout.dialog_new_chat, null)
-        val dialog = AlertDialog.Builder(context)
-            .setView(view)
-            .show()
-
-        val textTitle = view.findViewById<TextView>(R.id.tv_current_address)
-        val buttonConfirm = view.findViewById<TextView>(R.id.btn_chat_place_save)
-        val buttonClose = view.findViewById<View>(R.id.btn_chat_place_cancel)
-        textTitle.text = address
-
-        dialog.window?.setGravity(Gravity.TOP)
-
-        buttonClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        buttonConfirm.setOnClickListener {
-            dialog.dismiss()
-            findNavController().apply {
-                previousBackStackEntry?.savedStateHandle?.set(ADDRESS_KEY, address)
-                previousBackStackEntry?.savedStateHandle?.set(LATLNG_KEY, markerState?.position)
-                popBackStack()
+    private fun placeShowDialog(address: String) {
+        val msgBuilder= AlertDialog.Builder(context)
+            .setTitle("주소")
+            .setMessage(address)
+            .setPositiveButton("취소") { _, _ ->
             }
-        }
+            .setNegativeButton("저장") { _, _ ->
+                findNavController().apply {
+                    previousBackStackEntry?.savedStateHandle?.set(ADDRESS_KEY, address)
+                    previousBackStackEntry?.savedStateHandle?.set(LATLNG_KEY, markerState?.position)
+                    popBackStack()
+                }
+            }
+
+        val msgDlg: AlertDialog = msgBuilder.create()
+        msgDlg.show()
     }
 
     private fun changeAddButtonShowAndHide() {
