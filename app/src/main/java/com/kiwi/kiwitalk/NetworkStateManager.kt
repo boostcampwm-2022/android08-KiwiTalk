@@ -2,12 +2,12 @@ package com.kiwi.kiwitalk
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.widget.Toast
-import android.widget.Toast.makeText
+
 
 
 class NetworkStateManager(context: Context) : ConnectivityManager.NetworkCallback() {
@@ -25,38 +25,37 @@ class NetworkStateManager(context: Context) : ConnectivityManager.NetworkCallbac
     }
 
     fun register() {
-        connectivityManager = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager!!.registerNetworkCallback(networkRequest!!, this)
+        connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager?.registerNetworkCallback(networkRequest?:return, this)
     }
 
     fun unregister() {
-        connectivityManager!!.unregisterNetworkCallback(this)
+        connectivityManager?.unregisterNetworkCallback(this)
     }
 
     private fun networkShowDialog() {
         val msgBuilder= AlertDialog.Builder(context)
-            .setTitle("Network Connect Check")
+            .setTitle("Network State Error")
             .setMessage("네트워크 상태를 확인해주세요.")
-            .setPositiveButton("재시도") { dialogInterface, i ->
-
+            .setPositiveButton("취소") { _, _ ->
             }
-            .setNegativeButton("취소") { dialogInterface, i ->
-
+            .setNegativeButton("재시도") { _, _ ->
+                val intent = Intent()
+                intent.setClassName(
+                    "com.android.settings",
+                    "com.android.settings.wifi.WifiSettings"
+                )
+                context?.startActivity(intent)
             }
             .setCancelable(false)
         val msgDlg: AlertDialog = msgBuilder.create()
         msgDlg.show()
     }
 
-    override fun onAvailable(network: Network) {
-        super.onAvailable(network)
-        
-        makeText(context, "network available", Toast.LENGTH_SHORT).show()
-    }
-
     override fun onLost(network: Network) {
         super.onLost(network)
         networkShowDialog()
     }
+
 
 }
