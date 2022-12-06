@@ -144,8 +144,7 @@ class SearchPlaceFragment : Fragment() {
             }
         }
         baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_)
-        selectMarker =
-            changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_click)
+        selectMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_click)
         initToolbar()
     }
 
