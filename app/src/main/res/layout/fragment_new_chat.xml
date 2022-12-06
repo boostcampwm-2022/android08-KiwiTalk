@@ -9,7 +9,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        >
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/new_chat_map_toolbar"
+            style="@style/kiwi.Toolbar"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/menu_new_chat"
+            app:title="채팅방 생성" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_chat_image"
@@ -18,8 +25,9 @@
             android:src="@drawable/logo_splash_transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_chat_map_toolbar"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerCut"
+            android:layout_marginTop="20dp"
             app:strokeWidth="3dp" />
 
         <ImageButton
@@ -39,7 +47,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_margin="15dp"
             app:counterEnabled="true"
             app:counterMaxLength="20"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +69,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_margin="15dp"
             app:counterEnabled="true"
             app:counterMaxLength="50"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +90,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_margin="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_chat_description">
@@ -102,6 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
             android:text="@string/text_chat_max_number_count"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_chat_max_personnel" />
@@ -112,6 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
             android:text="@string/text_chat_keyword"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -125,6 +135,9 @@
             android:layout_height="wrap_content"
             android:text="@string/text_chat_keyword_search"
             app:icon="@drawable/ic_search"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text" />
@@ -133,7 +146,7 @@
             android:id="@+id/tv_chat_address_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_margin="15dp"
             android:text="@string/text_chat_place"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -143,7 +156,8 @@
             android:id="@+id/tv_chat_select_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_chat_address_text" />
@@ -153,19 +167,16 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="50dp"
             android:text="@string/text_chat_place_search"
             app:icon="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_chat_select_address" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_new_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/text_chat_add"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_chat_address" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

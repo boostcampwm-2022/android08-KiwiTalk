@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.newchat.SearchPlaceFragment">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/search_place_map_toolbar"
+        style="@style/kiwi.Toolbar"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="장소 검색" />
+
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_keyword_search"
@@ -16,7 +23,7 @@
         android:maxLines="1"
         app:layout_constraintEnd_toStartOf="@+id/btn_keyword_search"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/search_place_map_toolbar" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_keyword_search"
@@ -27,7 +34,7 @@
         android:text="@string/btn_search_text"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/search_place_map_toolbar" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/search_map"
