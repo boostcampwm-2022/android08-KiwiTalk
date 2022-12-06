@@ -11,4 +11,9 @@ object Const {
     const val KAKAO_AUTH = "Authorization"
     const val ADDRESS_ERROR = "현재 좌표에서 주소를 가져올 수 없습니다."
     const val PERMISSION_CODE = 99
+    const val SEC = 60
+    const val MIN = 60
+    const val HOUR = 24
+    const val DAY = 30
+    const val MONTH = 12
 }

@@ -3,7 +3,7 @@ package com.kiwi.data.mapper
 import com.kiwi.data.Const.SPACE
 import java.util.*
 
-object DateFormatter {
+object StringFormatter {
     private const val SEC = 60
     private const val MIN = 60
     private const val HOUR = 24
@@ -15,7 +15,7 @@ object DateFormatter {
         val curTime = System.currentTimeMillis()
 
         var diffTime = (curTime - regTime) / 1000
-        var msg: String = ""
+        var msg = ""
         if (diffTime < SEC) {
             msg = "방금 전"
         } else if (SEC.let { diffTime /= it; diffTime } < MIN) {
