@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -57,7 +57,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             by lazy() { LocationServices.getFusedLocationProviderClient(requireActivity()) }
     private lateinit var map: GoogleMap
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<CoordinatorLayout>
     private lateinit var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback
 
     private val activityResultLauncher = initPermissionLauncher()
@@ -243,23 +243,35 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
-                        binding.rvDetail.visibility = View.VISIBLE
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
-                        binding.rvDetail.visibility = View.INVISIBLE
-                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> showBottomSheetDetail()
+                    BottomSheetBehavior.STATE_COLLAPSED -> showBottomSheetPreview()
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         }
 
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.layoutBottomSheet)
-        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior = BottomSheetBehavior
+            .from(binding.layoutBottomSheet)
+            .apply {
+                addBottomSheetCallback(bottomSheetCallback)
+                state = BottomSheetBehavior.STATE_HIDDEN
+                isDraggable = true
+                hideFriction = 0.01F
+                isFitToContents = true // default
+            }
+    }
+
+    private fun showBottomSheetDetail() {
+        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.INVISIBLE
+        binding.tvTmpChatDetail.visibility = View.VISIBLE
+        binding.rvDetail.visibility = View.VISIBLE
+    }
+
+    private fun showBottomSheetPreview() {
+        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+        binding.tvTmpChatDetail.visibility = View.INVISIBLE
+        binding.rvDetail.visibility = View.INVISIBLE
     }
 
     private fun initToolbar() {
@@ -285,13 +297,9 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         binding.rvSearchChatKeywords.adapter = adapter
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
+        bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
         _binding = null
     }
 
