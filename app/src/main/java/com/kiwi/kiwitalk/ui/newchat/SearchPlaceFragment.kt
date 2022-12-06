@@ -38,13 +38,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.markerClickEvents
 import com.google.maps.android.ktx.myLocationButtonClickEvents
 import com.kiwi.domain.model.PlaceInfoList
+import com.kiwi.kiwitalk.NetworkStateManager
+import com.kiwi.kiwitalk.R
+import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
 import com.kiwi.kiwitalk.util.ChangeExpansion.changeLatLngToAddress
 import com.kiwi.kiwitalk.util.Const.ADDRESS_ERROR
 import com.kiwi.kiwitalk.util.Const.PERMISSION_CODE
-import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.util.Util.changeVectorToBitmapDescriptor
 import com.kiwi.kiwitalk.util.Util.generateVibrator
-import com.kiwi.kiwitalk.databinding.FragmentSearchPlaceBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -66,6 +67,7 @@ class SearchPlaceFragment : Fragment() {
     private var markerState: Marker? = null
     private var baseMarker: BitmapDescriptor? = null
     private var selectMarker: BitmapDescriptor? = null
+    private lateinit var networkConnectionState: NetworkStateManager
 
     private var permissions = arrayOf(
         ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
@@ -73,6 +75,8 @@ class SearchPlaceFragment : Fragment() {
 
     private val mapReadyCallback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
+       // MapStyleOptions.loadRawResourceStyle(requireContext(),R.)
+
         mMap.setMinZoomPreference(5.0F)
         mMap.setMaxZoomPreference(20.0F)
         mMap.clear()
@@ -103,6 +107,8 @@ class SearchPlaceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        networkConnectionState = NetworkStateManager(requireContext())
+        networkConnectionState.register()
 
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.search_map) as SupportMapFragment?
@@ -123,6 +129,7 @@ class SearchPlaceFragment : Fragment() {
                     currentLocation ?: return@setOnClickListener,
                     etKeywordSearch.text.toString()
                 )
+                mMap.clear()
                 etKeywordSearch.text = null
             }
             btnPlaceSave.setOnClickListener {
@@ -137,15 +144,19 @@ class SearchPlaceFragment : Fragment() {
         baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_)
         selectMarker =
             changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_click)
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        binding.searchPlaceMapToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun isPermitted(): Boolean {
         for (perm in permissions) {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    perm
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
+            if (ContextCompat.checkSelfPermission(requireContext(), perm)
+                != PackageManager.PERMISSION_GRANTED) {
                 return false
             }
         }
@@ -169,7 +180,6 @@ class SearchPlaceFragment : Fragment() {
     }
 
     private fun searchLocation(location: Location, keyword: String) {
-        mMap.clear()
         searchPlaceViewModel.getSearchPlace(
             location.longitude.toString(),
             location.latitude.toString(),
@@ -202,7 +212,7 @@ class SearchPlaceFragment : Fragment() {
                     it.setIcon(selectMarker)
                     it
                 }
-                checkAddButtonShowAndHide()
+                changeAddButtonShowAndHide()
                 it.showInfoWindow()
             }
         }
@@ -213,7 +223,7 @@ class SearchPlaceFragment : Fragment() {
             if (markerState != null) {
                 markerState?.setIcon(baseMarker)
                 markerState = null
-                checkAddButtonShowAndHide()
+                changeAddButtonShowAndHide()
             }
         }
     }
@@ -226,7 +236,7 @@ class SearchPlaceFragment : Fragment() {
                     .icon(baseMarker)
             mMap.clear()
             markerState = null
-            checkAddButtonShowAndHide()
+            changeAddButtonShowAndHide()
             mMap.addMarker(markerOptions)
             generateVibrator(requireContext())
         }
@@ -284,7 +294,7 @@ class SearchPlaceFragment : Fragment() {
         }
     }
 
-    private fun checkAddButtonShowAndHide() {
+    private fun changeAddButtonShowAndHide() {
         if (markerState != null) {
             val animation = TranslateAnimation(view?.width?.toFloat() ?: return, 0F, 0F, 0F)
             animation.duration = 200
@@ -308,6 +318,7 @@ class SearchPlaceFragment : Fragment() {
 
     override fun onDestroy() {
         _binding = null
+        networkConnectionState.unregister()
         super.onDestroy()
     }
 
