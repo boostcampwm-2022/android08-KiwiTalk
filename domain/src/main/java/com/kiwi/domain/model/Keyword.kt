@@ -2,5 +2,5 @@ package com.kiwi.domain.model
 
 data class Keyword(
     val name: String,
-    val count: Int
+    val count: Int = 0
 )

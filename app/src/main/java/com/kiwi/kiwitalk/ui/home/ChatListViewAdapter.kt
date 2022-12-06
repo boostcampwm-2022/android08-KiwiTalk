@@ -53,7 +53,9 @@ class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDi
             }
 
             override fun areContentsTheSame(oldItem: Channel, newItem: Channel): Boolean {
-                return oldItem == newItem
+                return oldItem.cid == newItem.cid && oldItem.createdAt == newItem.createdAt &&
+                        oldItem.hasUnread == newItem.hasUnread && oldItem.updatedAt == newItem.updatedAt &&
+                        oldItem.lastUpdated == newItem.lastUpdated && oldItem.unreadCount == newItem.unreadCount
             }
         }
     }

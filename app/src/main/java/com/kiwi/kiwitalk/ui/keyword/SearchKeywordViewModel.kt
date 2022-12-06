@@ -44,7 +44,7 @@ class SearchKeywordViewModel @Inject constructor(
     }
 
     fun setSelectedKeywords(text: String) {
-        getKeyword(text)?.let { keyword ->
+        Keyword(text).let { keyword ->
             if (_selectedKeywords.value == null) {
                 _selectedKeywords.value = listOf(keyword)
             } else {
