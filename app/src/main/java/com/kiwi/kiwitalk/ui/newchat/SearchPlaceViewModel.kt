@@ -21,7 +21,7 @@ class SearchPlaceViewModel @Inject constructor(
 
     fun getSearchPlace(lng: String, lat: String, place: String) {
         viewModelScope.launch {
-            searchPlaceRepository.getSearchKeyword(lng, lat, place)
+            searchPlaceRepository.getSearchPlace(lng, lat, place)
                 .catch {
                     Log.d("getSearchPlace", "getSearchPlace: ${this.toResult()} $it")
                 }.collect {
