@@ -13,7 +13,7 @@ class SearchPlaceRemoteDataSourceImpl @Inject constructor(
 
     private val searchService = client?.create(SearchService::class.java)
 
-    override suspend fun getSearchKeyword(
+    override suspend fun getSearchPlace(
         lng: String,
         lat: String,
         place: String
