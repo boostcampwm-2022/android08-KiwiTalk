@@ -1,16 +1,18 @@
 package com.kiwi.kiwitalk.ui.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kiwi.domain.model.Keyword
 import com.kiwi.kiwitalk.databinding.ItemChatListBinding
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
+import com.kiwi.kiwitalk.util.Const
 import io.getstream.chat.android.client.models.Channel
 
-class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDiffUtil) {
-    lateinit var onClickListener: OnChatClickListener
+class ChatListViewAdapter(private val onClickListener: OnChatClickListener) :
+    ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ChatViewHolder(
@@ -29,6 +31,10 @@ class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDi
                 holder.itemView.setOnClickListener {
                     onClickListener.onChatClick(getItem(position))
                 }
+                holder.itemView.setOnLongClickListener {
+                    onClickListener.onChatLongClick(getItem(position))
+                    true
+                }
             }
         }
 
@@ -37,13 +43,18 @@ class ChatListViewAdapter : ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDi
     class ChatViewHolder(private val binding: ItemChatListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Channel) {
-            Log.d("ChatListViewAdapter", "bind: ${item.image}")
             binding.chat = item
+            val keywordAdapter = SelectedKeywordAdapter()
+            val keywords = item.extraData[Const.CHAT_KEYWORDS] as? List<String>
+            keywordAdapter.submitList(keywords?.map { Keyword(it, 0) } ?: emptyList<Keyword>())
+            binding.tvRvChatListKeyword.adapter = keywordAdapter
         }
     }
 
     interface OnChatClickListener {
         fun onChatClick(channel: Channel)
+
+        fun onChatLongClick(channel: Channel)
     }
 
     companion object {
