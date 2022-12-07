@@ -148,7 +148,8 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             } else {
                 map.uiSettings.isMyLocationButtonEnabled = false
                 map.isMyLocationEnabled = false
-                Toast.makeText(requireContext(), "권한이 필요합니다", Toast.LENGTH_SHORT).show()
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(37.3587, 127.1051), 15f))
+                Toast.makeText(requireContext(), "위치 권한이 필요합니다", Toast.LENGTH_SHORT).show()
             }
         }
     }
