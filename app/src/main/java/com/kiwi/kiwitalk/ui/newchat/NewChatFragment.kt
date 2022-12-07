@@ -2,11 +2,13 @@ package com.kiwi.kiwitalk.ui.newchat
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,6 +23,7 @@ import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentNewChatBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
 import com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.ADDRESS_KEY
 import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.LATLNG_KEY
 import com.kiwi.kiwitalk.ui.setImage
@@ -34,7 +37,6 @@ class NewChatFragment : Fragment() {
     private val newChatViewModel: NewChatViewModel by viewModels()
     private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
     private lateinit var networkConnectionState: NetworkStateManager
-
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -112,6 +114,13 @@ class NewChatFragment : Fragment() {
         }
 
         initToolbar()
+        initKeywordRecyclerView()
+    }
+
+    private fun initKeywordRecyclerView() {
+        val adapter = SelectedKeywordAdapter()
+        adapter.submitList(searchKeywordViewModel.selectedKeyword.value)
+        binding.rvNewChatKeywords.adapter = adapter
     }
 
     private fun initToolbar() {
@@ -121,9 +130,9 @@ class NewChatFragment : Fragment() {
         binding.newChatMapToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.item_action_new_chat_save -> {
-                    val keywords = searchKeywordViewModel.selectedKeyword.value?.map { keyword ->  keyword.name }
-                    if (allCheckNull() && keywords != null && keywords.isEmpty().not()) {
-                        newChatViewModel.setNewChat(changeChatInfo(keywords))
+                    val keywords = searchKeywordViewModel.selectedKeyword.value?.map { keyword -> keyword.name }
+                    if (allCheckNull() && checkKeyword(keywords)) {
+                        newChatViewModel.setNewChat(changeChatInfo(checkNotNull(keywords)))
                     }
                     true
                 }
@@ -144,6 +153,16 @@ class NewChatFragment : Fragment() {
                 latLng.value?.latitude ?: 0.0,
                 latLng.value?.longitude ?: 0.0
             )
+        }
+    }
+
+    private fun checkKeyword(keywords: List<String>?): Boolean {
+        return if(keywords != null && keywords.isEmpty().not()){
+            true
+        } else {
+            Toast.makeText(requireContext(),"키워드를 선택해 주세요.",Toast.LENGTH_SHORT).show()
+            //Snackbar.make(this,"키워드를 선택해 주세요.", Snackbar.LENGTH_SHORT).show()
+            false
         }
     }
 
