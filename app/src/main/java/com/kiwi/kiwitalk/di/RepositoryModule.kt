@@ -58,4 +58,11 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindUserLocalDatasource(dataImpl: UserLocalDataSourceImpl): UserLocalDataSource
 
+    @Binds
+    @Singleton
+    abstract fun bindUserRemoteDatasource(dataImpl: UserRemoteDataSourceImpl): UserRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(repoImpl: UserRepositoryImpl): UserRepository
 }
