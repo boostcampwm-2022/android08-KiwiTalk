@@ -55,7 +55,6 @@ class LoginActivity : AppCompatActivity() {
                 navigateToHome()
             }
         }
-        viewModel.loginWithLocalToken()
 
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -78,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
 
             when (result.status.statusCode) {
                 GoogleSignInStatusCodes.SUCCESS -> result.signInAccount?.apply {
-                    viewModel.saveToken(
+                    viewModel.signUp(
                         id = id!!,
                         name = displayName ?: Const.EMPTY_STRING,
                         imageUrl = photoUrl.toString()
@@ -108,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "k001"
+        private const val TAG = "k001|LoginActivity"
         private const val LOGIN_SUCCESS = "로그인 성공"
         private const val NO_NETWORK = "인터넷 연결을 확인해주세요"
     }

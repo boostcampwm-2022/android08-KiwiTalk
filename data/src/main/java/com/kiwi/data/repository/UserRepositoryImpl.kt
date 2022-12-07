@@ -1,10 +1,11 @@
 package com.kiwi.data.repository
 
-import android.util.Log
-import com.kiwi.data.Const
+import com.kiwi.data.UserDataCallback
 import com.kiwi.data.datasource.local.UserLocalDataSource
 import com.kiwi.data.datasource.remote.UserRemoteDataSource
+import com.kiwi.domain.UserUiCallback
 import com.kiwi.domain.repository.UserRepository
+import io.getstream.chat.android.client.models.User
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -12,34 +13,50 @@ class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
 ) : UserRepository {
 
-    override suspend fun isRemoteLoginRequired(): Result<Boolean> {
-        val savedToken = userLocalDataSource.getToken()
-        return login(savedToken, Const.EMPTY_STRING, Const.EMPTY_STRING)
-    }
-
-    override suspend fun tryLogin(token: String, name: String, imageUrl: String): Result<Boolean> {
-        return login(token, name, imageUrl)
-    }
-
-    private suspend fun login(token: String, name: String, imageUrl: String): Result<Boolean> {
-        return kotlin.runCatching {
-            if (!isValidToken(token)) {
-                userLocalDataSource.deleteToken()
-                throw INVALID_TOKEN
-            }
-
-            val loginResult = userRemoteDataSource.login(token, name, imageUrl)
-            val userInfo = loginResult.getOrNull()
-
-            if(userInfo == null) {
-                throw loginResult.exceptionOrNull()!!
-            } else {
-                userInfo.let {
-                    userLocalDataSource.saveToken(it.id, it.name, it.image)
-                }
-                true
-            }
+    override fun isRemoteLoginRequired(userUiCallback: UserUiCallback) {
+        val token = userLocalDataSource.getToken()
+        if (!isValidToken(token)) {
+            userLocalDataSource.deleteToken()
+            userUiCallback.onFailure(INVALID_TOKEN)
         }
+
+        userRemoteDataSource.login(token, object : UserDataCallback {
+            override fun onSuccess(user: User) {
+                if (user.id.isNotEmpty()) {
+                    userUiCallback.onSuccess()
+                } else {
+                    userUiCallback.onFailure(NO_DATA)
+                }
+            }
+            override fun onFailure(e: Throwable) {
+                userUiCallback.onFailure(e)
+            }
+        })
+    }
+
+    override fun tryLogin(token: String, googleName: String, imageUrl: String, userUiCallback: UserUiCallback) {
+        if (!isValidToken(token)) {
+            throw INVALID_TOKEN
+        }
+        userRemoteDataSource.login(token, object : UserDataCallback {
+            override fun onSuccess(user: User) {
+                with(user) {
+                    if (id.isEmpty()) {
+                        userUiCallback.onFailure(NO_DATA)
+                    } else if (name.isEmpty()) {
+                        userRemoteDataSource.updateUser(
+                            User(id = this.id, name = googleName, image = imageUrl)
+                        )
+                    } else {
+                        userLocalDataSource.saveToken(id, name, image)
+                    }
+                }
+                userUiCallback.onSuccess()
+            }
+            override fun onFailure(e: Throwable) {
+                userUiCallback.onFailure(e)
+            }
+        })
     }
 
     private fun isValidToken(token: String): Boolean {
@@ -50,5 +67,6 @@ class UserRepositoryImpl @Inject constructor(
         private const val TAG = "k001|UserRepo"
         private val tokenRegex = Regex("[0-9,a-z]{1,21}")
         private val INVALID_TOKEN = Exception("Invalid Token")
+        private val NO_DATA = Exception("Stream에서 Id값이 Empty String으로 반환됨")
     }
 }

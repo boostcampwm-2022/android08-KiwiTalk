@@ -1,7 +1,9 @@
 package com.kiwi.data.datasource.remote
 
+import com.kiwi.data.UserDataCallback
 import io.getstream.chat.android.client.models.User
 
 interface UserRemoteDataSource {
-    suspend fun login(token: String, name: String, imageUrl: String): Result<User>
+    fun login(token: String, callback: UserDataCallback)
+    fun updateUser(user: User)
 }
