@@ -12,13 +12,11 @@ import android.content.res.AssetManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -189,6 +187,7 @@ class SearchPlaceFragment : Fragment() {
     }
 
     private fun resultSearchPlace(placeList: PlaceInfoList) {
+        if (::mMap.isInitialized.not()) return
         placeList.list?.forEach { place ->
             val location = LatLng(place.lat.toDouble(), place.lng.toDouble())
 
