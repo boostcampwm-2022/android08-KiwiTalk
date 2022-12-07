@@ -54,7 +54,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     private val keywordViewModel: SearchKeywordViewModel by activityViewModels()
 
     private val fusedLocationClient
-            by lazy() { LocationServices.getFusedLocationProviderClient(requireActivity()) }
+            by lazy { LocationServices.getFusedLocationProviderClient(requireActivity()) }
     private lateinit var map: GoogleMap
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<CoordinatorLayout>
