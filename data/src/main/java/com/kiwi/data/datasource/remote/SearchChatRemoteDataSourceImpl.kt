@@ -36,6 +36,7 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
                 }.forEach { markerRemote ->
                     trySend(markerRemote.toMarker())
                 }
+                close()
             }.addOnFailureListener {
                 cancel()
             }
