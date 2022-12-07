@@ -229,7 +229,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun moveToLocation(location: Location?) {
         Log.d(TAG, "moveToLocation: $location")
-        location ?: return
+        if (location == null || ::map.isInitialized.not()) return
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
                 LatLng(location.latitude, location.longitude), 15f
