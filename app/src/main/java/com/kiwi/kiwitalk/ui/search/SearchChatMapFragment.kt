@@ -171,6 +171,8 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun setUpCluster() {
         val clusterManager = ClusterManager<ClusterMarker>(requireContext(), map)
+        val clusterRenderer = ClusterMarkerRenderer(requireContext(),map,clusterManager)
+        clusterManager.renderer = clusterRenderer
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 chatViewModel.markerList.collect {
