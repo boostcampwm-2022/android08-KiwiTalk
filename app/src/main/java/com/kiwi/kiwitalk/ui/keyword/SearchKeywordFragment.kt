@@ -1,10 +1,12 @@
 package com.kiwi.kiwitalk.ui.keyword
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -15,10 +17,6 @@ import com.kiwi.kiwitalk.databinding.FragmentSearchKeywordBinding
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.KeywordCategoryAdapter
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import dagger.hilt.android.AndroidEntryPoint
-
-/**
- * TODO 완료 버튼이랑 화면 전환
- */
 
 @AndroidEntryPoint
 class SearchKeywordFragment : Fragment() {
@@ -37,6 +35,7 @@ class SearchKeywordFragment : Fragment() {
             Snackbar.make(binding.root, "최대 5개 까지 선택 가능합니다", Snackbar.LENGTH_SHORT).show()
         }
     }
+    private lateinit var backPressedCallback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +57,29 @@ class SearchKeywordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         searchKeywordViewModel.saveBeforeKeywords()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                try {
+                    val navController = this@SearchKeywordFragment.findNavController()
+                    searchKeywordViewModel.SaveSelectedKeywordOrNot(false)
+                    navController.popBackStack()
+                } catch (e: Exception) {
+                    Log.d("NAV_CONTROLLER", "setNavigationOnClickListener: $e")
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        backPressedCallback.remove()
     }
 
     private fun setObserve() {
