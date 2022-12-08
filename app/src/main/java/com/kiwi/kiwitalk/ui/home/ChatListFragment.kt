@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentChatListBinding
 import com.kiwi.kiwitalk.ui.chatting.ChattingActivity
@@ -89,7 +90,16 @@ class ChatListFragment : Fragment() {
 
         chatListViewModel.signOutState.observe(viewLifecycleOwner) { result ->
             Log.d("K001|ChatListFrag", "result : $result")
-            navigateToLogin()
+            if (result == true) {
+                navigateToLogin()
+            } else {
+                Snackbar.make(
+                    requireContext(),
+                    requireView(),
+                    "로그아웃에 실패했습니다",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
