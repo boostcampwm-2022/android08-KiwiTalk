@@ -9,7 +9,7 @@
         android:id="@+id/tv_keywordCategory_categoryName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnBackground"
         android:textSize="24sp"
         tools:text="카테고리 이름" />
 
