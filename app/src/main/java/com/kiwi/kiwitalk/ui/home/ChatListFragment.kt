@@ -69,6 +69,7 @@ class ChatListFragment : Fragment() {
                 adapter.submitList(it.channels)
             }
         }
+        binding.rvChatList.itemAnimator = null
         binding.rvChatList.adapter = adapter
     }
 

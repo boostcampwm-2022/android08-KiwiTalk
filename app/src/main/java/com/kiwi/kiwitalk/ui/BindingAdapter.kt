@@ -5,8 +5,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.kiwi.data.Const
 import com.kiwi.kiwitalk.R
+import com.kiwi.kiwitalk.util.Const
 import io.getstream.chat.android.client.models.Channel
 import java.util.*
 
@@ -53,20 +53,20 @@ fun setDateOfLastMassage(textView: TextView, lastDate: Date?) {
     val curTime = System.currentTimeMillis()
 
     if (regTime == null) {
-        textView.text = "방금 전"
+        textView.text = Const.EMPTY_STRING
         return
     }
 
     var diffTime = (curTime - regTime) / 1000
-    textView.text = if (diffTime < com.kiwi.kiwitalk.util.Const.SEC) {
-        "알 수 없음"
-    } else if (com.kiwi.kiwitalk.util.Const.SEC.let { diffTime /= it; diffTime } < com.kiwi.kiwitalk.util.Const.MIN) {
+    textView.text = if (diffTime < Const.SEC) {
+        "방금 전"
+    } else if (Const.SEC.let { diffTime /= it; diffTime } < Const.MIN) {
         "${diffTime}분 전"
-    } else if (com.kiwi.kiwitalk.util.Const.MIN.let { diffTime /= it; diffTime } < com.kiwi.kiwitalk.util.Const.HOUR) {
+    } else if (Const.MIN.let { diffTime /= it; diffTime } < Const.HOUR) {
         "${diffTime}시간 전"
-    } else if (com.kiwi.kiwitalk.util.Const.HOUR.let { diffTime /= it; diffTime } < com.kiwi.kiwitalk.util.Const.DAY) {
+    } else if (Const.HOUR.let { diffTime /= it; diffTime } < Const.DAY) {
         "${diffTime}일 전"
-    } else if (com.kiwi.kiwitalk.util.Const.DAY.let { diffTime /= it; diffTime } < com.kiwi.kiwitalk.util.Const.MONTH) {
+    } else if (Const.DAY.let { diffTime /= it; diffTime } < Const.MONTH) {
         "${diffTime}달 전"
     } else {
         "${diffTime}년 전"
