@@ -36,9 +36,8 @@
             android:text="선택된 키워드"
             android:textColor="?attr/colorOnBackground"
             android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_searchKeyword_title"
             app:layout_constraintStart_toStartOf="parent"
-             />
+            app:layout_constraintTop_toBottomOf="@id/toolbar_searchKeyword_title" />
 
         <ScrollView
             android:id="@+id/sv_searchKeyword_selectedKeywordList"
@@ -46,10 +45,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/tv_searchKeyword_selected"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_searchKeyword_selected"
-            app:layout_constraintTop_toTopOf="@id/tv_searchKeyword_selected"
-            app:layout_constraintBottom_toBottomOf="@id/tv_searchKeyword_selected">
+            app:layout_constraintTop_toTopOf="@id/tv_searchKeyword_selected">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_searchKeyword_selectedKeywordList"
