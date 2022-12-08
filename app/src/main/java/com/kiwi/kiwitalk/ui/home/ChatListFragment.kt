@@ -12,12 +12,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentChatListBinding
+import com.kiwi.kiwitalk.ui.chatting.ChattingActivity
 import com.kiwi.kiwitalk.ui.search.SearchChatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.getstream.chat.android.client.models.Channel
 import io.getstream.chat.android.ui.channel.list.viewmodel.ChannelListViewModel
 import io.getstream.chat.android.ui.channel.list.viewmodel.factory.ChannelListViewModelFactory
-import io.getstream.chat.android.ui.message.MessageListActivity
 
 @AndroidEntryPoint
 class ChatListFragment : Fragment() {
@@ -49,7 +49,7 @@ class ChatListFragment : Fragment() {
     private fun initRecyclerView() {
         val adapter = ChatListViewAdapter(object : ChatListViewAdapter.OnChatClickListener {
             override fun onChatClick(channel: Channel) {
-                startActivity(MessageListActivity.createIntent(requireContext(), channel.cid))
+                startActivity(ChattingActivity.createIntent(requireContext(), channel.cid))
             }
 
             override fun onChatLongClick(channel: Channel) {

@@ -7,13 +7,15 @@ import androidx.annotation.RequiresApi
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.kiwi.kiwitalk.AppPreference
+import com.kiwi.data.AppPreference
 import com.kiwi.kiwitalk.util.Const
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -41,4 +43,7 @@ object ApplicationModule {
     fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
         context.getSystemService(ConnectivityManager::class.java)
 
+    @Provides
+    fun provideIoDispatcher(): CoroutineDispatcher =
+        Dispatchers.IO
 }
