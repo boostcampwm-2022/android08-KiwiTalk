@@ -69,7 +69,6 @@ class ChatListFragment : Fragment() {
                 adapter.submitList(mutableListOf<Channel>().apply { addAll(it.channels) })
             }
         }
-        binding.rvChatList.itemAnimator = null
         binding.rvChatList.adapter = adapter
     }
 
