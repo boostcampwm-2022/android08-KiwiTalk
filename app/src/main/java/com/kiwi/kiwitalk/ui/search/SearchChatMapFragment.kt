@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -56,7 +57,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     private val keywordViewModel: SearchKeywordViewModel by activityViewModels()
 
     private val fusedLocationClient
-            by lazy() { LocationServices.getFusedLocationProviderClient(requireActivity()) }
+            by lazy { LocationServices.getFusedLocationProviderClient(requireActivity()) }
     private lateinit var map: GoogleMap
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<CoordinatorLayout>
@@ -148,7 +149,8 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             } else {
                 map.uiSettings.isMyLocationButtonEnabled = false
                 map.isMyLocationEnabled = false
-                Toast.makeText(requireContext(), "권한이 필요합니다", Toast.LENGTH_SHORT).show()
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(37.3587, 127.1051), 15f))
+                Toast.makeText(requireContext(), "위치 권한이 필요합니다", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -167,6 +169,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             map.setMinZoomPreference(5.0F)
             map.setMaxZoomPreference(20.0F)
             map.clear()
+            map.setMinZoomPreference(10f)
             getDeviceLocation(permissions)
             setUpCluster()
         }
@@ -185,7 +188,6 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 chatViewModel.markerList.collect {
                     clusterManager.addItem(it.toClusterMarker())
-                    clusterManager.cluster()
                 }
             }
         }
@@ -237,7 +239,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun moveToLocation(location: Location?) {
         Log.d(TAG, "moveToLocation: $location")
-        location ?: return
+        if (location == null || ::map.isInitialized.not()) return
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
                 LatLng(location.latitude, location.longitude), 17f
@@ -302,8 +304,10 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     }
 
     private fun initKeywordRecyclerView() {
+        val keywords = keywordViewModel.selectedKeyword.value
+        binding.tvSearchChatKeywordsHint.isVisible = keywords.isNullOrEmpty()
         val adapter = SelectedKeywordAdapter()
-        adapter.submitList(keywordViewModel.selectedKeyword.value)
+        adapter.submitList(keywords)
         binding.rvSearchChatKeywords.adapter = adapter
     }
 

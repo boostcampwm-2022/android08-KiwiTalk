@@ -45,4 +45,5 @@
     <string name="et_search_hint">검색어를 입력해 주세요.</string>
     <string name="btn_search_text">검색</string>
     <string name="btn_search_add_description">위치 저장 버튼</string>
+    <string name="tv_searchChat_keywords_hint">돋보기를 눌러 검색하세요!</string>
 </resources>
