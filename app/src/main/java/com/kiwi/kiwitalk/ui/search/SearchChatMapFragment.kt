@@ -45,7 +45,6 @@ import com.kiwi.kiwitalk.ui.newchat.NewChatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.getstream.chat.android.ui.message.MessageListActivity
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -177,9 +176,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         val clusterManager = ClusterManager<ClusterMarker>(requireContext(), map)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                chatViewModel.markerList.onCompletion {
-                    clusterManager.cluster()
-                }.collect {
+                chatViewModel.markerList.collect {
                     clusterManager.addItem(it.toClusterMarker())
                 }
             }
