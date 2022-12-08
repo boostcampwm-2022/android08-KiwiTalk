@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
@@ -158,6 +159,13 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
                 ?: return
         viewLifecycleOwner.lifecycleScope.launch {
             map = mapFragment.awaitMap()
+            val styleOption = resources.assets.open("map_style.json").reader().readText()
+            val mapStyleOptions = MapStyleOptions(styleOption)
+            map.setMapStyle(mapStyleOptions)
+
+
+            map.setMinZoomPreference(5.0F)
+            map.setMaxZoomPreference(20.0F)
             map.clear()
             getDeviceLocation(permissions)
             setUpCluster()
@@ -171,6 +179,8 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun setUpCluster() {
         val clusterManager = ClusterManager<ClusterMarker>(requireContext(), map)
+        val clusterRenderer = ClusterMarkerRenderer(requireContext(),map,clusterManager)
+        clusterManager.renderer = clusterRenderer
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 chatViewModel.markerList.collect {
@@ -230,7 +240,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         location ?: return
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
-                LatLng(location.latitude, location.longitude), 15f
+                LatLng(location.latitude, location.longitude), 17f
             )
         )
     }

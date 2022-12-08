@@ -17,22 +17,11 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
         currentTime: String,
         newChatRemote: NewChatRemote
     ) {
-        val fireStoreData = hashMapOf(
-            "cid" to "messaging:$userId$currentTime",
-            "keywords" to newChatRemote.keywords,
-            "lat" to newChatRemote.lat,
-            "lng" to newChatRemote.lng
-        )
+        addStreamChat(userId,currentTime,newChatRemote)
+        addFireBaseChat(userId,currentTime,newChatRemote)
+    }
 
-        firestore.collection("chat_list").document().set(fireStoreData)
-            .addOnSuccessListener {
-                Log.d("addFireBaseChat", "DocumentSnapshot successfully written!")
-            }
-            .addOnFailureListener {
-                Log.d("addFireBaseChat", "Error writing document")
-            }
-
-
+    private fun addStreamChat(userId: String, currentTime: String, newChatRemote: NewChatRemote) {
         val streamData = hashMapOf(
             "image" to newChatRemote.imageUri,
             "name" to newChatRemote.chatName,
@@ -57,5 +46,22 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
                 ).enqueue()
             }
         }
+    }
+
+    private fun addFireBaseChat(userId: String, currentTime: String, newChatRemote: NewChatRemote) {
+        val fireStoreData = hashMapOf(
+            "cid" to "messaging:$userId$currentTime",
+            "keywords" to newChatRemote.keywords,
+            "lat" to newChatRemote.lat,
+            "lng" to newChatRemote.lng
+        )
+
+        firestore.collection("chat_list").document().set(fireStoreData)
+            .addOnSuccessListener {
+                Log.d("addFireBaseChat", "DocumentSnapshot successfully written!")
+            }
+            .addOnFailureListener {
+                Log.d("addFireBaseChat", "Error writing document")
+            }
     }
 }
