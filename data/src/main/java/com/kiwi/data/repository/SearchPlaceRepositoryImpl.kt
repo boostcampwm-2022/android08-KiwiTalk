@@ -11,12 +11,12 @@ import javax.inject.Inject
 class SearchPlaceRepositoryImpl @Inject constructor(
     private val dataSource: SearchPlaceRemoteDataSource
 ): SearchPlaceRepository {
-    override suspend fun getSearchKeyword(
+    override suspend fun getSearchPlace(
         lng: String,
         lat: String,
         place: String
     ): Flow<PlaceInfoList> = flow {
-        dataSource.getSearchKeyword(lng, lat, place).collect {
+        dataSource.getSearchPlace(lng, lat, place).collect {
             emit(it.toPlaceList())
         }
     }
