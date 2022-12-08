@@ -19,11 +19,6 @@
         <item name="colorOnSurfaceLight">@color/grey5</item>
         <item name="colorOnSurfaceVariant">@color/green_text</item>
 
-
-        <!-- Splash screen-->
-        <item name="android:windowSplashScreenBackground">@color/white</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo_splash_light</item>
-
     </style>
 
     <style name="Theme.Keyword" parent="Widget.MaterialComponents.Chip.Choice">
@@ -32,5 +27,13 @@
         <item name="chipStrokeWidth">1dp</item>
         <item name="chipBackgroundColor">@color/color_chip_background_keyword</item>
         <item name="android:textColor">@color/color_chip_text_keyword</item>
+    </style>
+
+    <style name="Theme.KiwiTalk.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>

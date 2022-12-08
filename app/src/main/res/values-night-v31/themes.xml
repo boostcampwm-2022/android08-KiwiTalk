@@ -18,9 +18,14 @@
         <item name="colorOnSurface">@color/black</item>
         <item name="colorOnSurfaceLight">@color/grey5</item>
         <item name="colorOnSurfaceVariant">@color/green_deep</item>
-
-        <!-- Splash screen-->
-        <item name="android:windowSplashScreenBackground">@color/white</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo_splash_dark</item>
     </style>
+
+    <style name="Theme.KiwiTalk.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>
