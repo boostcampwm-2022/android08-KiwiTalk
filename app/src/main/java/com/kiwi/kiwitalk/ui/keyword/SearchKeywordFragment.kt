@@ -85,11 +85,11 @@ class SearchKeywordFragment : Fragment() {
     }
 
     private fun initToolbar() {
-        binding.tbSearchKeywordTitle.inflateMenu(R.menu.menu_search_keyword_toolbar)
+        binding.toolbarSearchKeywordTitle.inflateMenu(R.menu.menu_search_keyword_toolbar)
     }
 
     private fun setListener() {
-        with(binding.tbSearchKeywordTitle) {
+        with(binding.toolbarSearchKeywordTitle) {
             setNavigationOnClickListener {
                 try {
                     val navController = this@SearchKeywordFragment.findNavController()
