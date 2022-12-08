@@ -64,13 +64,7 @@ class SearchKeywordFragment : Fragment() {
 
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                try {
-                    val navController = this@SearchKeywordFragment.findNavController()
-                    searchKeywordViewModel.SaveSelectedKeywordOrNot(false)
-                    navController.popBackStack()
-                } catch (e: Exception) {
-                    Log.d("NAV_CONTROLLER", "setNavigationOnClickListener: $e")
-                }
+                popBackStackWithNoSave()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
@@ -113,13 +107,7 @@ class SearchKeywordFragment : Fragment() {
     private fun setListener() {
         with(binding.toolbarSearchKeywordTitle) {
             setNavigationOnClickListener {
-                try {
-                    val navController = this@SearchKeywordFragment.findNavController()
-                    searchKeywordViewModel.SaveSelectedKeywordOrNot(false)
-                    navController.popBackStack()
-                } catch (e: Exception) {
-                    Log.d("NAV_CONTROLLER", "setNavigationOnClickListener: $e")
-                }
+                popBackStackWithNoSave()
             }
 
             setOnMenuItemClickListener {
@@ -137,6 +125,16 @@ class SearchKeywordFragment : Fragment() {
                 }
                 return@setOnMenuItemClickListener true
             }
+        }
+    }
+
+    private fun popBackStackWithNoSave(){
+        try {
+            val navController = this@SearchKeywordFragment.findNavController()
+            searchKeywordViewModel.SaveSelectedKeywordOrNot(false)
+            navController.popBackStack()
+        } catch (e: Exception) {
+            Log.d("NAV_CONTROLLER", "setNavigationOnClickListener: $e")
         }
     }
 
