@@ -23,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var binding: ActivityLoginBinding
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var loginProgressDialog: ProgressDialog
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.loginState.observe(this) {
             if (it) {
+                loginProgressDialog.cancel()
                 showPopUpMessage(LOGIN_SUCCESS)
                 navigateToHome()
             }
@@ -55,6 +57,9 @@ class LoginActivity : AppCompatActivity() {
         try {
             result ?: return
             Log.d(TAG, result.status.toString())
+
+            loginProgressDialog =
+                ProgressDialog(this).apply { show() }
 
             when (result.status.statusCode) {
                 GoogleSignInStatusCodes.SUCCESS -> result.signInAccount?.apply {
