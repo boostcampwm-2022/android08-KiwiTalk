@@ -1,5 +1,7 @@
 package com.kiwi.kiwitalk.di
 
+import com.kiwi.data.datasource.local.UserLocalDataSource
+import com.kiwi.data.datasource.local.UserLocalDataSourceImpl
 import com.kiwi.data.datasource.remote.*
 import com.kiwi.data.repository.*
 import com.kiwi.domain.repository.*
@@ -51,4 +53,16 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindExitChatRepository(exitChatRepositoryImpl: ExitChatRepositoryImpl): ExitChatRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindUserLocalDatasource(dataImpl: UserLocalDataSourceImpl): UserLocalDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindUserRemoteDatasource(dataImpl: UserRemoteDataSourceImpl): UserRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(repoImpl: UserRepositoryImpl): UserRepository
 }

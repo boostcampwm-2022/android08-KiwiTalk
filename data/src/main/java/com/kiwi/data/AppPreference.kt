@@ -1,11 +1,8 @@
-package com.kiwi.kiwitalk
+package com.kiwi.data
 
 import android.content.SharedPreferences
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AppPreference @Inject constructor(private val prefs: SharedPreferences) {
+class AppPreference constructor(private val prefs: SharedPreferences) {
     fun getString(key: String, defValue: String): String {
         return prefs.getString(key, defValue) ?: defValue
     }
