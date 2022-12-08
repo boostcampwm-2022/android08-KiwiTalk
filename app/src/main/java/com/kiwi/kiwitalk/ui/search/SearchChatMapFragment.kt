@@ -162,6 +162,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         viewLifecycleOwner.lifecycleScope.launch {
             map = mapFragment.awaitMap()
             map.clear()
+            map.setMinZoomPreference(10f)
             getDeviceLocation(permissions)
             setUpCluster()
         }
