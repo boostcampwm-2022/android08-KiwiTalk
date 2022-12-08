@@ -1,21 +1,15 @@
 package com.kiwi.kiwitalk.ui.home
 
-<<<<<<< feat/profile
 import android.content.Context
-=======
 import android.content.Intent
->>>>>>> sprint/week4
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-<<<<<<< feat/profile
 import androidx.activity.OnBackPressedCallback
-=======
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
->>>>>>> sprint/week4
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
