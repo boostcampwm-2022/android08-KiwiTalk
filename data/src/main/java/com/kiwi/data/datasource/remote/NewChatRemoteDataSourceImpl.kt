@@ -19,11 +19,15 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
         currentTime: String,
         newChatRemote: NewChatRemote
     ) {
-        addStreamChat(userId, currentTime, newChatRemote)
+        uploadImageForAddStreamChat(userId, currentTime, newChatRemote)
         addFireBaseChat(userId, currentTime, newChatRemote)
     }
 
-    private fun addStreamChat(userId: String, currentTime: String, newChatRemote: NewChatRemote) {
+    private fun uploadImageForAddStreamChat(
+        userId: String,
+        currentTime: String,
+        newChatRemote: NewChatRemote,
+    ) {
         val cid = userId + currentTime
         if (newChatRemote.imageUri.isEmpty()) {
             addStreamChat(userId, cid, "", newChatRemote)
