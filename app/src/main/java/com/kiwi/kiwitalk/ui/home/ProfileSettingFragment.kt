@@ -51,7 +51,7 @@ class ProfileSettingFragment : Fragment() {
 
     }
 
-    fun setListener() {
+    private fun setListener() {
         binding.tvProfileChangeSelectKeyword.setOnClickListener {
             Navigation.findNavController(binding.root)
                 .navigate(R.id.action_profileSettingFragment_to_searchKeywordFragment)
@@ -60,6 +60,7 @@ class ProfileSettingFragment : Fragment() {
         with(binding.toolbarProfileTitle) {
             setNavigationOnClickListener {
                 try {
+                    restoreSelectedKeywordFromCurrentUser()
                     this@ProfileSettingFragment.findNavController().popBackStack()
                 } catch (e: Exception) {
                     Log.d("NAV_PROFILE", "setListener: $e")
@@ -82,21 +83,30 @@ class ProfileSettingFragment : Fragment() {
         }
     }
 
-    fun setAdapter() {
+    private fun setAdapter() {
         selectedKeywordAdapter = SelectedKeywordAdapter()
         binding.rvProfileSelectKeywordList.adapter = selectedKeywordAdapter
     }
 
-    fun setViewModelObserve() {
+    private fun setViewModelObserve() {
         searchKeywordViewModel.selectedKeyword.observe(viewLifecycleOwner) {
             selectedKeywordAdapter.submitList(it)
         }
 
-        profileViewModel.myKeywords.observe(viewLifecycleOwner) { list ->
-            searchKeywordViewModel.selectedKeyword.value ?: run {
+        profileViewModel.myKeywords.value?.let { list ->
+            if (searchKeywordViewModel.selectedKeyword.value == null) {
                 list.forEach {
                     searchKeywordViewModel.setSelectedKeywords(it.name)
                 }
+            }
+        }
+    }
+
+    private fun restoreSelectedKeywordFromCurrentUser(){
+        searchKeywordViewModel.deleteAllSelectedKeyword()
+        profileViewModel.myKeywords.value?.let { list ->
+            list.forEach {
+                searchKeywordViewModel.setSelectedKeywords(it.name)
             }
         }
     }
