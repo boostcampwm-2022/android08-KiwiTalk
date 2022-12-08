@@ -4,5 +4,5 @@ import com.kiwi.domain.UserUiCallback
 
 interface UserRepository {
     fun isRemoteLoginRequired(userUiCallback: UserUiCallback)
-    fun tryLogin(token: String, name: String, imageUrl: String, userUiCallback: UserUiCallback)
+    fun tryLogin(token: String, googleName: String, imageUrl: String, userUiCallback: UserUiCallback)
 }

@@ -18,6 +18,7 @@ class UserRepositoryImpl @Inject constructor(
         if (!isValidToken(token)) {
             userLocalDataSource.deleteToken()
             userUiCallback.onFailure(INVALID_TOKEN)
+            return
         }
 
         userRemoteDataSource.login(token, object : UserDataCallback {

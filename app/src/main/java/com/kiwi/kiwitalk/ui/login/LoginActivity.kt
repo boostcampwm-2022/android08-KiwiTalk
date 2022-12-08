@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.ViewTreeObserver
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -15,9 +13,9 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.material.snackbar.Snackbar
-import com.kiwi.kiwitalk.util.Const
 import com.kiwi.kiwitalk.databinding.ActivityLoginBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
+import com.kiwi.kiwitalk.util.Const
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,23 +29,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val splashScreen: View = findViewById(android.R.id.content)
-        splashScreen.viewTreeObserver.addOnPreDrawListener(
-            object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-                    return if (viewModel.isReady) {
-                        if (!viewModel.isNetworkConnect) {
-                            showPopUpMessage(NO_NETWORK)
-                        }
-                        splashScreen.viewTreeObserver.removeOnPreDrawListener(this)
-                        true
-                    } else {
-                        false
-                    }
-                }
-            }
-        )
 
         viewModel.loginState.observe(this) {
             if (it) {
@@ -90,10 +71,9 @@ class LoginActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.d(TAG, e.toString())
         }
-
-        if (viewModel.loginState.value == false) {
-            viewModel.loginWithLocalToken()
-        }
+//        if (viewModel.loginState.value == false) {
+//            viewModel.loginWithLocalToken()
+//        }
     }
 
     private fun navigateToHome() {
