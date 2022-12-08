@@ -59,17 +59,10 @@ class ProfileSettingFragment : Fragment() {
 
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                try {
-                    Log.d("BACKPRESS", "profile: ")
-                    restoreSelectedKeywordFromCurrentUser()
-                    this@ProfileSettingFragment.findNavController().popBackStack()
-                } catch (e: Exception) {
-                    Log.d("NAV_PROFILE", "setListener: $e")
-                    errorSnackbar
-                }
+                popBackStackWithNoSave()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this,backPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
     override fun onDetach() {
@@ -86,13 +79,7 @@ class ProfileSettingFragment : Fragment() {
 
         with(binding.toolbarProfileTitle) {
             setNavigationOnClickListener {
-                try {
-                    restoreSelectedKeywordFromCurrentUser()
-                    this@ProfileSettingFragment.findNavController().popBackStack()
-                } catch (e: Exception) {
-                    Log.d("NAV_PROFILE", "setListener: $e")
-                    errorSnackbar
-                }
+                popBackStackWithNoSave()
             }
 
             setOnMenuItemClickListener {
@@ -129,7 +116,17 @@ class ProfileSettingFragment : Fragment() {
         }
     }
 
-    private fun restoreSelectedKeywordFromCurrentUser(){
+    private fun popBackStackWithNoSave() {
+        try {
+            restoreSelectedKeywordFromCurrentUser()
+            this@ProfileSettingFragment.findNavController().popBackStack()
+        } catch (e: Exception) {
+            Log.d("NAV_PROFILE", "setListener: $e")
+            errorSnackbar
+        }
+    }
+
+    private fun restoreSelectedKeywordFromCurrentUser() {
         searchKeywordViewModel.deleteAllSelectedKeyword()
         profileViewModel.myKeywords.value?.let { list ->
             list.forEach {
@@ -137,6 +134,7 @@ class ProfileSettingFragment : Fragment() {
             }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
