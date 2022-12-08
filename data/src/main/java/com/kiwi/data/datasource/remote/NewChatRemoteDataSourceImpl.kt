@@ -1,50 +1,69 @@
 package com.kiwi.data.datasource.remote
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.kiwi.data.model.remote.NewChatRemote
 import io.getstream.chat.android.client.ChatClient
-import io.getstream.chat.android.client.models.User
 import javax.inject.Inject
 
 class NewChatRemoteDataSourceImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val chatClient: ChatClient,
-): NewChatRemoteDataSource {
+    private val storage: FirebaseStorage,
+) : NewChatRemoteDataSource {
 
     override suspend fun addChatUpload(
         userId: String,
         currentTime: String,
         newChatRemote: NewChatRemote
     ) {
-        addStreamChat(userId,currentTime,newChatRemote)
-        addFireBaseChat(userId,currentTime,newChatRemote)
+        uploadImageForAddStreamChat(userId, currentTime, newChatRemote)
+        addFireBaseChat(userId, currentTime, newChatRemote)
     }
 
-    private fun addStreamChat(userId: String, currentTime: String, newChatRemote: NewChatRemote) {
+    private fun uploadImageForAddStreamChat(
+        userId: String,
+        currentTime: String,
+        newChatRemote: NewChatRemote,
+    ) {
+        val cid = userId + currentTime
+        if (newChatRemote.imageUri.isEmpty()) {
+            addStreamChat(userId, cid, "", newChatRemote)
+        } else {
+            val ref = storage.reference.child("chat/$cid")
+            ref.putFile(Uri.parse(newChatRemote.imageUri)).addOnSuccessListener {
+                it.storage.downloadUrl.addOnCompleteListener { url ->
+                    addStreamChat(userId, cid, url.result.toString(), newChatRemote)
+                }
+            }.addOnFailureListener {
+                Log.d("NewChatDataSource", "putFile Failure: $it")
+            }
+        }
+    }
+
+    private fun addStreamChat(
+        userId: String,
+        cid: String,
+        imageUrl: String,
+        newChatRemote: NewChatRemote,
+    ) {
         val streamData = hashMapOf(
-            "image" to newChatRemote.imageUri,
+            "image" to imageUrl,
             "name" to newChatRemote.chatName,
             "description" to newChatRemote.chatDescription,
             "address" to newChatRemote.address,
             "keywords" to newChatRemote.keywords,
             "max_member_count" to newChatRemote.maxMemberCount
         )
-
-        val token = chatClient.devToken(userId) // developer 토큰 생성
-        chatClient.connectUser( // 유저 로그인
-            user = User(id = userId),
-            token = token
-        ).enqueue {
-            // Step 4 - 새로운 그룹 (채널) 생성
-            if (it.isSuccess) {
-                chatClient.createChannel(
-                    channelType = "messaging",
-                    channelId = userId + currentTime,
-                    memberIds = listOf(userId),
-                    extraData = streamData
-                ).enqueue()
-            }
+        chatClient.createChannel(
+            channelType = "messaging",
+            channelId = cid,
+            memberIds = listOf(userId),
+            extraData = streamData
+        ).enqueue() {
+            Log.d("NewChatDataSource", "createChannel: $it")
         }
     }
 

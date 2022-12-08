@@ -1,10 +1,13 @@
 package com.kiwi.kiwitalk.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,6 +18,7 @@ import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentProfileSettingBinding
 import com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
+import com.kiwi.kiwitalk.ui.setImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +33,16 @@ class ProfileSettingFragment : Fragment() {
             .show()
     }
     lateinit var selectedKeywordAdapter: SelectedKeywordAdapter
+
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
+            profileViewModel.setChatImage(
+                it.data?.data?.toString() ?: return@registerForActivityResult
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,6 +94,11 @@ class ProfileSettingFragment : Fragment() {
                 return@setOnMenuItemClickListener false
             }
         }
+        binding.btnProfileAddImage.setOnClickListener {
+            activityResultLauncher.launch(Intent(Intent.ACTION_PICK).apply {
+                type = "image/*"
+            })
+        }
     }
 
     fun setAdapter() {
@@ -98,6 +117,10 @@ class ProfileSettingFragment : Fragment() {
                     searchKeywordViewModel.setSelectedKeywords(it.name)
                 }
             }
+        }
+
+        profileViewModel.profileImage.observe(viewLifecycleOwner) {
+            setImage(binding.ivProfileImage, it)
         }
     }
 
