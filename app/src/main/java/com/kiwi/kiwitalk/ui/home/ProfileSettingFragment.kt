@@ -1,10 +1,12 @@
 package com.kiwi.kiwitalk.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -29,6 +31,7 @@ class ProfileSettingFragment : Fragment() {
             .show()
     }
     lateinit var selectedKeywordAdapter: SelectedKeywordAdapter
+    lateinit var backPressedCallback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +52,30 @@ class ProfileSettingFragment : Fragment() {
         setAdapter()
         setViewModelObserve()
 
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                try {
+                    Log.d("BACKPRESS", "profile: ")
+                    restoreSelectedKeywordFromCurrentUser()
+                    this@ProfileSettingFragment.findNavController().popBackStack()
+                } catch (e: Exception) {
+                    Log.d("NAV_PROFILE", "setListener: $e")
+                    errorSnackbar
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this,backPressedCallback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        backPressedCallback.remove()
     }
 
     private fun setListener() {
