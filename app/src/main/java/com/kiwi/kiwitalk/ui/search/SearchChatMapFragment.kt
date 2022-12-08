@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -295,8 +296,10 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     }
 
     private fun initKeywordRecyclerView() {
+        val keywords = keywordViewModel.selectedKeyword.value
+        binding.tvSearchChatKeywordsHint.isVisible = keywords.isNullOrEmpty()
         val adapter = SelectedKeywordAdapter()
-        adapter.submitList(keywordViewModel.selectedKeyword.value)
+        adapter.submitList(keywords)
         binding.rvSearchChatKeywords.adapter = adapter
     }
 
