@@ -6,9 +6,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.AssetManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -141,7 +139,7 @@ class SearchPlaceFragment : Fragment() {
                 placeShowDialog(address)
             }
         }
-        baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_)
+        baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on)
         selectMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on_click)
         initToolbar()
     }

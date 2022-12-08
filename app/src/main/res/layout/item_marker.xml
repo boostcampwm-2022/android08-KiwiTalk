@@ -9,7 +9,7 @@
         android:id="@+id/iv_marker_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_location_on_"
+        android:src="@drawable/ic_location_cluster"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

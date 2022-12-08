@@ -39,14 +39,6 @@ class NetworkStateManager(context: Context) : ConnectivityManager.NetworkCallbac
             .setMessage("네트워크 상태를 확인해주세요.")
             .setPositiveButton("취소") { _, _ ->
             }
-            .setNegativeButton("재시도") { _, _ ->
-                val intent = Intent()
-                intent.setClassName(
-                    "com.android.settings",
-                    "com.android.settings.wifi.WifiSettings"
-                )
-                context?.startActivity(intent)
-            }
             .setCancelable(false)
         val msgDlg: AlertDialog = msgBuilder.create()
         msgDlg.show()
