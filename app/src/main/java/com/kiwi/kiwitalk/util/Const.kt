@@ -1,6 +1,7 @@
 package com.kiwi.kiwitalk.util
 
 object Const {
+    const val SPACE = " "
     const val LOGIN_ID_KEY = "login_history_key"
     const val LOGIN_NAME_KEY = "login_name"
     const val LOGIN_URL_KEY = "login_url"

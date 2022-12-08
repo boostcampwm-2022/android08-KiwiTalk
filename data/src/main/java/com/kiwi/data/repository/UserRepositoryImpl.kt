@@ -6,6 +6,8 @@ import com.kiwi.data.datasource.remote.UserRemoteDataSource
 import com.kiwi.domain.UserUiCallback
 import com.kiwi.domain.repository.UserRepository
 import io.getstream.chat.android.client.models.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -29,13 +31,19 @@ class UserRepositoryImpl @Inject constructor(
                     userUiCallback.onFailure(NO_DATA)
                 }
             }
+
             override fun onFailure(e: Throwable) {
                 userUiCallback.onFailure(e)
             }
         })
     }
 
-    override fun tryLogin(token: String, googleName: String, imageUrl: String, userUiCallback: UserUiCallback) {
+    override fun tryLogin(
+        token: String,
+        googleName: String,
+        imageUrl: String,
+        userUiCallback: UserUiCallback
+    ) {
         if (!isValidToken(token)) {
             throw INVALID_TOKEN
         }
@@ -54,11 +62,20 @@ class UserRepositoryImpl @Inject constructor(
                 }
                 userUiCallback.onSuccess()
             }
+
             override fun onFailure(e: Throwable) {
                 userUiCallback.onFailure(e)
             }
         })
     }
+
+    override suspend fun signOut(): Flow<Boolean> = flow {
+        userRemoteDataSource.signOut().collect {
+            if (it) userLocalDataSource.deleteToken()
+            emit(it)
+        }
+    }
+
 
     private fun isValidToken(token: String): Boolean {
         return tokenRegex.matches(token)

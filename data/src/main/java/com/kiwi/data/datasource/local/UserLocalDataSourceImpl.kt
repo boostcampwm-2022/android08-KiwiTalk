@@ -2,12 +2,10 @@ package com.kiwi.data.datasource.local
 
 import com.kiwi.data.AppPreference
 import com.kiwi.data.Const
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 class UserLocalDataSourceImpl @Inject constructor(
     private val pref: AppPreference,
-    private val ioDispatcher: CoroutineDispatcher,
 ) : UserLocalDataSource {
 
     override fun saveToken(

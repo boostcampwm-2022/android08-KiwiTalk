@@ -2,7 +2,6 @@ package com.kiwi.kiwitalk.ui.newchat
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,7 +103,7 @@ class NewChatFragment : Fragment() {
                 findNavController().navigate(R.id.action_newChatFragment_to_searchPlaceFragment)
             }
             btnChatAddImage.setOnClickListener {
-                activityResultLauncher.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
+                activityResultLauncher.launch(Intent(Intent.ACTION_PICK).apply {
                     type = "image/*"
                 })
             }
