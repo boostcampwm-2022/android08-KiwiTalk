@@ -42,7 +42,8 @@ dependencies {
 
     // Firebase
     implementation platform ('com.google.firebase:firebase-bom:31.0.3')
-    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx' //파이어베이스
+    implementation 'com.google.firebase:firebase-storage-ktx' //파이어스토리지
 
     // Inject(For Hilt)
     implementation "javax.inject:javax.inject:1"
