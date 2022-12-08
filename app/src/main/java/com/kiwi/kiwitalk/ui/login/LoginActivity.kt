@@ -76,9 +76,6 @@ class LoginActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.d(TAG, e.toString())
         }
-//        if (viewModel.loginState.value == false) {
-//            viewModel.loginWithLocalToken()
-//        }
     }
 
     private fun navigateToHome() {
