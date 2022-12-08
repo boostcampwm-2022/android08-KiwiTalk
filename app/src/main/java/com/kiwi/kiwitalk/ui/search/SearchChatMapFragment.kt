@@ -34,6 +34,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.mapClickEvents
+import com.kiwi.domain.model.ChatInfo
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchChatMapBinding
 import com.kiwi.kiwitalk.model.ClusterMarker
@@ -88,7 +89,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun initAdapter() {
         val previewAdapter = ChatAdapter(mutableListOf()) {
-            chatViewModel.updateClickedChat(it)
+            showChatDialog(it)
         }
         binding.layoutMarkerInfoPreview.rvPreviewChat.apply {
             adapter = previewAdapter
@@ -96,8 +97,9 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         }
 
         val detailAdapter = ChatAdapter(mutableListOf()) {
-            chatViewModel.updateClickedChat(it)
+            showChatDialog(it)
         }
+
         binding.rvDetail.apply {
             adapter = detailAdapter
             layoutManager = GridLayoutManager(context, 2)
@@ -115,13 +117,11 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         binding.fabCreateChat.setOnClickListener {
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
+    }
 
-        chatViewModel.clickedChatInfo.observe(viewLifecycleOwner) {
-            if (it != null) {
-                val dialog = ChatJoinDialog(this, it)
-                dialog.show(childFragmentManager, "Chat_Join_Dialog")
-            }
-        }
+    private fun showChatDialog(chatInfo: ChatInfo) {
+        val dialog = ChatJoinDialog(this, chatInfo)
+        dialog.show(childFragmentManager, "Chat_Join_Dialog")
     }
 
     override fun onClickJoinButton(cid: String) {
