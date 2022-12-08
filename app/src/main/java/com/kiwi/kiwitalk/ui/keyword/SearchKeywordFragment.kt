@@ -67,7 +67,7 @@ class SearchKeywordFragment : Fragment() {
                 popBackStackWithNoSave()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(this,backPressedCallback)
     }
 
     override fun onDetach() {
