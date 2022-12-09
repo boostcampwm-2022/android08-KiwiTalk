@@ -15,29 +15,30 @@ class ChatListViewAdapter(private val onClickListener: OnChatClickListener) :
     ListAdapter<Channel, RecyclerView.ViewHolder>(ChatDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ChatViewHolder(
-            ItemChatListBinding.inflate(
-                LayoutInflater.from(
-                    parent.context
-                ), parent, false
-            )
+        val binding = ItemChatListBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
         )
+        val holder = ChatViewHolder(binding)
+        binding.root.setOnClickListener {
+            val position = holder.bindingAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                onClickListener.onChatClick(getItem(position))
+            }
+        }
+        binding.root.setOnLongClickListener {
+            val position = holder.bindingAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                onClickListener.onChatLongClick(getItem(position))
+            }
+            true
+        }
+        return holder
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ChatViewHolder -> {
-                holder.bind(getItem(position))
-                holder.itemView.setOnClickListener {
-                    onClickListener.onChatClick(getItem(position))
-                }
-                holder.itemView.setOnLongClickListener {
-                    onClickListener.onChatLongClick(getItem(position))
-                    true
-                }
-            }
+            is ChatViewHolder -> holder.bind(getItem(position))
         }
-
     }
 
     class ChatViewHolder(private val binding: ItemChatListBinding) :

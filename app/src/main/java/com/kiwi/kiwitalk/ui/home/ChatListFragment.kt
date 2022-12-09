@@ -66,7 +66,7 @@ class ChatListFragment : Fragment() {
             } else {
                 binding.tvChatListEmpty.visibility = View.INVISIBLE
                 binding.rvChatList.visibility = View.VISIBLE
-                adapter.submitList(mutableListOf<Channel>().apply { addAll(it.channels) })
+                adapter.submitList(it.channels)
             }
         }
         binding.rvChatList.adapter = adapter
