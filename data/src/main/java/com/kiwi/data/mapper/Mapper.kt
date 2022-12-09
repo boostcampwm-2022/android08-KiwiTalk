@@ -42,7 +42,7 @@ object Mapper {
         keywords = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf("키워드가 없습니다"),
         description = this.extraData["description"] as? String ?: "",
         memberCount = this.memberCount,
-        lastMessageAt = this.lastMessageAt?.formatTimeString() ?: "오래전",
+        lastMessageAt = this.lastMessageAt?.formatTimeString() ?: Const.EMPTY_STRING,
         address = StringFormatter.trimAddress(this.extraData[Const.MAP_KEY_ADDRESS])
     )
 
