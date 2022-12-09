@@ -16,6 +16,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
         tools:context=".ui.keyword.SearchKeywordFragment">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:paddingVertical="10dp"
-            android:text="선택된 키워드"
+            android:text="@string/tv_selected_keyword_head"
             android:textColor="?attr/colorOnBackground"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"

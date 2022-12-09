@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
         >
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/new_chat_map_toolbar"
@@ -22,12 +23,13 @@
             android:id="@+id/iv_chat_image"
             android:layout_width="230dp"
             android:layout_height="230dp"
-            android:src="@drawable/logo_splash_transparent"
+            android:src="@drawable/logo_splash_light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/new_chat_map_toolbar"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerCut"
             android:layout_marginTop="20dp"
+            app:strokeColor="?attr/colorOnSurfaceLight"
             app:strokeWidth="3dp" />
 
         <ImageButton
@@ -53,7 +55,8 @@
             app:counterMaxLength="20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_chat_image">
+            app:layout_constraintTop_toBottomOf="@+id/iv_chat_image"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_chat_name"
@@ -62,7 +65,8 @@
                 android:hint="@string/text_chat_name"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:nextFocusDown="@+id/et_chat_description" />
+                android:nextFocusDown="@+id/et_chat_description"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -76,7 +80,8 @@
             app:counterMaxLength="50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_chat_name">
+            app:layout_constraintTop_toBottomOf="@+id/til_chat_name"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_chat_description"
@@ -116,6 +121,7 @@
             android:layout_marginEnd="15dp"
             android:text="@string/text_chat_max_number_count"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="?attr/colorOnSurfaceLight"
             app:layout_constraintTop_toBottomOf="@+id/til_chat_max_personnel" />
 
 
@@ -128,7 +134,8 @@
             android:text="@string/text_chat_keyword"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_max_personnel" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_max_personnel"
+            android:textColor="?attr/colorOnSurfaceLight"/>
 
 
         <com.google.android.material.button.MaterialButton
@@ -143,7 +150,8 @@
             android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text"
+            app:strokeColor="@color/grey1"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_new_chat_keywords"
@@ -162,7 +170,7 @@
             android:id="@+id/tv_chat_address_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:textColor="?attr/colorOnSurfaceLight"
             android:layout_marginStart="15dp"
             android:text="@string/text_chat_place"
             android:textStyle="bold"
@@ -177,7 +185,8 @@
             android:layout_marginStart="15dp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat_address_text" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat_address_text"
+            android:textColor="?attr/colorOnSurfaceLight"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_chat_address"
@@ -193,7 +202,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat_select_address" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat_select_address"
+            app:strokeColor="@color/grey1"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

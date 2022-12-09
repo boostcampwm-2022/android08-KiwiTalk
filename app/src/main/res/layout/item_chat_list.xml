@@ -41,8 +41,8 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{chat.name}"
-                android:textColor="?attr/colorOnPrimary"
-                android:textSize="17sp"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="방 제목" />
 
@@ -50,7 +50,8 @@
                 android:id="@+id/tv_rvChatList_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="12sp"
                 app:setAddress="@{chat.extraData.getOrDefault(Const.CHAT_ADDRESS, @string/tv_itemChatList_country_default).toString()}"
                 tools:text="서울특별시 강남구" />
 
@@ -71,15 +72,17 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnPrimary"
+                    android:textColor="?attr/colorOnSurface"
                     app:setDateOfLastMassage="@{chat.lastMessageAt}"
+                    android:textSize="11sp"
                     tools:text="5시간 전" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:textColor="?attr/colorOnPrimary"
+                    android:textSize="11sp"
+                    android:textColor="?attr/colorOnSurface"
                     app:setChatMemberCount="@{chat}"
                     tools:text="15 / 50" />
             </com.google.android.material.circularreveal.CircularRevealFrameLayout>

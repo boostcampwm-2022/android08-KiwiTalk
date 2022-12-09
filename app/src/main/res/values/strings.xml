@@ -46,4 +46,6 @@
     <string name="btn_search_text">검색</string>
     <string name="btn_search_add_description">위치 저장 버튼</string>
     <string name="tv_searchChat_keywords_hint">돋보기를 눌러 검색하세요!</string>
+    <string name="tv_tmp_more_chat">채팅방 더보기</string>
+    <string name="tv_selected_keyword_head">선택된 키워드</string>
 </resources>
