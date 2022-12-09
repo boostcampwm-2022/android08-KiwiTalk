@@ -25,7 +25,7 @@
         <item name="chipStrokeColor">@color/grey1</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="chipBackgroundColor">@color/color_chip_background_keyword</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textColor">@color/color_chip_text_keyword</item>
     </style>
 
     <style name="Theme.KiwiTalk.NoActionBar">
