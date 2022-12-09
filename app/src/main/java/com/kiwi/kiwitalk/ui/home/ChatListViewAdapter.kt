@@ -64,9 +64,9 @@ class ChatListViewAdapter(private val onClickListener: OnChatClickListener) :
             }
 
             override fun areContentsTheSame(oldItem: Channel, newItem: Channel): Boolean {
-                return oldItem.cid == newItem.cid && oldItem.createdAt == newItem.createdAt &&
-                        oldItem.hasUnread == newItem.hasUnread && oldItem.updatedAt == newItem.updatedAt &&
-                        oldItem.lastUpdated == newItem.lastUpdated && oldItem.unreadCount == newItem.unreadCount
+                return oldItem.cid == newItem.cid && oldItem.updatedAt == newItem.updatedAt &&
+                        (oldItem.unreadCount == newItem.unreadCount || newItem.unreadCount == null || oldItem.unreadCount == null) &&
+                        oldItem.memberCount == newItem.memberCount
             }
         }
     }
