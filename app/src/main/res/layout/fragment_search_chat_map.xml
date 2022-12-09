@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/medium_margin"
-                android:text="채팅방 더보기"
+                android:text="@string/tv_tmp_more_chat"
                 android:textSize="30sp"
                 android:visibility="invisible" />
 
@@ -65,7 +65,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="?attr/colorSurface">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/searchChat_map_toolbar"
