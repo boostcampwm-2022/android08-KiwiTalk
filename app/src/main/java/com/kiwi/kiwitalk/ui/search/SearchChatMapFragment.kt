@@ -188,6 +188,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 chatViewModel.markerList.collect {
                     clusterManager.addItem(it.toClusterMarker())
+                    clusterManager.cluster()
                 }
             }
         }
@@ -200,6 +201,11 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
                 return View(requireContext())
             }
         })
+        chatViewModel.isLoadingMarkerList.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading.not()) {
+                clusterManager.cluster()
+            }
+        }
         map.setOnCameraIdleListener(clusterManager)
         setupMapClickListener(clusterManager)
     }
