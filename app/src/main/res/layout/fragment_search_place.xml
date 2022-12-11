@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.newchat.SearchPlaceFragment">
+    tools:context=".ui.newchat.SearchPlaceFragment"
+    android:background="?attr/colorSurface">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/search_place_map_toolbar"
@@ -23,7 +24,10 @@
         android:maxLines="1"
         app:layout_constraintEnd_toStartOf="@+id/btn_keyword_search"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_place_map_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/search_place_map_toolbar"
+        android:textColorHint="@color/grey2"
+        android:textColor="@color/grey2"
+        android:shadowColor="@color/grey2"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_keyword_search"
@@ -34,7 +38,8 @@
         android:text="@string/btn_search_text"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_place_map_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/search_place_map_toolbar"
+        app:strokeColor="@color/grey2"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/search_map"
