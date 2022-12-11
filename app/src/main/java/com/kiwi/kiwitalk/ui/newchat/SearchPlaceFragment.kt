@@ -127,6 +127,7 @@ class SearchPlaceFragment : Fragment() {
                     currentLocation ?: return@setOnClickListener,
                     etKeywordSearch.text.toString()
                 )
+                markerState = null
                 mMap.clear()
                 etKeywordSearch.text = null
             }
