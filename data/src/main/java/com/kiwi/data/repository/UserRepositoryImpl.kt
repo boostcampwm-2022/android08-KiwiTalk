@@ -3,7 +3,9 @@ package com.kiwi.data.repository
 import com.kiwi.data.UserDataCallback
 import com.kiwi.data.datasource.local.UserLocalDataSource
 import com.kiwi.data.datasource.remote.UserRemoteDataSource
+import com.kiwi.data.mapper.Mapper.toUserInfo
 import com.kiwi.domain.UserUiCallback
+import com.kiwi.domain.model.UserInfo
 import com.kiwi.domain.repository.UserRepository
 import io.getstream.chat.android.client.models.User
 import kotlinx.coroutines.flow.Flow
@@ -81,10 +83,18 @@ class UserRepositoryImpl @Inject constructor(
         return tokenRegex.matches(token)
     }
 
+    override fun getUserInfo(): UserInfo {
+        userRemoteDataSource.getCurrentUser()?.let {
+            lastUser = it.toUserInfo()
+        }
+        return lastUser
+    }
+
     companion object {
         private const val TAG = "k001|UserRepo"
         private val tokenRegex = Regex("[0-9,a-z]{1,21}")
         private val INVALID_TOKEN = Exception("Invalid Token")
         private val NO_DATA = Exception("Stream에서 Id값이 Empty String으로 반환됨")
+        private var lastUser: UserInfo = UserInfo("","", listOf())
     }
 }
