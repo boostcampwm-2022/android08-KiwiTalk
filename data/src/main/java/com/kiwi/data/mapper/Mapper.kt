@@ -63,11 +63,12 @@ object Mapper {
     fun User.toUserInfo(): UserInfo {
         val keywordStringList = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf()
         return UserInfo(
-            this.id,
-            this.name,
-            keywordStringList.map {
+            id = this.id,
+            name = this.name,
+            keywords = keywordStringList.map {
                 Keyword(it)
-            }
+            },
+            imageUrl = image,
         )
     }
 
