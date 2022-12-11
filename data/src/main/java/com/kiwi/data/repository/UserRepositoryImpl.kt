@@ -58,8 +58,10 @@ class UserRepositoryImpl @Inject constructor(
                         userRemoteDataSource.updateUser(
                             User(id = this.id, name = googleName, image = imageUrl)
                         )
+                        lastUser = UserInfo(this.id, googleName, listOf())
                     } else {
                         userLocalDataSource.saveToken(id, name, image)
+                        lastUser = this.toUserInfo()
                     }
                 }
                 userUiCallback.onSuccess()
