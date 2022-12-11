@@ -70,4 +70,14 @@ object Mapper {
             }
         )
     }
+
+    fun UserInfo.toUser(): User {
+        val user = User(
+            id = this.id,
+            name = this.name,
+            image = this.imageUrl
+        )
+        user.extraData.put(Const.MAP_KEY_KEYWORD, this.keywords.map { it.name })
+        return user
+    }
 }
