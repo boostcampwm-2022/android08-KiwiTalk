@@ -41,7 +41,7 @@ object Mapper {
     fun Channel.toChatInfo() = ChatInfo(
         cid = this.cid,
         name = this.name,
-        keywords = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf("키워드가 없습니다"),
+        keywords = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf(),
         description = this.extraData["description"] as? String ?: "",
         memberCount = this.memberCount,
         lastMessageAt = this.lastMessageAt?.formatTimeString() ?: Const.EMPTY_STRING,
