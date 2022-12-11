@@ -8,18 +8,17 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.kiwi.domain.model.Keyword
+import com.kiwi.domain.model.UserInfo
+import com.kiwi.domain.repository.UserRepository
+import com.kiwi.kiwitalk.util.Const
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.User
 import javax.inject.Inject
 
-
-/**
- * 너무나 단순한 작업에서 MVVM구조를 따라야할까?
- */
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    val chatClient: ChatClient
+    private val userRepository: UserRepository,
 ) : ViewModel() {
     private val _profileImage = MutableLiveData<String?>()
     val profileImage: LiveData<String?> = _profileImage
@@ -35,15 +34,11 @@ class ProfileViewModel @Inject constructor(
         getMyProfile()
     }
 
-    fun getMyProfile() {
-        chatClient.getCurrentUser()?.let { user ->
-            myName.value = user.name
-            user.extraData.get("keywords")?.let { keywordStringList ->
-                _myKeywords.value = (keywordStringList as List<*>).map { keywordString ->
-                    Keyword(keywordString as String)
-                }
-            }
-            _profileImage.value = user.image.ifBlank { null }
+    private fun getMyProfile() {
+        userRepository.getUserInfo().let { userInfo ->
+            myName.value = userInfo.name
+            _myKeywords.value = userInfo.keywords
+            _profileImage.value = userInfo.imageUrl.ifBlank { null }
         }
     }
 
@@ -54,32 +49,38 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun setUpdateProfile() {
-        chatClient.getCurrentUser()?.let { user ->
-            myName.value?.let { myNameString ->
-                user.name = myNameString
-            }
-            myKeywords.value?.let { myKeywordsList ->
-                user.extraData.put("keywords", myKeywordsList.map { it.name })
-            }
-            val uri = profileImage.value
-            if (uri == null) {
-                updateUser(user, uri)
-            } else {
-                val ref = Firebase.storage.reference.child("profile/${user.id}")
-                ref.putFile(Uri.parse(uri)).addOnSuccessListener {
-                    it.storage.downloadUrl.addOnCompleteListener { url ->
-                        updateUser(user, url.result.toString())
-                    }
-                }.addOnFailureListener {
-                    Log.d("NewChatDataSource", "putFile Failure: $it")
+        val uri = profileImage.value
+        val id = userRepository.getUserInfo().id
+        if (uri == null) {
+            updateUser(
+                UserInfo(
+                    id = id,
+                    name = myName.value ?: Const.EMPTY_STRING,
+                    keywords = myKeywords.value ?: listOf(),
+                    imageUrl = Const.EMPTY_STRING
+                )
+            )
+        } else {
+            val ref = Firebase.storage.reference.child("profile/${id}")
+            ref.putFile(Uri.parse(uri)).addOnSuccessListener {
+                it.storage.downloadUrl.addOnCompleteListener { url ->
+                    updateUser(
+                        UserInfo(
+                            id = id,
+                            name = myName.value ?: Const.EMPTY_STRING,
+                            keywords = myKeywords.value ?: listOf(),
+                            imageUrl = url.result.toString()
+                        )
+                    )
                 }
+            }.addOnFailureListener {
+                Log.d("NewChatDataSource", "putFile Failure: $it")
             }
         }
     }
 
-    private fun updateUser(user: User, uri: String?) {
-        user.image = uri ?: ""
-        chatClient.updateUser(user).enqueue()
+    private fun updateUser(userInfo: UserInfo) {
+        userRepository.updateUser(userInfo)
     }
 
     fun setChatImage(uri: String) {

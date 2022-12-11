@@ -45,4 +45,8 @@ class UserRemoteDataSourceImpl @Inject constructor(
         }
         awaitClose()
     }
+
+    override fun getCurrentUser(): User? {
+        return chatClient.getCurrentUser()
+    }
 }
