@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.ktx.markerClickEvents
 import com.google.maps.android.ktx.myLocationButtonClickEvents
 import com.kiwi.domain.model.PlaceInfoList
@@ -58,7 +59,6 @@ class SearchPlaceFragment : Fragment() {
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var currentLocation: Location? = null
-
     private var markerState: Marker? = null
     private var baseMarker: BitmapDescriptor? = null
     private var selectMarker: BitmapDescriptor? = null
@@ -136,7 +136,11 @@ class SearchPlaceFragment : Fragment() {
                     markerState?.position?.latitude ?: return@setOnClickListener,
                     markerState?.position?.longitude ?: return@setOnClickListener
                 )
-                placeShowDialog(address)
+                if(address == ADDRESS_ERROR){
+                    Snackbar.make(binding.root,ADDRESS_ERROR,Snackbar.LENGTH_SHORT).show()
+                } else {
+                    placeShowDialog(address)
+                }
             }
         }
         baseMarker = changeVectorToBitmapDescriptor(requireContext(), R.drawable.ic_location_on)
