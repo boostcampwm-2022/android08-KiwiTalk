@@ -11,4 +11,5 @@ interface UserRepository {
     )
     suspend fun signOut(): Flow<Boolean>
     fun getUserInfo(): UserInfo
+    fun updateUser(userInfo: UserInfo)
 }

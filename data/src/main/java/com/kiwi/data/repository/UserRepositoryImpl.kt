@@ -3,6 +3,7 @@ package com.kiwi.data.repository
 import com.kiwi.data.UserDataCallback
 import com.kiwi.data.datasource.local.UserLocalDataSource
 import com.kiwi.data.datasource.remote.UserRemoteDataSource
+import com.kiwi.data.mapper.Mapper.toUser
 import com.kiwi.data.mapper.Mapper.toUserInfo
 import com.kiwi.domain.UserUiCallback
 import com.kiwi.domain.model.UserInfo
@@ -89,7 +90,13 @@ class UserRepositoryImpl @Inject constructor(
         userRemoteDataSource.getCurrentUser()?.let {
             lastUser = it.toUserInfo()
         }
-        return lastUser
+        return lastUser.copy()
+    }
+
+    override fun updateUser(userInfo: UserInfo) {
+        userRemoteDataSource.updateUser(
+            userInfo.toUser()
+        )
     }
 
     companion object {
