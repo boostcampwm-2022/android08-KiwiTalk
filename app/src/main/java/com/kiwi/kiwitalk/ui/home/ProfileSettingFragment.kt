@@ -1,10 +1,15 @@
 package com.kiwi.kiwitalk.ui.home
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,6 +20,7 @@ import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentProfileSettingBinding
 import com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
+import com.kiwi.kiwitalk.ui.setImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +35,17 @@ class ProfileSettingFragment : Fragment() {
             .show()
     }
     lateinit var selectedKeywordAdapter: SelectedKeywordAdapter
+    lateinit var backPressedCallback: OnBackPressedCallback
+
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
+            profileViewModel.setChatImage(
+                it.data?.data?.toString() ?: return@registerForActivityResult
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +68,24 @@ class ProfileSettingFragment : Fragment() {
 
     }
 
-    fun setListener() {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                popBackStackWithNoSave()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        backPressedCallback.remove()
+    }
+
+    private fun setListener() {
         binding.tvProfileChangeSelectKeyword.setOnClickListener {
             Navigation.findNavController(binding.root)
                 .navigate(R.id.action_profileSettingFragment_to_searchKeywordFragment)
@@ -59,12 +93,7 @@ class ProfileSettingFragment : Fragment() {
 
         with(binding.toolbarProfileTitle) {
             setNavigationOnClickListener {
-                try {
-                    this@ProfileSettingFragment.findNavController().popBackStack()
-                } catch (e: Exception) {
-                    Log.d("NAV_PROFILE", "setListener: $e")
-                    errorSnackbar
-                }
+                popBackStackWithNoSave()
             }
 
             setOnMenuItemClickListener {
@@ -80,26 +109,55 @@ class ProfileSettingFragment : Fragment() {
                 return@setOnMenuItemClickListener false
             }
         }
+        binding.btnProfileAddImage.setOnClickListener {
+            activityResultLauncher.launch(Intent(Intent.ACTION_PICK).apply {
+                type = "image/*"
+            })
+        }
     }
 
-    fun setAdapter() {
+    private fun setAdapter() {
         selectedKeywordAdapter = SelectedKeywordAdapter()
         binding.rvProfileSelectKeywordList.adapter = selectedKeywordAdapter
     }
 
-    fun setViewModelObserve() {
+    private fun setViewModelObserve() {
         searchKeywordViewModel.selectedKeyword.observe(viewLifecycleOwner) {
             selectedKeywordAdapter.submitList(it)
         }
 
-        profileViewModel.myKeywords.observe(viewLifecycleOwner) { list ->
-            searchKeywordViewModel.selectedKeyword.value ?: run {
+        profileViewModel.myKeywords.value?.let { list ->
+            if (searchKeywordViewModel.selectedKeyword.value == null) {
                 list.forEach {
                     searchKeywordViewModel.setSelectedKeywords(it.name)
                 }
             }
         }
+
+        profileViewModel.profileImage.observe(viewLifecycleOwner) {
+            setImage(binding.ivProfileImage, it)
+        }
     }
+
+    private fun popBackStackWithNoSave() {
+        try {
+            restoreSelectedKeywordFromCurrentUser()
+            this@ProfileSettingFragment.findNavController().popBackStack()
+        } catch (e: Exception) {
+            Log.d("NAV_PROFILE", "setListener: $e")
+            errorSnackbar
+        }
+    }
+
+    private fun restoreSelectedKeywordFromCurrentUser() {
+        searchKeywordViewModel.deleteAllSelectedKeyword()
+        profileViewModel.myKeywords.value?.let { list ->
+            list.forEach {
+                searchKeywordViewModel.setSelectedKeywords(it.name)
+            }
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

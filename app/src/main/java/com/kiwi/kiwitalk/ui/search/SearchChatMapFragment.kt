@@ -12,7 +12,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -30,10 +31,12 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.mapClickEvents
+import com.kiwi.domain.model.ChatInfo
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentSearchChatMapBinding
 import com.kiwi.kiwitalk.model.ClusterMarker
@@ -54,10 +57,10 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     private val keywordViewModel: SearchKeywordViewModel by activityViewModels()
 
     private val fusedLocationClient
-            by lazy() { LocationServices.getFusedLocationProviderClient(requireActivity()) }
+            by lazy { LocationServices.getFusedLocationProviderClient(requireActivity()) }
     private lateinit var map: GoogleMap
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<CoordinatorLayout>
     private lateinit var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback
 
     private val activityResultLauncher = initPermissionLauncher()
@@ -88,7 +91,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun initAdapter() {
         val previewAdapter = ChatAdapter(mutableListOf()) {
-            chatViewModel.updateClickedChat(it)
+            showChatDialog(it)
         }
         binding.layoutMarkerInfoPreview.rvPreviewChat.apply {
             adapter = previewAdapter
@@ -96,8 +99,9 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         }
 
         val detailAdapter = ChatAdapter(mutableListOf()) {
-            chatViewModel.updateClickedChat(it)
+            showChatDialog(it)
         }
+
         binding.rvDetail.apply {
             adapter = detailAdapter
             layoutManager = GridLayoutManager(context, 2)
@@ -115,13 +119,11 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         binding.fabCreateChat.setOnClickListener {
             startActivity(Intent(requireContext(), NewChatActivity::class.java))
         }
+    }
 
-        chatViewModel.clickedChatInfo.observe(viewLifecycleOwner) {
-            if (it != null) {
-                val dialog = ChatJoinDialog(this, it)
-                dialog.show(childFragmentManager, "Chat_Join_Dialog")
-            }
-        }
+    private fun showChatDialog(chatInfo: ChatInfo) {
+        val dialog = ChatJoinDialog(this, chatInfo)
+        dialog.show(childFragmentManager, "Chat_Join_Dialog")
     }
 
     override fun onClickJoinButton(cid: String) {
@@ -147,7 +149,8 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             } else {
                 map.uiSettings.isMyLocationButtonEnabled = false
                 map.isMyLocationEnabled = false
-                Toast.makeText(requireContext(), "권한이 필요합니다", Toast.LENGTH_SHORT).show()
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(37.3587, 127.1051), 15f))
+                Toast.makeText(requireContext(), "위치 권한이 필요합니다", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -158,7 +161,15 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
                 ?: return
         viewLifecycleOwner.lifecycleScope.launch {
             map = mapFragment.awaitMap()
+            val styleOption = resources.assets.open("map_style.json").reader().readText()
+            val mapStyleOptions = MapStyleOptions(styleOption)
+            map.setMapStyle(mapStyleOptions)
+
+
+            map.setMinZoomPreference(5.0F)
+            map.setMaxZoomPreference(20.0F)
             map.clear()
+            map.setMinZoomPreference(10f)
             getDeviceLocation(permissions)
             setUpCluster()
         }
@@ -171,11 +182,12 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun setUpCluster() {
         val clusterManager = ClusterManager<ClusterMarker>(requireContext(), map)
+        val clusterRenderer = ClusterMarkerRenderer(requireContext(),map,clusterManager)
+        clusterManager.renderer = clusterRenderer
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 chatViewModel.markerList.collect {
                     clusterManager.addItem(it.toClusterMarker())
-                    clusterManager.cluster()
                 }
             }
         }
@@ -227,10 +239,10 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun moveToLocation(location: Location?) {
         Log.d(TAG, "moveToLocation: $location")
-        location ?: return
+        if (location == null || ::map.isInitialized.not()) return
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
-                LatLng(location.latitude, location.longitude), 15f
+                LatLng(location.latitude, location.longitude), 17f
             )
         )
     }
@@ -243,23 +255,35 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.GONE
-                        binding.rvDetail.visibility = View.VISIBLE
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
-                        binding.rvDetail.visibility = View.INVISIBLE
-                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> showBottomSheetDetail()
+                    BottomSheetBehavior.STATE_COLLAPSED -> showBottomSheetPreview()
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         }
 
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.layoutBottomSheet)
-        bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior = BottomSheetBehavior
+            .from(binding.layoutBottomSheet)
+            .apply {
+                addBottomSheetCallback(bottomSheetCallback)
+                state = BottomSheetBehavior.STATE_HIDDEN
+                isDraggable = true
+                hideFriction = 0.01F
+                isFitToContents = true // default
+            }
+    }
+
+    private fun showBottomSheetDetail() {
+        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.INVISIBLE
+        binding.tvTmpChatDetail.visibility = View.VISIBLE
+        binding.rvDetail.visibility = View.VISIBLE
+    }
+
+    private fun showBottomSheetPreview() {
+        binding.layoutMarkerInfoPreview.rootLayout.visibility = View.VISIBLE
+        binding.tvTmpChatDetail.visibility = View.INVISIBLE
+        binding.rvDetail.visibility = View.INVISIBLE
     }
 
     private fun initToolbar() {
@@ -280,18 +304,16 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     }
 
     private fun initKeywordRecyclerView() {
+        val keywords = keywordViewModel.selectedKeyword.value
+        binding.tvSearchChatKeywordsHint.isVisible = keywords.isNullOrEmpty()
         val adapter = SelectedKeywordAdapter()
-        adapter.submitList(keywordViewModel.selectedKeyword.value)
+        adapter.submitList(keywords)
         binding.rvSearchChatKeywords.adapter = adapter
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
         _binding = null
     }
 

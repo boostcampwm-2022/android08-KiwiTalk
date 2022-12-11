@@ -10,7 +10,7 @@
             type="com.kiwi.domain.model.PlaceChatInfo" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottomSheet_collapse_size"
@@ -20,33 +20,32 @@
             android:id="@+id/rv_preview_chat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical" />
 
         <TextView
             android:id="@+id/tv_chat_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_marginVertical="@dimen/large_margin"
             android:text="@{item.popularChat.address}"
             android:textColor="?attr/colorOnSurface"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/rv_preview_chat"
-            app:layout_constraintTop_toBottomOf="@id/rv_preview_chat"
+            app:layout_anchor="@id/rv_preview_chat"
+            app:layout_anchorGravity="start|bottom"
             tools:text="청주시 청원구" />
 
         <TextView
             android:id="@+id/tv_chat_number_prefix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_margin="@dimen/large_margin"
             android:text="@{@string/chat_number(item.chattingNumber)}"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_preview_chat"
+            app:layout_anchor="@id/rv_preview_chat"
+            app:layout_anchorGravity="end|bottom"
             tools:text="현재 채팅방 수 : 5" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

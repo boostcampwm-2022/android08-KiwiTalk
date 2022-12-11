@@ -2,12 +2,12 @@ package com.kiwi.kiwitalk.ui.newchat
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -17,10 +17,12 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.kiwi.domain.model.NewChatInfo
+import com.kiwi.kiwitalk.NetworkStateManager
 import com.kiwi.kiwitalk.R
 import com.kiwi.kiwitalk.databinding.FragmentNewChatBinding
 import com.kiwi.kiwitalk.ui.home.HomeActivity
 import com.kiwi.kiwitalk.ui.keyword.SearchKeywordViewModel
+import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
 import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.ADDRESS_KEY
 import com.kiwi.kiwitalk.ui.newchat.SearchPlaceFragment.Companion.LATLNG_KEY
 import com.kiwi.kiwitalk.ui.setImage
@@ -33,7 +35,7 @@ class NewChatFragment : Fragment() {
     private val binding get() = checkNotNull(_binding)
     private val newChatViewModel: NewChatViewModel by viewModels()
     private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
-
+    private lateinit var networkConnectionState: NetworkStateManager
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -56,6 +58,8 @@ class NewChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        networkConnectionState = NetworkStateManager(requireContext())
+        networkConnectionState.register()
 
         findNavController().currentBackStackEntry
             ?.savedStateHandle?.apply {
@@ -99,18 +103,39 @@ class NewChatFragment : Fragment() {
                 findNavController().navigate(R.id.action_newChatFragment_to_searchPlaceFragment)
             }
             btnChatAddImage.setOnClickListener {
-                activityResultLauncher.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
+                activityResultLauncher.launch(Intent(Intent.ACTION_PICK).apply {
                     type = "image/*"
                 })
             }
-            btnNewChat.setOnClickListener {
-                val keywords = searchKeywordViewModel.selectedKeyword.value?.map { it.name }
-                if (allCheckNull() && keywords != null && keywords.isEmpty().not()) {
-                    newChatViewModel.setNewChat(changeChatInfo(keywords))
-                }
-            }
             btnChatKeyword.setOnClickListener {
                 findNavController().navigate(R.id.action_newChatFragment_to_searchKeywordFragment)
+            }
+        }
+
+        initToolbar()
+        initKeywordRecyclerView()
+    }
+
+    private fun initKeywordRecyclerView() {
+        val adapter = SelectedKeywordAdapter()
+        adapter.submitList(searchKeywordViewModel.selectedKeyword.value)
+        binding.rvNewChatKeywords.adapter = adapter
+    }
+
+    private fun initToolbar() {
+        binding.newChatMapToolbar.setNavigationOnClickListener {
+            activity?.finish()
+        }
+        binding.newChatMapToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.item_action_new_chat_save -> {
+                    val keywords = searchKeywordViewModel.selectedKeyword.value?.map { keyword -> keyword.name }
+                    if (allCheckNull() && checkKeyword(keywords)) {
+                        newChatViewModel.setNewChat(changeChatInfo(checkNotNull(keywords)))
+                    }
+                    true
+                }
+                else -> false
             }
         }
     }
@@ -123,12 +148,20 @@ class NewChatFragment : Fragment() {
                 binding.etChatDescription.text.toString(),
                 binding.etChatMaxPersonnel.text.toString(),
                 keywords,
-
                 address.value ?: "",
-
                 latLng.value?.latitude ?: 0.0,
                 latLng.value?.longitude ?: 0.0
             )
+        }
+    }
+
+    private fun checkKeyword(keywords: List<String>?): Boolean {
+        return if(keywords != null && keywords.isEmpty().not()){
+            true
+        } else {
+            Toast.makeText(requireContext(),"키워드를 선택해 주세요.",Toast.LENGTH_SHORT).show()
+            //Snackbar.make(this,"키워드를 선택해 주세요.", Snackbar.LENGTH_SHORT).show()
+            false
         }
     }
 
@@ -172,6 +205,7 @@ class NewChatFragment : Fragment() {
 
     override fun onDestroy() {
         _binding = null
+        networkConnectionState.unregister()
         super.onDestroy()
     }
 }

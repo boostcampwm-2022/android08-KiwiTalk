@@ -15,13 +15,13 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:layout_margin="10dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="15dp">
 
             <ImageView
                 android:id="@+id/img_rvChatList_profile"
@@ -39,24 +39,69 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:text="@{chat.name}"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="14sp"
+                android:textStyle="bold"
                 tools:text="방 제목" />
 
             <TextView
                 android:id="@+id/tv_rvChatList_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chat.extraData.getOrDefault(Const.CHAT_ADDRESS, @string/tv_itemChatList_country_default).toString()}"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="12sp"
+                app:setAddress="@{chat.extraData.getOrDefault(Const.CHAT_ADDRESS, @string/tv_itemChatList_country_default).toString()}"
                 tools:text="서울특별시 강남구" />
 
-            <TextView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tv_rvChatList_keyword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chat.extraData.getOrDefault(Const.CHAT_KEYWORDS, @string/tv_itemChatList_keyword_default).toString()}"
-                tools:text="축구, 농구, 운동" />
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_keyword" />
+
+            <com.google.android.material.circularreveal.CircularRevealFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnSurface"
+                    app:setDateOfLastMassage="@{chat.lastMessageAt}"
+                    android:textSize="11sp"
+                    tools:text="5시간 전" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:textSize="11sp"
+                    android:textColor="?attr/colorOnSurface"
+                    app:setChatMemberCount="@{chat}"
+                    tools:text="15 / 50" />
+            </com.google.android.material.circularreveal.CircularRevealFrameLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_chat_list_unread_count"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="3dp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="13sp"
+            app:setUnreadCount="@{chat.unreadCount}"
+            tools:text="999+" />
     </com.google.android.material.card.MaterialCardView>
 </layout>

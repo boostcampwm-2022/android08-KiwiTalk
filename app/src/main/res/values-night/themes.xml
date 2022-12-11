@@ -2,22 +2,29 @@
     <!-- Base application theme. -->
     <style name="Theme.KiwiTalk" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/green</item>
-        <item name="colorPrimaryVariant">@color/green_deep</item>
+        <item name="colorPrimary">@color/green_deep</item>
+        <item name="colorPrimaryVariant">@color/green</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/brown</item>
         <item name="colorSecondaryVariant">@color/brown_deep</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- custom color-->
-        <item name="colorSurface">@color/white</item>
-        <item name="colorSurfaceDark">@color/grey1</item>
-        <item name="colorOnSurface">@color/black</item>
-        <item name="colorOnSurfaceLight">@color/grey5</item>
+        <item name="colorSurface">@color/black</item>
+        <item name="colorSurfaceDark">@color/grey5</item>
+        <item name="colorOnSurface">@color/grey1</item>
+        <item name="colorOnSurfaceLight">@color/grey2</item>
         <item name="colorOnSurfaceVariant">@color/green_deep</item>
 
 
+    </style>
+
+    <style name="Theme.KiwiTalk.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 </resources>

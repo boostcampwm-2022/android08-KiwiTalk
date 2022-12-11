@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/brown_deep</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- custom color-->
         <item name="colorSurface">@color/white</item>
         <item name="colorSurfaceDark">@color/grey1</item>
@@ -31,5 +31,7 @@
     <style name="Theme.KiwiTalk.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 </resources>

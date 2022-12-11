@@ -18,7 +18,7 @@ class ChatModule {
     @Provides
     @Singleton
     fun provideChatClient(@ApplicationContext context: Context): ChatClient {
-        return ChatClient.Builder("zjqddnpezttd", context)
+        return ChatClient.Builder("b5m96pppmwh5", context)
             .withPlugin(getOfflinePlugin(context))
             .logLevel(ChatLogLevel.ALL)
             .build()

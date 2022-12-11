@@ -8,12 +8,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kiwi.domain.model.ChatInfo
 import com.kiwi.domain.model.Marker
 import com.kiwi.domain.model.PlaceChatInfo
 import com.kiwi.domain.model.Keyword
 import com.kiwi.domain.repository.SearchChatRepository
-import com.kiwi.kiwitalk.AppPreference
+import com.kiwi.data.AppPreference
 import com.kiwi.kiwitalk.util.Const
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
@@ -39,13 +38,6 @@ class SearchChatMapViewModel @Inject constructor(
     private val _location = MutableLiveData<Location>()
     val location: LiveData<Location> = _location
 
-    private val _clickedChatInfo = MutableLiveData<ChatInfo>()
-    val clickedChatInfo: LiveData<ChatInfo> get() = _clickedChatInfo
-
-    fun updateClickedChat(chatInfo: ChatInfo) {
-        _clickedChatInfo.value = chatInfo
-    }
-
     fun appendUserToChat(cid: String, userId: String = "") {
         // TODO datasource로 이동시키기
         val targetChannel = chatClient.channel(cid)
@@ -59,7 +51,6 @@ class SearchChatMapViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     fun getPlaceInfo(cidList: List<String>) {
@@ -81,6 +72,7 @@ class SearchChatMapViewModel @Inject constructor(
                 }
         }
     }
+
 
     fun setDeviceLocation(newLocation: Location) {
         _location.value = newLocation

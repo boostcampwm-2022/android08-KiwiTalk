@@ -22,4 +22,7 @@
     <color name="grey3">#FFA6A6A6</color>
     <color name="grey4">#FF808080</color>
     <color name="grey5">#FF5E5E5E</color>
+
+    <color name="text_color">#FF5E5E5E</color>
+    <color name="red">#FFFF0000</color>
 </resources>

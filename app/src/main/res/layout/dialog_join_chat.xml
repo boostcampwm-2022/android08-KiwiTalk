@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/medium_margin"
             android:backgroundTint="?attr/colorPrimaryVariant"
+            android:textColor="?attr/colorOnPrimary"
             android:text="@string/chat_name"
             app:layout_constraintBottom_toTopOf="@id/chip_dialog_keyword"
             app:layout_constraintStart_toStartOf="parent"
