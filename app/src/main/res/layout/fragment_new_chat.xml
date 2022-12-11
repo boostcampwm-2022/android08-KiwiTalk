@@ -9,17 +9,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:background="?attr/colorSurface"
+        >
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/new_chat_map_toolbar"
+            style="@style/kiwi.Toolbar"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/menu_new_chat"
+            app:title="채팅방 생성" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_chat_image"
             android:layout_width="230dp"
             android:layout_height="230dp"
-            android:src="@drawable/logo_splash_transparent"
+            android:src="@drawable/logo_splash_light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_chat_map_toolbar"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerCut"
+            android:layout_marginTop="20dp"
+            app:strokeColor="?attr/colorOnSurfaceLight"
             app:strokeWidth="3dp" />
 
         <ImageButton
@@ -39,12 +49,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_margin="15dp"
+            android:textColorHint="@color/text_color"
             app:counterEnabled="true"
             app:counterMaxLength="20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_chat_image">
+            app:layout_constraintTop_toBottomOf="@+id/iv_chat_image"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_chat_name"
@@ -53,7 +65,8 @@
                 android:hint="@string/text_chat_name"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:nextFocusDown="@+id/et_chat_description" />
+                android:nextFocusDown="@+id/et_chat_description"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -61,12 +74,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_margin="15dp"
+            android:textColorHint="@color/text_color"
             app:counterEnabled="true"
             app:counterMaxLength="50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_chat_name">
+            app:layout_constraintTop_toBottomOf="@+id/til_chat_name"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_chat_description"
@@ -82,7 +97,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:textColorHint="@color/text_color"
+            android:layout_margin="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/til_chat_description">
@@ -102,8 +118,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
             android:text="@string/text_chat_max_number_count"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="?attr/colorOnSurfaceLight"
             app:layout_constraintTop_toBottomOf="@+id/til_chat_max_personnel" />
 
 
@@ -112,10 +130,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
             android:text="@string/text_chat_keyword"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_max_personnel" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_max_personnel"
+            android:textColor="?attr/colorOnSurfaceLight"/>
 
 
         <com.google.android.material.button.MaterialButton
@@ -125,47 +145,65 @@
             android:layout_height="wrap_content"
             android:text="@string/text_chat_keyword_search"
             app:icon="@drawable/ic_search"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat_keyword_text"
+            app:strokeColor="@color/grey1"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_new_chat_keywords"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintHorizontal_weight="1"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_chat_keyword"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_keyword" />
 
         <TextView
             android:id="@+id/tv_chat_address_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:textColor="?attr/colorOnSurfaceLight"
+            android:layout_marginStart="15dp"
             android:text="@string/text_chat_place"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_chat_keyword" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_new_chat_keywords" />
 
         <TextView
             android:id="@+id/tv_chat_select_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="15dp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat_address_text" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat_address_text"
+            android:textColor="?attr/colorOnSurfaceLight"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_chat_address"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="50dp"
             android:text="@string/text_chat_place_search"
             app:icon="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_chat_select_address" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_chat_select_address"
+            app:strokeColor="@color/grey1"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_new_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/text_chat_add"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_chat_address" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -43,6 +43,10 @@ class SearchKeywordViewModel @Inject constructor(
         Log.d("FIRESTORE_CALL_KEYWORD", "getKeywords: VM 2")
     }
 
+    fun deleteAllSelectedKeyword(){
+        _selectedKeywords.value = listOf()
+    }
+
     fun setSelectedKeywords(text: String) {
         Keyword(text).let { keyword ->
             if (_selectedKeywords.value == null) {

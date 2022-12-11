@@ -1,7 +1,7 @@
 package com.kiwi.data.mapper
 
 import com.kiwi.data.Const
-import com.kiwi.data.mapper.DateFormatter.formatTimeString
+import com.kiwi.data.mapper.StringFormatter.formatTimeString
 import com.kiwi.data.model.remote.MarkerRemote
 import com.kiwi.data.model.remote.NewChatRemote
 import com.kiwi.data.model.remote.PlaceListRemote
@@ -42,8 +42,8 @@ object Mapper {
         keywords = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf("키워드가 없습니다"),
         description = this.extraData["description"] as? String ?: "",
         memberCount = this.memberCount,
-        lastMessageAt = this.lastMessageAt?.formatTimeString() ?: "오래전",
-        address = DateFormatter.trimAddress(this.extraData[Const.MAP_KEY_ADDRESS])
+        lastMessageAt = this.lastMessageAt?.formatTimeString() ?: Const.EMPTY_STRING,
+        address = StringFormatter.trimAddress(this.extraData[Const.MAP_KEY_ADDRESS])
     )
 
     fun NewChatInfo.toNewChatRemote() = NewChatRemote(

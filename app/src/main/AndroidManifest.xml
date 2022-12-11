@@ -27,25 +27,32 @@
 
         <activity
             android:name=".ui.newchat.NewChatActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"
+            android:theme="@style/Theme.KiwiTalk.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chatting.ChattingActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.search.SearchChatActivity"
             android:exported="false"
-            android:theme="@style/Theme.KiwiTalk.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.KiwiTalk.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false"
-            android:theme="@style/Theme.KiwiTalk.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.KiwiTalk.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.login.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.KiwiTalk.NoActionBar"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

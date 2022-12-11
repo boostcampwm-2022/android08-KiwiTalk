@@ -36,6 +36,7 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
                 }.forEach { markerRemote ->
                     trySend(markerRemote.toMarker())
                 }
+                close()
             }.addOnFailureListener {
                 cancel()
             }
@@ -69,6 +70,6 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
     companion object {
         private const val ONE = 1
         private const val TAG = "k001"
-        private val Double.toRange get() = this - 1..this + 1
+        private val Double.toRange get() = this - 0.15..this + 10.15 //약 2.13km
     }
 }

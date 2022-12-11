@@ -18,6 +18,8 @@
     <string name="item_chatList_actionToProfileSetting">프로필 수정</string>
     <string name="item_chatList_logout">로그아웃</string>
     <string name="tv_searchChat_keywords">선택 키워드</string>
+    <string name="tv_chatList_unreadCountMax">999+</string>
+    <string name="tv_chatList_member_count">%1$d / %2$d</string>
 
     <string name="close_dialog">닫기</string>
     <string name="dialog_join">입장</string>
@@ -43,4 +45,7 @@
     <string name="et_search_hint">검색어를 입력해 주세요.</string>
     <string name="btn_search_text">검색</string>
     <string name="btn_search_add_description">위치 저장 버튼</string>
+    <string name="tv_searchChat_keywords_hint">돋보기를 눌러 검색하세요!</string>
+    <string name="tv_tmp_more_chat">채팅방 더보기</string>
+    <string name="tv_selected_keyword_head">선택된 키워드</string>
 </resources>

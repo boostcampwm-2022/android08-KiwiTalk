@@ -16,10 +16,11 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
         tools:context=".ui.keyword.SearchKeywordFragment">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/tb_searchKeyword_title"
+            android:id="@+id/toolbar_searchKeyword_title"
             style="@style/kiwi.Toolbar"
             android:layout_width="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,13 +33,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="선택된 키워드"
-            android:textColor="@color/black"
+            android:paddingVertical="10dp"
+            android:text="@string/tv_selected_keyword_head"
+            android:textColor="?attr/colorOnBackground"
             android:textSize="20sp"
-            android:visibility="@{viewmodel.selectedKeyword.size() &lt;= 0 ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/sv_searchKeyword_selectedKeywordList"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/sv_searchKeyword_selectedKeywordList" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar_searchKeyword_title" />
 
         <ScrollView
             android:id="@+id/sv_searchKeyword_selectedKeywordList"
@@ -46,9 +46,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/tv_searchKeyword_selected"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_searchKeyword_selected"
-            app:layout_constraintTop_toBottomOf="@id/tb_searchKeyword_title">
+            app:layout_constraintTop_toTopOf="@id/tv_searchKeyword_selected">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_searchKeyword_selectedKeywordList"
@@ -68,7 +69,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sv_searchKeyword_selectedKeywordList">
+            app:layout_constraintTop_toBottomOf="@id/tv_searchKeyword_selected">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_searchKeyword_keywordCategoryList"
