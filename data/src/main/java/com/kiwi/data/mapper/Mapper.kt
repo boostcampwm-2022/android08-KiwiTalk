@@ -1,6 +1,7 @@
 package com.kiwi.data.mapper
 
 import com.kiwi.data.Const
+import com.kiwi.data.mapper.Mapper.toChatInfo
 import com.kiwi.data.mapper.StringFormatter.formatTimeString
 import com.kiwi.data.model.remote.MarkerRemote
 import com.kiwi.data.model.remote.NewChatRemote
@@ -8,6 +9,7 @@ import com.kiwi.data.model.remote.PlaceListRemote
 import com.kiwi.data.model.remote.PlaceRemote
 import com.kiwi.domain.model.*
 import io.getstream.chat.android.client.models.Channel
+import io.getstream.chat.android.client.models.User
 
 object Mapper {
     fun MarkerRemote.toMarker() = Marker(
@@ -56,4 +58,16 @@ object Mapper {
         lat = this.lat,
         lng = this.lng
     )
+
+
+    fun User.toUserInfo(): UserInfo {
+        val keywordStringList = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf()
+        return UserInfo(
+            this.id,
+            this.name,
+            keywordStringList.map {
+                Keyword(it)
+            }
+        )
+    }
 }
