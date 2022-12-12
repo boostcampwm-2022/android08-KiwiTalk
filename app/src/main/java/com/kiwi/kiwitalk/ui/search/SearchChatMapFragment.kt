@@ -67,6 +67,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     private val permissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
     )
+    private var dialog: ChatJoinDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -87,6 +88,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         initBottomSheetCallBack()
         initKeywordRecyclerView()
         initScreenChange()
+        recoverUiState()
     }
 
     private fun initAdapter() {
@@ -122,8 +124,9 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     }
 
     private fun showChatDialog(chatInfo: ChatInfo) {
-        val dialog = ChatJoinDialog(this, chatInfo)
-        dialog.show(childFragmentManager, "Chat_Join_Dialog")
+        dialog = ChatJoinDialog(this, chatInfo)
+        dialog?.show(childFragmentManager, "Chat_Join_Dialog")
+        chatViewModel.dialogData = chatInfo
     }
 
     override fun onClickJoinButton(cid: String) {
@@ -141,6 +144,17 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             if (Regex(".+:.+").matches(cid)) {
                 startActivity(MessageListActivity.createIntent(requireContext(), cid))
             }
+        }
+    }
+
+    private fun recoverUiState(){
+        chatViewModel.dialogData?.let {
+            showChatDialog(it)
+        }
+        val state = chatViewModel.lastBottomSheetState
+        if(state == BottomSheetBehavior.STATE_COLLAPSED) {
+            bottomSheetBehavior.state = state
+            showBottomSheetPreview()
         }
     }
 
@@ -187,7 +201,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
     private fun setUpCluster() {
         val clusterManager = ClusterManager<ClusterMarker>(requireContext(), map)
-        val clusterRenderer = ClusterMarkerRenderer(requireContext(),map,clusterManager)
+        val clusterRenderer = ClusterMarkerRenderer(requireContext(), map, clusterManager)
         clusterManager.renderer = clusterRenderer
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -261,7 +275,11 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_DRAGGING -> showBottomSheetDetail()
-                    BottomSheetBehavior.STATE_COLLAPSED -> showBottomSheetPreview()
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        showBottomSheetPreview()
+                        chatViewModel.lastBottomSheetState = BottomSheetBehavior.STATE_COLLAPSED
+                    }
+                    else -> chatViewModel.lastBottomSheetState = BottomSheetBehavior.STATE_HIDDEN
                 }
             }
 
@@ -314,6 +332,11 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         val adapter = SelectedKeywordAdapter()
         adapter.submitList(keywords)
         binding.rvSearchChatKeywords.adapter = adapter
+    }
+
+    override fun onPause() {
+        super.onPause()
+        dialog?.dismiss() // recover 대상에서 제외
     }
 
     override fun onDestroyView() {
