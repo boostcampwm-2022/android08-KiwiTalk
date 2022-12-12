@@ -23,8 +23,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -97,7 +95,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         }
         binding.layoutMarkerInfoPreview.rvPreviewChat.apply {
             adapter = previewAdapter
-            layoutManager = StaggeredGridLayoutManager(1, RecyclerView.VERTICAL)
+            layoutManager = GridLayoutManager(context, 1)
         }
 
         val detailAdapter = ChatAdapter(mutableListOf()) {
@@ -106,7 +104,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
         binding.rvDetail.apply {
             adapter = detailAdapter
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, 1)
         }
 
         chatViewModel.placeChatInfo.observe(viewLifecycleOwner) { placeChatInfo ->
@@ -147,12 +145,12 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         }
     }
 
-    private fun recoverUiState(){
+    private fun recoverUiState() {
         chatViewModel.dialogData?.let {
             showChatDialog(it)
         }
         val state = chatViewModel.lastBottomSheetState
-        if(state == BottomSheetBehavior.STATE_COLLAPSED) {
+        if (state == BottomSheetBehavior.STATE_COLLAPSED) {
             bottomSheetBehavior.state = state
             showBottomSheetPreview()
         }
