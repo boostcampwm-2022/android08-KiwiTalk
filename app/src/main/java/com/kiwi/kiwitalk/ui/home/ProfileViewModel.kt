@@ -51,13 +51,13 @@ class ProfileViewModel @Inject constructor(
     fun setUpdateProfile() {
         val uri = profileImage.value
         val id = userRepository.getUserInfo().id
-        if (uri == null) {
+        if (uri == null || uri.contains("https://")) {
             updateUser(
                 UserInfo(
                     id = id,
                     name = myName.value ?: Const.EMPTY_STRING,
                     keywords = myKeywords.value ?: listOf(),
-                    imageUrl = Const.EMPTY_STRING
+                    imageUrl = uri ?: Const.EMPTY_STRING
                 )
             )
         } else {
@@ -74,7 +74,7 @@ class ProfileViewModel @Inject constructor(
                     )
                 }
             }.addOnFailureListener {
-                Log.d("NewChatDataSource", "putFile Failure: $it")
+                Log.d("NewChatDataSource", "putFile Failure: ${it.cause}")
             }
         }
     }
