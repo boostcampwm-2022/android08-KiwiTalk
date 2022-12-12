@@ -149,10 +149,15 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         chatViewModel.dialogData?.let {
             showChatDialog(it)
         }
-        val state = chatViewModel.lastBottomSheetState
-        if (state == BottomSheetBehavior.STATE_COLLAPSED) {
-            bottomSheetBehavior.state = state
-            showBottomSheetPreview()
+        when (val state = chatViewModel.lastBottomSheetState) {
+            BottomSheetBehavior.STATE_COLLAPSED -> {
+                bottomSheetBehavior.state = state
+                showBottomSheetPreview()
+            }
+            BottomSheetBehavior.STATE_EXPANDED -> {
+                bottomSheetBehavior.state = state
+                showBottomSheetDetail()
+            }
         }
     }
 
@@ -275,9 +280,10 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
                     BottomSheetBehavior.STATE_DRAGGING -> showBottomSheetDetail()
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         showBottomSheetPreview()
-                        chatViewModel.lastBottomSheetState = BottomSheetBehavior.STATE_COLLAPSED
+                        chatViewModel.lastBottomSheetState = newState
                     }
-                    else -> chatViewModel.lastBottomSheetState = BottomSheetBehavior.STATE_HIDDEN
+                    BottomSheetBehavior.STATE_SETTLING -> true
+                    else -> chatViewModel.lastBottomSheetState = newState
                 }
             }
 
