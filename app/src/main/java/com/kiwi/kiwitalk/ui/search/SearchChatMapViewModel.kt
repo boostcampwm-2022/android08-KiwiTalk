@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kiwi.domain.model.ChatInfo
 import com.kiwi.domain.model.Keyword
 import com.kiwi.domain.model.Marker
 import com.kiwi.domain.model.PlaceChatInfo
@@ -32,6 +33,9 @@ class SearchChatMapViewModel @Inject constructor(
 
     private val _location = MutableLiveData<Location>()
     val location: LiveData<Location> = _location
+
+    var dialogData: ChatInfo? = null
+    var lastBottomSheetState: Int? = null
 
     fun appendUserToChat(cid: String) {
         searchChatRepository.appendUserToChat(cid)
