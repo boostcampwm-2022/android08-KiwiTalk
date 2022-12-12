@@ -62,6 +62,7 @@ object Mapper {
 
     fun User.toUserInfo(): UserInfo {
         val keywordStringList = this.extraData[Const.MAP_KEY_KEYWORD] as? List<String>? ?: listOf()
+        val description = this.extraData["description"] as? String? ?: ""
         return UserInfo(
             id = this.id,
             name = this.name,
@@ -69,6 +70,7 @@ object Mapper {
                 Keyword(it)
             },
             imageUrl = image,
+            description = description
         )
     }
 
@@ -79,6 +81,7 @@ object Mapper {
             image = this.imageUrl
         )
         user.extraData.put(Const.MAP_KEY_KEYWORD, this.keywords.map { it.name })
+        user.extraData.put("description", this.description)
         return user
     }
 }

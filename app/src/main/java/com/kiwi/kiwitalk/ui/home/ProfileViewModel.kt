@@ -44,6 +44,7 @@ class ProfileViewModel @Inject constructor(
     private fun getMyProfile() {
         userRepository.getUserInfo().let { userInfo ->
             myName.value = userInfo.name
+            myDescription.value = userInfo.description
             _myKeywords.value = userInfo.keywords
             _profileImage.value = userInfo.imageUrl.ifBlank { null }
         }
@@ -64,7 +65,8 @@ class ProfileViewModel @Inject constructor(
                     id = id,
                     name = myName.value ?: Const.EMPTY_STRING,
                     keywords = myKeywords.value ?: listOf(),
-                    imageUrl = uri ?: Const.EMPTY_STRING
+                    imageUrl = uri ?: Const.EMPTY_STRING,
+                    description = myDescription.value ?: Const.EMPTY_STRING
                 )
             )
         } else {
@@ -76,7 +78,8 @@ class ProfileViewModel @Inject constructor(
                             id = id,
                             name = myName.value ?: Const.EMPTY_STRING,
                             keywords = myKeywords.value ?: listOf(),
-                            imageUrl = url.result.toString()
+                            imageUrl = url.result.toString(),
+                            description = myDescription.value ?: Const.EMPTY_STRING
                         )
                     )
                 }
