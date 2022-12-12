@@ -81,7 +81,6 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-
     private fun isValidToken(token: String): Boolean {
         return tokenRegex.matches(token)
     }
