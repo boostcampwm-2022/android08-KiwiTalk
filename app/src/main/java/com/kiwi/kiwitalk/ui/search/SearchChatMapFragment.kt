@@ -127,7 +127,12 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     }
 
     override fun onClickJoinButton(cid: String) {
+        chatViewModel.dialogData = null
         startChat(cid)
+    }
+
+    override fun onClickCancleButton() {
+        chatViewModel.dialogData = null
     }
 
     private fun startChat(cid: String) {
