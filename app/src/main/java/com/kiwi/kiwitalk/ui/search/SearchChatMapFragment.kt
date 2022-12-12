@@ -188,7 +188,6 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 chatViewModel.markerList.collect {
                     clusterManager.addItem(it.toClusterMarker())
-                    clusterManager.cluster()
                 }
             }
         }
