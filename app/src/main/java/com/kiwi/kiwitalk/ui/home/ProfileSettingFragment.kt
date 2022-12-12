@@ -1,15 +1,18 @@
 package com.kiwi.kiwitalk.ui.home
 
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -109,10 +112,22 @@ class ProfileSettingFragment : Fragment() {
                 return@setOnMenuItemClickListener false
             }
         }
+
         binding.btnProfileAddImage.setOnClickListener {
             activityResultLauncher.launch(Intent(Intent.ACTION_PICK).apply {
                 type = "image/*"
             })
+        }
+
+        binding.etProfileDescription.doAfterTextChanged {
+            it?.toString()?.let { desString ->
+                if (desString.contains("\n")){
+                    binding.etProfileDescription.setText(desString.replace("\n",""))
+                    binding.etProfileDescription.clearFocus()
+                    (activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+                        .hideSoftInputFromWindow(binding.root.windowToken,0)
+                }
+            }
         }
     }
 

@@ -20,11 +20,13 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) : ViewModel() {
-    private val _profileImage = MutableLiveData<String?>()
-    val profileImage: LiveData<String?> = _profileImage
 
     //2way binding
     val myName = MutableLiveData<String>()
+    val myDescription = MutableLiveData<String>()
+
+    private val _profileImage = MutableLiveData<String?>()
+    val profileImage: LiveData<String?> = _profileImage
 
     private val _myKeywords = MutableLiveData<List<Keyword>>()
     val myKeywords: LiveData<List<Keyword>>

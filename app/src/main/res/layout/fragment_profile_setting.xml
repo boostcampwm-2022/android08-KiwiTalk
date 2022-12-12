@@ -71,9 +71,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="이름"
+                        android:inputType="textPersonName"
                         android:maxLength="20"
                         android:maxLines="1"
-                        android:nextFocusDown="@+id/et_chat_description"
+                        android:nextFocusDown="@+id/et_profile_description"
                         android:text="@={viewmodel.myName}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,8 +94,10 @@
                         android:id="@+id/et_profile_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="소개(미구현)"
-                        android:maxLength="50" />
+                        android:hint="소개"
+                        android:text="@={viewmodel.myDescription}"
+                        android:inputType="textMultiLine"
+                        android:maxLength="140" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
