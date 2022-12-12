@@ -62,6 +62,7 @@ object Mapper {
             name = this.name,
             keywords = ChatMapper.getKeywords(extraData).map { Keyword(it) },
             imageUrl = image,
+            description = ChatMapper.getDescription(extraData)
         )
     }
 
@@ -72,6 +73,7 @@ object Mapper {
             image = this.imageUrl
         )
         user.extraData[ChatKey.CHAT_KEYWORDS] = this.keywords.map { it.name }
+        user.extraData[ChatKey.CHAT_DESCRIPTION] = this.description
         return user
     }
 }
