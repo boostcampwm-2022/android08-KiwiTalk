@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kiwi.chatmapper.ChatMapper
 import com.kiwi.domain.model.Keyword
 import com.kiwi.kiwitalk.databinding.ItemChatListBinding
 import com.kiwi.kiwitalk.ui.keyword.recyclerview.SelectedKeywordAdapter
-import com.kiwi.kiwitalk.util.Const
 import io.getstream.chat.android.client.models.Channel
 
 class ChatListViewAdapter(private val onClickListener: OnChatClickListener) :
@@ -46,8 +46,8 @@ class ChatListViewAdapter(private val onClickListener: OnChatClickListener) :
         fun bind(item: Channel) {
             binding.chat = item
             val keywordAdapter = SelectedKeywordAdapter()
-            val keywords = item.extraData[Const.CHAT_KEYWORDS] as? List<String>
-            keywordAdapter.submitList(keywords?.map { Keyword(it, 0) } ?: emptyList<Keyword>())
+            val keywords = ChatMapper.getKeywords(item.extraData)
+            keywordAdapter.submitList(keywords.map { Keyword(it, 0) })
             binding.tvRvChatListKeyword.adapter = keywordAdapter
         }
     }
