@@ -70,7 +70,7 @@
                         android:id="@+id/et_profile_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="이름"
+                        android:hint="이름 (영어,한글만 입력가능)"
                         android:inputType="textPersonName"
                         android:maxLength="20"
                         android:maxLines="1"

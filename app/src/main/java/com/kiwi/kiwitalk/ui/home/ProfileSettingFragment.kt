@@ -33,8 +33,8 @@ class ProfileSettingFragment : Fragment() {
     private val binding get() = _binding!!
     private val profileViewModel: ProfileViewModel by viewModels()
     private val searchKeywordViewModel: SearchKeywordViewModel by activityViewModels()
-    private val errorSnackbar: () -> Unit = {
-        Snackbar.make(binding.root, "뒤로가기를 실행할 수 없습니다. 앱을 종료해주세요.", Snackbar.LENGTH_SHORT)
+    private val errorSnackbar: (message: String) -> Unit = {
+        Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT)
             .show()
     }
     lateinit var selectedKeywordAdapter: SelectedKeywordAdapter
@@ -100,15 +100,7 @@ class ProfileSettingFragment : Fragment() {
             }
 
             setOnMenuItemClickListener {
-                try {
-                    profileViewModel.setMySelectedKeyword(searchKeywordViewModel.selectedKeyword.value)
-                    profileViewModel.setUpdateProfile()
-                    this@ProfileSettingFragment.findNavController().popBackStack()
-                    return@setOnMenuItemClickListener true
-                } catch (e: Exception) {
-                    Log.d("NAV_PROFILE", "setListener: $e")
-                    errorSnackbar
-                }
+                profileViewModel.checkInput()
                 return@setOnMenuItemClickListener false
             }
         }
@@ -121,11 +113,11 @@ class ProfileSettingFragment : Fragment() {
 
         binding.etProfileDescription.doAfterTextChanged {
             it?.toString()?.let { desString ->
-                if (desString.contains("\n")){
-                    binding.etProfileDescription.setText(desString.replace("\n",""))
+                if (desString.contains("\n")) {
+                    binding.etProfileDescription.setText(desString.replace("\n", ""))
                     binding.etProfileDescription.clearFocus()
                     (activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                        .hideSoftInputFromWindow(binding.root.windowToken,0)
+                        .hideSoftInputFromWindow(binding.root.windowToken, 0)
                 }
             }
         }
@@ -152,6 +144,23 @@ class ProfileSettingFragment : Fragment() {
         profileViewModel.profileImage.observe(viewLifecycleOwner) {
             setImage(binding.ivProfileImage, it)
         }
+
+        profileViewModel.isAllConditionPass.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { boolean ->
+                if (boolean) {
+                    try {
+                        profileViewModel.setMySelectedKeyword(searchKeywordViewModel.selectedKeyword.value)
+                        profileViewModel.setUpdateProfile()
+                        this@ProfileSettingFragment.findNavController().popBackStack()
+                    } catch (e: Exception) {
+                        Log.d("NAV_PROFILE", "setListener: $e")
+                        errorSnackbar("저장을 실행할 수 없습니다. 앱을 종료해주세요.")
+                    }
+                } else {
+                    errorSnackbar("입력양식이 올바르지 않습니다.")
+                }
+            }
+        }
     }
 
     private fun popBackStackWithNoSave() {
@@ -160,7 +169,7 @@ class ProfileSettingFragment : Fragment() {
             this@ProfileSettingFragment.findNavController().popBackStack()
         } catch (e: Exception) {
             Log.d("NAV_PROFILE", "setListener: $e")
-            errorSnackbar
+            errorSnackbar("뒤로가기를 실행할 수 없습니다. 앱을 종료해주세요.")
         }
     }
 

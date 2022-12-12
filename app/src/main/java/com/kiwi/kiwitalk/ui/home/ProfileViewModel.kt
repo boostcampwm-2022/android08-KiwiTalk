@@ -11,6 +11,7 @@ import com.kiwi.domain.model.Keyword
 import com.kiwi.domain.model.UserInfo
 import com.kiwi.domain.repository.UserRepository
 import com.kiwi.kiwitalk.util.Const
+import com.kiwi.kiwitalk.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.User
@@ -31,6 +32,10 @@ class ProfileViewModel @Inject constructor(
     private val _myKeywords = MutableLiveData<List<Keyword>>()
     val myKeywords: LiveData<List<Keyword>>
         get() = _myKeywords
+
+    private val _isAllConditionPass = MutableLiveData<Event<Boolean>>()
+    val isAllConditionPass: LiveData<Event<Boolean>>
+        get() = _isAllConditionPass
 
     init {
         getMyProfile()
@@ -87,5 +92,17 @@ class ProfileViewModel @Inject constructor(
 
     fun setChatImage(uri: String) {
         _profileImage.value = uri
+    }
+
+    fun checkInput() {
+        _isAllConditionPass.value = Event(checkName())
+    }
+
+    private fun checkName(): Boolean {
+        val nameStrng = myName.value
+        nameStrng?.let {
+            return !nameStrng.contains(Regex("[^가-힣a-zA-Z]"))
+        }
+        return false
     }
 }
