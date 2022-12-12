@@ -71,6 +71,6 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
     companion object {
         private const val ONE = 1
         private const val TAG = "k001"
-        private val Double.toRange get() = this - 0.15..this + 10.15 //약 2.13km
+        private val Double.toRange get() = this - 0.015..this + 0.015 //약 -1.5km~+1.5km
     }
 }
