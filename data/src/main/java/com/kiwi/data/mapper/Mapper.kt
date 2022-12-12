@@ -57,7 +57,6 @@ object Mapper {
 
 
     fun User.toUserInfo(): UserInfo {
-        val description = this.extraData["description"] as? String? ?: ""
         return UserInfo(
             id = this.id,
             name = this.name,

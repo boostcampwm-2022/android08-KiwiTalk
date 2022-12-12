@@ -59,7 +59,7 @@ class ProfileViewModel @Inject constructor(
     fun setUpdateProfile() {
         val uri = profileImage.value
         val id = userRepository.getUserInfo().id
-        if (uri == null || uri.contains("https://")) {
+        if (uri == null || uri.startsWith("https://")) {
             updateUser(
                 UserInfo(
                     id = id,
@@ -103,9 +103,6 @@ class ProfileViewModel @Inject constructor(
 
     private fun checkName(): Boolean {
         val nameStrng = myName.value
-        nameStrng?.let {
-            return !nameStrng.contains(Regex("[^가-힣a-zA-Z]"))
-        }
-        return false
+        return nameStrng?.contains(Regex("[^가-힣a-zA-Z]"))?.not() ?: false
     }
 }
