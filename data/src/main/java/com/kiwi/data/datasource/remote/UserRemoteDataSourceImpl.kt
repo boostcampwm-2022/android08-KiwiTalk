@@ -26,7 +26,7 @@ class UserRemoteDataSourceImpl @Inject constructor(
             if (result.isSuccess) {
                 callback.onSuccess(result.data().user)
             } else {
-                callback.onFailure(result.error().cause!!)
+                callback.onFailure(result.error().cause?:Throwable("Error가 null이다."))
             }
         }
     }
