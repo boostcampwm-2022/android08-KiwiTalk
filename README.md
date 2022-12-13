@@ -63,3 +63,19 @@
     <p></p>
 </div>
 
+
+## 우리 팀의 활동
+### 기술공유[(Wiki)](https://github.com/boostcampwm-2022/android08-KiwiTalk/wiki/%EC%9E%90%EB%A3%8C-%EA%B3%B5%EC%9C%A0#%EA%B8%B0%EC%88%A0-%EA%B3%B5%EC%9C%A0)
+
+||||
+
+|<a href="https://velog.io/@choius323/Fragment%EC%97%90%EC%84%9C-Toolbar-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0">Fragment에서 Toolbar 사용</a><br/> #레이아웃 #툴바 #style<br/> |[Kakao API Flow 적용기](https://velog.io/@pwolong/Kakao-Api-Flow-%EC%A0%81%EC%9A%A9%EA%B8%B0)<br/>#Flow란 #Flow사용이유<br/>#Flow고민사항 #함수정리|[Fragment에서 권한 요청](https://velog.io/@choius323/Fragment%EC%97%90%EC%84%9C-%EA%B6%8C%ED%95%9C-%EC%9A%94%EC%B2%AD)<br/>#권한 요청 #지도|
+|ㅇ|ㅇ|ㅇ|
+|ㅇ|ㅇ|ㅇ|
+|ㅇ|ㅇ|ㅇ|
+|ㅇ|ㅇ|ㅇ|
+|:--|:--|:--|
+
+
+
+### 논의[(Discussions)](https://github.com/boostcampwm-2022/android08-KiwiTalk/discussions)
