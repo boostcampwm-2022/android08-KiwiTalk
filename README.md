@@ -27,7 +27,6 @@
 🎸[김경연](https://github.com/KimGyeongyeon)<br>(INTP)|:fire:[박재홍](https://github.com/prk4224)<br>(INFJ)|🥝[정철주](https://github.com/steelzoo)<br>(INTP)|[🥕최우석](https://github.com/choius323)<br>(ISFP)
 
 
-
 ## 기능, 동작화면
 
 
@@ -35,7 +34,7 @@
 |:--:|:--:|:--:|:--:|
 |로그인|지도에서 채팅방 찾기|프로필 수정|채팅방 생성|
 
-|<img src="https://user-images.githubusercontent.com/67995865/205436537-33c1b5fc-50f6-47b0-9372-49827d1f5bbf.jpg" width="180" />|<img src="https://user-images.githubusercontent.com/67995865/205436539-ad420dfc-f118-4018-8926-c09879ef2667.jpg" width="180" />|<img src="https://user-images.githubusercontent.com/67995865/205436543-0f8eff78-812e-40b7-a7af-af83e73190e1.jpg" width="180" />|<img src="https://user-images.githubusercontent.com/67995865/205450834-0859e1b5-7cf2-43ad-b6bf-9fc81dfcc026.jpg" width="180" />|
+|<img src="https://user-images.githubusercontent.com/67995865/205436537-33c1b5fc-50f6-47b0-9372-49827d1f5bbf.jpg" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/207273926-01e7c274-399c-46d9-b127-85783bc1af05.png" width="180" />|<img src="https://user-images.githubusercontent.com/67995865/205436543-0f8eff78-812e-40b7-a7af-af83e73190e1.jpg" width="180" />|<img src="https://user-images.githubusercontent.com/67748153/207274029-69c8b499-0268-4e15-84aa-4d2967306e76.png" width="180" />|
 |:--:|:--:|:--:|:--:|
 |채팅방 생성 위치 선택|키워드 선택|채팅방|채팅방 목록|
 
