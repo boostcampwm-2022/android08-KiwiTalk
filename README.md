@@ -65,17 +65,18 @@
 
 
 ## 우리 팀의 활동
-### 기술공유[(Wiki)](https://github.com/boostcampwm-2022/android08-KiwiTalk/wiki/%EC%9E%90%EB%A3%8C-%EA%B3%B5%EC%9C%A0#%EA%B8%B0%EC%88%A0-%EA%B3%B5%EC%9C%A0)
-
-||||
-
-|<a href="https://velog.io/@choius323/Fragment%EC%97%90%EC%84%9C-Toolbar-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0">Fragment에서 Toolbar 사용</a><br/> #레이아웃 #툴바 #style<br/> |[Kakao API Flow 적용기](https://velog.io/@pwolong/Kakao-Api-Flow-%EC%A0%81%EC%9A%A9%EA%B8%B0)<br/>#Flow란 #Flow사용이유<br/>#Flow고민사항 #함수정리|[Fragment에서 권한 요청](https://velog.io/@choius323/Fragment%EC%97%90%EC%84%9C-%EA%B6%8C%ED%95%9C-%EC%9A%94%EC%B2%AD)<br/>#권한 요청 #지도|
-|ㅇ|ㅇ|ㅇ|
-|ㅇ|ㅇ|ㅇ|
-|ㅇ|ㅇ|ㅇ|
-|ㅇ|ㅇ|ㅇ|
-|:--|:--|:--|
-
-
-
 ### 논의[(Discussions)](https://github.com/boostcampwm-2022/android08-KiwiTalk/discussions)
+### 기술공유[(Wiki)](https://github.com/boostcampwm-2022/android08-KiwiTalk/wiki/%EC%9E%90%EB%A3%8C-%EA%B3%B5%EC%9C%A0#%EA%B8%B0%EC%88%A0-%EA%B3%B5%EC%9C%A0)
+||||
+|:--|:--|:--|
+|<a href="https://velog.io/@choius323/Fragment%EC%97%90%EC%84%9C-Toolbar-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0">`Fragment에서 Toolbar 사용`</a><br/> #레이아웃 #툴바 #style<br/> |[`Kakao API Flow 적용기`](https://velog.io/@pwolong/Kakao-Api-Flow-%EC%A0%81%EC%9A%A9%EA%B8%B0)<br/>#Flow란 #Flow사용이유<br/>#Flow고민사항 #함수정리|[Fragment에서 권한 요청](https://velog.io/@choius323/Fragment%EC%97%90%EC%84%9C-%EA%B6%8C%ED%95%9C-%EC%9A%94%EC%B2%AD)<br/>#권한 요청 #지도|
+|[`구글 원탭 로그인`](https://www.notion.so/6f637f96effd420f936f3e81e0e941e3)<br/>#Activity#Communication|[`Kakao Map API 사용 정리`](https://velog.io/@pwolong/Kakao-map-api-%ED%99%9C%EC%9A%A9) <br/>#사용방법정리|[`커스텀 style적용 안될때`](https://steelzoodev.tistory.com/10)<br/>#Theme #Style|
+|[`Fragment 이동 → 데이터 유지`](https://velog.io/@pwolong/Fragment-%EA%B0%84%EC%9D%98-%EC%9D%B4%EB%8F%99-%EC%8B%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%9C%A0%EC%A7%80)<br/>#문제정의 #해결방법| [`Google Map SDK 사용 정리`](https://velog.io/@pwolong/Google-Map-Api-%ED%99%9C%EC%9A%A9) <br/>#디바이스 위치정보<br/>#MarkerCustom| [ `에뮬레이터 멀티 터치 `](https://www.notion.so/4eaa7e99ce814033af18909751753f48) <br/>#에뮬레이터<br/>#안드로이드 스튜디오|
+|[` Firestore 설명 및 사용법 `](https://velog.io/@choius323/Firestore)<br/>#Firestore #훑어보기<br/>#사용법|[` 리스너의 동작 타이밍 `](https://steelzoodev.tistory.com/11)<br/>#Chip<br/>#ClickListener|  [`구글 로그인 & FB 연동`](https://velog.io/@pwolong/%EA%B5%AC%EA%B8%80-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%8C%8C%EC%9D%B4%EC%96%B4-%EB%B2%A0%EC%9D%B4%EC%8A%A4FireBase-%EC%97%B0%EB%8F%99)  <br/>#사용방법정리|
+|[` Firestore 호출 응답 await `](https://steelzoodev.tistory.com/9)<br/>#FireStore #Suspend|[` Bottom Sheet `](https://www.notion.so/aa50d5aee92f4cf3abb69d32abb5b50f)<br/>#Standard #Modal|[ ` Stream Chat API `](https://steelzoodev.tistory.com/category/%EB%B6%80%EC%8A%A4%ED%8A%B8%EC%BA%A0%ED%94%84%20%EB%A9%A4%EB%B2%84%EC%8B%AD/Stream%20Chat%20SDK)<br/>#StreamChat<br/>#채팅 API|
+|[` CoordinateLayout `](https://dev-juli.tistory.com/entry/CoordinatorLayout%EC%97%90%EC%84%9C-%EA%B2%B9%EC%B3%90%EC%A7%84-%EB%B7%B0%EC%9D%98-%ED%84%B0%EC%B9%98-%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EB%A6%AC%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95)<br/>#TouchEvent #Intercept|[` Manifest Merge `](https://velog.io/@choius323/Android에서-Firebase-사용-시-Internet-권한-추가)<br/>#Manifest #권한|[` callbackFlow의 awaitClose`](https://velog.io/@choius323/callbackFlow의-awaitClose) <br/>#flow#callbackFLow<br/>#awaitClose#close<br/>#cancel|
+
+
+
+
+
