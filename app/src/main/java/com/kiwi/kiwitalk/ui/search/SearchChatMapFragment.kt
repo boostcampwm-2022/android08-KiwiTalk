@@ -222,6 +222,11 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
                 return View(requireContext())
             }
         })
+        chatViewModel.isLoadingMarkerList.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading.not()) {
+                clusterManager.cluster()
+            }
+        }
         map.setOnCameraIdleListener(clusterManager)
         setupMapClickListener(clusterManager)
     }
@@ -264,7 +269,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         if (location == null || ::map.isInitialized.not()) return
         map.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
-                LatLng(location.latitude, location.longitude), 17f
+                LatLng(location.latitude, location.longitude), 13f
             )
         )
     }

@@ -18,6 +18,7 @@ import io.getstream.chat.android.client.utils.toResult
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,12 +35,15 @@ class SearchChatMapViewModel @Inject constructor(
     private val _location = MutableLiveData<Location>()
     val location: LiveData<Location> = _location
 
+    private val _isLoadingMarkerList = MutableLiveData(false)
+    val isLoadingMarkerList: LiveData<Boolean>
+        get() = _isLoadingMarkerList
+
     var dialogData: ChatInfo? = null
     var lastBottomSheetState: Int? = null
 
     fun appendUserToChat(cid: String) {
         searchChatRepository.appendUserToChat(cid)
-    }
 
     fun getPlaceInfo(cidList: List<String>) {
         viewModelScope.launch {
@@ -50,17 +54,19 @@ class SearchChatMapViewModel @Inject constructor(
     fun getMarkerList(keywords: List<Keyword>?) {
         if (keywords.isNullOrEmpty()) return
         val (lat, lng) = location.value ?: return
+        _isLoadingMarkerList.value = true
         viewModelScope.launch {
             searchChatRepository.getMarkerList(keywords, lat, lng)
                 .catch {
                     Log.d("SearchChatViewModel", "getMarkerList: ${this.toResult()} $it")
+                }.onCompletion {
+                    _isLoadingMarkerList.value = false
                 }.collect {
                     Log.d("SearchChatViewModel", "getMarkerList: collect $it")
                     _markerList.emit(it)
                 }
         }
     }
-
 
     fun setDeviceLocation(newLocation: Location) {
         _location.value = newLocation
