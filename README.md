@@ -29,8 +29,7 @@
 
 ## 기능, 동작화면
 
-
-|<img src="https://user-images.githubusercontent.com/83493143/205109192-7b25e6c9-f4ce-4ee4-b463-742c1eb510d8.gif" width="180" />|<img src="https://user-images.githubusercontent.com/67995865/205450847-8c80b766-85d0-4eb6-82da-5267faf805a0.gif" width="180"/>|<img src="https://user-images.githubusercontent.com/83493143/205110695-c3b8590c-561f-4477-ab02-af04c6253d35.gif" width="180" />|<img src="https://user-images.githubusercontent.com/83493143/205107836-fa20fc9d-aa03-4b72-bd51-23f0cc0d6ef2.gif" width="180" />|
+|<img src="https://user-images.githubusercontent.com/83493143/205109192-7b25e6c9-f4ce-4ee4-b463-742c1eb510d8.gif" width="180" />|<img src="https://user-images.githubusercontent.com/67995865/205450847-8c80b766-85d0-4eb6-82da-5267faf805a0.gif" width="180"/>|<img src="https://user-images.githubusercontent.com/67748153/207275039-32f88a16-6606-486f-a6ec-877d721e77f0.gif" width="180" />|<img src="https://user-images.githubusercontent.com/83493143/205107836-fa20fc9d-aa03-4b72-bd51-23f0cc0d6ef2.gif" width="180" />|
 |:--:|:--:|:--:|:--:|
 |로그인|지도에서 채팅방 찾기|프로필 수정|채팅방 생성|
 
