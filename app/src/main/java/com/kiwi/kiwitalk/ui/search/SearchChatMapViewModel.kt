@@ -44,6 +44,7 @@ class SearchChatMapViewModel @Inject constructor(
 
     fun appendUserToChat(cid: String) {
         searchChatRepository.appendUserToChat(cid)
+    }
 
     fun getPlaceInfo(cidList: List<String>) {
         viewModelScope.launch {
