@@ -1,5 +1,6 @@
 package com.kiwi.chatmapper
 
+import com.kiwi.chatmapper.ChatConst.ADDRESS_FILTER_LIST
 import com.kiwi.chatmapper.ChatConst.EMPTY_STRING
 import com.kiwi.chatmapper.ChatConst.STRING_SPACE
 import com.kiwi.chatmapper.ChatKey.CHAT_ADDRESS
@@ -47,7 +48,7 @@ object ChatMapper {
             EMPTY_STRING
         } else {
             fullAddress.split(STRING_SPACE)
-                .filter { it.last() in listOf('시', '도', '구', '군', '동', '읍', '면') }
+                .filter { ADDRESS_FILTER_LIST.contains(it.last()) }
                 .joinToString(STRING_SPACE)
         }
     }
