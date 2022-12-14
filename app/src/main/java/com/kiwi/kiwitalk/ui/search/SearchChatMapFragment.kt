@@ -23,8 +23,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -67,6 +65,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     private val permissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
     )
+    private var dialog: ChatJoinDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -87,6 +86,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         initBottomSheetCallBack()
         initKeywordRecyclerView()
         initScreenChange()
+        recoverUiState()
     }
 
     private fun initAdapter() {
@@ -95,7 +95,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         }
         binding.layoutMarkerInfoPreview.rvPreviewChat.apply {
             adapter = previewAdapter
-            layoutManager = StaggeredGridLayoutManager(1, RecyclerView.VERTICAL)
+            layoutManager = GridLayoutManager(context, 1)
         }
 
         val detailAdapter = ChatAdapter(mutableListOf()) {
@@ -104,7 +104,7 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
 
         binding.rvDetail.apply {
             adapter = detailAdapter
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, 1)
         }
 
         chatViewModel.placeChatInfo.observe(viewLifecycleOwner) { placeChatInfo ->
@@ -122,12 +122,18 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
     }
 
     private fun showChatDialog(chatInfo: ChatInfo) {
-        val dialog = ChatJoinDialog(this, chatInfo)
-        dialog.show(childFragmentManager, "Chat_Join_Dialog")
+        dialog = ChatJoinDialog(this, chatInfo)
+        dialog?.show(childFragmentManager, "Chat_Join_Dialog")
+        chatViewModel.dialogData = chatInfo
     }
 
     override fun onClickJoinButton(cid: String) {
+        chatViewModel.dialogData = null
         startChat(cid)
+    }
+
+    override fun onClickCancleButton() {
+        chatViewModel.dialogData = null
     }
 
     private fun startChat(cid: String) {
@@ -135,6 +141,22 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             chatViewModel.appendUserToChat(cid)
             if (Regex(".+:.+").matches(cid)) {
                 startActivity(MessageListActivity.createIntent(requireContext(), cid))
+            }
+        }
+    }
+
+    private fun recoverUiState() {
+        chatViewModel.dialogData?.let {
+            showChatDialog(it)
+        }
+        when (val state = chatViewModel.lastBottomSheetState) {
+            BottomSheetBehavior.STATE_COLLAPSED -> {
+                bottomSheetBehavior.state = state
+                showBottomSheetPreview()
+            }
+            BottomSheetBehavior.STATE_EXPANDED -> {
+                bottomSheetBehavior.state = state
+                showBottomSheetDetail()
             }
         }
     }
@@ -261,7 +283,12 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_DRAGGING -> showBottomSheetDetail()
-                    BottomSheetBehavior.STATE_COLLAPSED -> showBottomSheetPreview()
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        showBottomSheetPreview()
+                        chatViewModel.lastBottomSheetState = newState
+                    }
+                    BottomSheetBehavior.STATE_SETTLING -> true
+                    else -> chatViewModel.lastBottomSheetState = newState
                 }
             }
 
@@ -314,6 +341,11 @@ class SearchChatMapFragment : Fragment(), ChatDialogAction {
         val adapter = SelectedKeywordAdapter()
         adapter.submitList(keywords)
         binding.rvSearchChatKeywords.adapter = adapter
+    }
+
+    override fun onPause() {
+        super.onPause()
+        dialog?.dismiss() // recover 대상에서 제외
     }
 
     override fun onDestroyView() {

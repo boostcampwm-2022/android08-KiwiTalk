@@ -7,8 +7,12 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     fun isRemoteLoginRequired(userUiCallback: UserUiCallback)
     fun tryLogin(
-        token: String, googleName: String, imageUrl: String, userUiCallback: UserUiCallback
+        token: String,
+        googleName: String,
+        imageUrl: String,
+        userUiCallback: UserUiCallback
     )
+
     suspend fun signOut(): Flow<Boolean>
     fun getUserInfo(): UserInfo
     fun updateUser(userInfo: UserInfo)

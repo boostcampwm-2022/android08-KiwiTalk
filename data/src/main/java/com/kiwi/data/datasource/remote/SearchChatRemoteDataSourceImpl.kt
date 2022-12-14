@@ -68,9 +68,19 @@ class SearchChatRemoteDataSourceImpl @Inject constructor(
         }
     }
 
+    override fun appendUserToChat(cid: String, userId: String) {
+        val targetChannel = chatClient.channel(cid)
+        targetChannel.addMembers(listOf(userId)).enqueue {
+            if (it.isSuccess) {
+                Log.d(TAG, "초대 성공")
+            } else {
+                Log.d(TAG, "초대 실패")
+            }
+        }
+    }
+
     companion object {
-        private const val ONE = 1
-        private const val TAG = "k001"
+        private const val TAG = "k001|SearchChatRemote"
         private val Double.toRange get() = this - 0.015..this + 0.015 //약 -1.5km~+1.5km
     }
 }
