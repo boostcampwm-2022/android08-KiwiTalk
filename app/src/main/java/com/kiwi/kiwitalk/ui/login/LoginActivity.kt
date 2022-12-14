@@ -33,7 +33,6 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.loginState.observe(this) {
             if (it) {
-                loginProgressDialog.cancel()
                 showPopUpMessage(LOGIN_SUCCESS)
                 navigateToHome()
             }
@@ -73,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
                 GoogleSignInStatusCodes.NETWORK_ERROR -> showPopUpMessage(NO_NETWORK)
                 12501 -> throw Exception("디바이스가 Google Play 서비스를 포함하는지 확인")
             }
+            loginProgressDialog.cancel()
         } catch (e: Exception) {
             Log.d(TAG, e.toString())
         }

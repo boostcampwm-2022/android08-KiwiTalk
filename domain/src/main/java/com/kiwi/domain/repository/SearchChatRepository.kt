@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchChatRepository {
     fun getMarkerList(keywords: List<Keyword>, x: Double, y: Double): Flow<Marker>
-
     suspend fun getPlaceChatList(cidList: List<String>): PlaceChatInfo
+    fun appendUserToChat(cid: String)
 }

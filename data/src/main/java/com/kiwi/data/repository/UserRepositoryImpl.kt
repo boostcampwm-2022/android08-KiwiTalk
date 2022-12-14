@@ -3,7 +3,10 @@ package com.kiwi.data.repository
 import com.kiwi.data.UserDataCallback
 import com.kiwi.data.datasource.local.UserLocalDataSource
 import com.kiwi.data.datasource.remote.UserRemoteDataSource
+import com.kiwi.data.mapper.Mapper.toUser
+import com.kiwi.data.mapper.Mapper.toUserInfo
 import com.kiwi.domain.UserUiCallback
+import com.kiwi.domain.model.UserInfo
 import com.kiwi.domain.repository.UserRepository
 import io.getstream.chat.android.client.models.User
 import kotlinx.coroutines.flow.Flow
@@ -56,8 +59,10 @@ class UserRepositoryImpl @Inject constructor(
                         userRemoteDataSource.updateUser(
                             User(id = this.id, name = googleName, image = imageUrl)
                         )
+                        lastUser = UserInfo(this.id, googleName, listOf())
                     } else {
                         userLocalDataSource.saveToken(id, name, image)
+                        lastUser = this.toUserInfo()
                     }
                 }
                 userUiCallback.onSuccess()
@@ -76,9 +81,21 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-
     private fun isValidToken(token: String): Boolean {
         return tokenRegex.matches(token)
+    }
+
+    override fun getUserInfo(): UserInfo {
+        userRemoteDataSource.getCurrentUser()?.let {
+            lastUser = it.toUserInfo()
+        }
+        return lastUser.copy()
+    }
+
+    override fun updateUser(userInfo: UserInfo) {
+        userRemoteDataSource.updateUser(
+            userInfo.toUser()
+        )
     }
 
     companion object {
@@ -86,5 +103,6 @@ class UserRepositoryImpl @Inject constructor(
         private val tokenRegex = Regex("[0-9,a-z]{1,21}")
         private val INVALID_TOKEN = Exception("Invalid Token")
         private val NO_DATA = Exception("Stream에서 Id값이 Empty String으로 반환됨")
+        private var lastUser: UserInfo = UserInfo("","", listOf())
     }
 }

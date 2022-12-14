@@ -159,8 +159,7 @@ class NewChatFragment : Fragment() {
         return if(keywords != null && keywords.isEmpty().not()){
             true
         } else {
-            Toast.makeText(requireContext(),"키워드를 선택해 주세요.",Toast.LENGTH_SHORT).show()
-            //Snackbar.make(this,"키워드를 선택해 주세요.", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root,"키워드를 선택해 주세요.", Snackbar.LENGTH_SHORT).show()
             false
         }
     }
@@ -180,7 +179,7 @@ class NewChatFragment : Fragment() {
     private fun EditText.checkMaxMember(): Boolean {
         val cnt = this.text.toString().toInt()
         if(cnt > 100) {
-            Snackbar.make(this,"최대 인원 수를 초과했습니다.", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root,"최대 인원 수를 초과했습니다.", Snackbar.LENGTH_SHORT).show()
             this.requestFocus()
             return false
         }
@@ -197,7 +196,7 @@ class NewChatFragment : Fragment() {
 
     private fun TextView.checkNull(): Boolean {
         if (this.text.toString() == "") {
-            Snackbar.make(this,"장소를 선택해 주세요", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root,"장소를 선택해 주세요", Snackbar.LENGTH_SHORT).show()
             return false
         }
         return true

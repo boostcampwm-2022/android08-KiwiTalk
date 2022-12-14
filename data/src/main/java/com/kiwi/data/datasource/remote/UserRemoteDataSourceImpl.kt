@@ -26,7 +26,7 @@ class UserRemoteDataSourceImpl @Inject constructor(
             if (result.isSuccess) {
                 callback.onSuccess(result.data().user)
             } else {
-                callback.onFailure(result.error().cause!!)
+                callback.onFailure(result.error().cause?:Throwable("Error가 null이다."))
             }
         }
     }
@@ -44,5 +44,9 @@ class UserRemoteDataSourceImpl @Inject constructor(
             }
         }
         awaitClose()
+    }
+
+    override fun getCurrentUser(): User? {
+        return chatClient.getCurrentUser()
     }
 }
