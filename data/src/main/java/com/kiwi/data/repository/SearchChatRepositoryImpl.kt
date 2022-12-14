@@ -1,6 +1,7 @@
 package com.kiwi.data.repository
 
 import android.util.Log
+import com.kiwi.data.datasource.local.UserLocalDataSource
 import com.kiwi.data.datasource.remote.SearchChatRemoteDataSource
 import com.kiwi.domain.model.ChatInfo
 import com.kiwi.domain.model.Keyword
@@ -11,7 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SearchChatRepositoryImpl @Inject constructor(
-    private val dataSource: SearchChatRemoteDataSource,
+    private val searchChatDataSource: SearchChatRemoteDataSource,
+    private val userDataSource: UserLocalDataSource,
 ) : SearchChatRepository {
     override fun getMarkerList(
         keywords: List<Keyword>,
@@ -19,13 +21,18 @@ class SearchChatRepositoryImpl @Inject constructor(
         y: Double
     ): Flow<Marker> {
         Log.d("SearchChatRepository", "getMarkerList: start flow")
-        return dataSource.getMarkerList(keywords.map { it.name }, x, y)
+        return searchChatDataSource.getMarkerList(keywords.map { it.name }, x, y)
     }
 
     override suspend fun getPlaceChatList(cidList: List<String>): PlaceChatInfo {
-
-        // TODO : Flow 적용
-        val chatList = dataSource.getChatList(cidList) ?: mutableListOf<ChatInfo>()
+        val chatList = searchChatDataSource.getChatList(cidList) ?: mutableListOf<ChatInfo>()
         return PlaceChatInfo(chatList)
+    }
+
+    override fun appendUserToChat(cid: String){
+        val userId = userDataSource.getToken()
+        if (userId.isNotEmpty()){
+            searchChatDataSource.appendUserToChat(cid, userId)
+        }
     }
 }

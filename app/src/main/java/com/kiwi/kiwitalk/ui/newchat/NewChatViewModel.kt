@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.kiwi.domain.model.NewChatInfo
 import com.kiwi.domain.repository.NewChatRepository
 import com.kiwi.data.AppPreference
+import com.kiwi.domain.repository.UserRepository
 import com.kiwi.kiwitalk.util.Const.EMPTY_STRING
 import com.kiwi.kiwitalk.util.Const.LOGIN_ID_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NewChatViewModel @Inject constructor(
     private val repository: NewChatRepository,
-    private val pref: AppPreference
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     private val _chatImage = MutableLiveData<String>()
@@ -53,7 +54,7 @@ class NewChatViewModel @Inject constructor(
     }
 
     fun setChatId() {
-        _chatId.value = pref.getString(LOGIN_ID_KEY, EMPTY_STRING)
+        _chatId.value = userRepository.getUserInfo().id
     }
 
     fun addNewChat(userid: String, currentTime: String, newChat: NewChatInfo) {

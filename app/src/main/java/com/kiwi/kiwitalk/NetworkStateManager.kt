@@ -15,6 +15,8 @@ class NetworkStateManager(context: Context) : ConnectivityManager.NetworkCallbac
     private var context : Context? = null
     private var networkRequest: NetworkRequest? = null
     private var connectivityManager : ConnectivityManager? = null
+    private val msgBuilder: AlertDialog.Builder
+    private val msgDlg: AlertDialog
 
     init {
         this.context = context
@@ -22,6 +24,13 @@ class NetworkStateManager(context: Context) : ConnectivityManager.NetworkCallbac
             NetworkRequest.Builder()
                 .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
                 .addTransportType(NetworkCapabilities.TRANSPORT_WIFI).build()
+        this.msgBuilder = AlertDialog.Builder(context)
+            .setTitle("Network State Error")
+            .setMessage("네트워크 상태를 확인해주세요.")
+            .setPositiveButton("취소") { _, _ ->
+            }
+            .setCancelable(false)
+        this.msgDlg = msgBuilder.create()
     }
 
     fun register() {
@@ -31,16 +40,10 @@ class NetworkStateManager(context: Context) : ConnectivityManager.NetworkCallbac
 
     fun unregister() {
         connectivityManager?.unregisterNetworkCallback(this)
+        msgDlg.dismiss()
     }
 
     private fun networkShowDialog() {
-        val msgBuilder= AlertDialog.Builder(context)
-            .setTitle("Network State Error")
-            .setMessage("네트워크 상태를 확인해주세요.")
-            .setPositiveButton("취소") { _, _ ->
-            }
-            .setCancelable(false)
-        val msgDlg: AlertDialog = msgBuilder.create()
         msgDlg.show()
     }
 

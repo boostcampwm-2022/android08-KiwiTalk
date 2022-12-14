@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     private val viewModel: SplashViewModel by viewModels()
     private lateinit var binding: ActivitySplashBinding
-    private val networkStateManager = NetworkStateManager(this)
+    private val networkStateManager by lazy { NetworkStateManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

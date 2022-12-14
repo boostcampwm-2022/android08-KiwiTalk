@@ -5,7 +5,9 @@
 
     <data>
 
-        <import type="com.kiwi.kiwitalk.util.Const" />
+        <import type="com.kiwi.chatmapper.ChatKey" />
+
+        <import type="com.kiwi.chatmapper.ChatMapper" />
 
         <variable
             name="chat"
@@ -50,9 +52,9 @@
                 android:id="@+id/tv_rvChatList_country"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{ChatMapper.INSTANCE.getTrimAddress(chat.extraData) ?? @string/tv_itemChatList_country_default}"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="12sp"
-                app:setAddress="@{chat.extraData.getOrDefault(Const.CHAT_ADDRESS, @string/tv_itemChatList_country_default).toString()}"
                 tools:text="서울특별시 강남구" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -72,8 +74,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{ChatMapper.INSTANCE.getDateOfLastMassage(chat.lastMessageAt)}"
                     android:textColor="?attr/colorOnSurface"
-                    app:setDateOfLastMassage="@{chat.lastMessageAt}"
                     android:textSize="11sp"
                     tools:text="5시간 전" />
 
@@ -81,9 +83,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:textSize="11sp"
+                    android:text="@{@string/tv_chatList_member_count(chat.memberCount, ChatMapper.INSTANCE.getMaxMemberCount(chat.extraData)) }"
                     android:textColor="?attr/colorOnSurface"
-                    app:setChatMemberCount="@{chat}"
+                    android:textSize="11sp"
                     tools:text="15 / 50" />
             </com.google.android.material.circularreveal.CircularRevealFrameLayout>
 
