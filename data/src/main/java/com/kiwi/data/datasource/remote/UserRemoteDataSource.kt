@@ -8,4 +8,5 @@ interface UserRemoteDataSource {
     fun login(token: String, callback: UserDataCallback)
     fun updateUser(user: User)
     suspend fun signOut(): Flow<Boolean>
+    fun getCurrentUser(): User?
 }

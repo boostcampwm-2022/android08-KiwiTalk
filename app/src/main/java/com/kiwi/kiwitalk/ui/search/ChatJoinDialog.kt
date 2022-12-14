@@ -32,7 +32,10 @@ class ChatJoinDialog(
                 Keyword(it, 0)
             }.toMutableList())
         }
-        binding.btnDialogClose.setOnClickListener { dismiss() }
+        binding.btnDialogClose.setOnClickListener {
+            chatDialogAction.onClickCancleButton()
+            dismiss()
+        }
         binding.btnDialogJoin.setOnClickListener {
             chatDialogAction.onClickJoinButton(chatInfo.cid)
             dismiss()
@@ -49,4 +52,5 @@ class ChatJoinDialog(
 
 interface ChatDialogAction {
     fun onClickJoinButton(cid: String)
+    fun onClickCancleButton()
 }

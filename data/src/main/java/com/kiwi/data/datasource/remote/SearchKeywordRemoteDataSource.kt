@@ -2,6 +2,7 @@ package com.kiwi.data.datasource.remote
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kiwi.chatmapper.ChatKey
 import com.kiwi.domain.model.Keyword
 import com.kiwi.domain.model.KeywordCategory
 import kotlinx.coroutines.tasks.await
@@ -13,7 +14,7 @@ class SearchKeywordRemoteDataSource @Inject constructor(
     suspend fun callAllKeyword(): List<KeywordCategory> {
         val keywordCategoryList: MutableList<KeywordCategory> = mutableListOf()
 
-        firestore.collection("keywords").get()
+        firestore.collection(ChatKey.CHAT_KEYWORDS).get()
                 .addOnSuccessListener { result ->
                     result.documents.forEach {
                         val keywordCategory = KeywordCategory(it.id, mutableListOf())

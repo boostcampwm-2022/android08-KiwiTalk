@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.kiwi.chatmapper.ChatKey
 import com.kiwi.data.model.remote.NewChatRemote
 import io.getstream.chat.android.client.ChatClient
 import javax.inject.Inject
@@ -52,10 +53,10 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
         val streamData = hashMapOf(
             "image" to imageUrl,
             "name" to newChatRemote.chatName,
-            "description" to newChatRemote.chatDescription,
-            "address" to newChatRemote.address,
-            "keywords" to newChatRemote.keywords,
-            "max_member_count" to newChatRemote.maxMemberCount
+            ChatKey.CHAT_DESCRIPTION to newChatRemote.chatDescription,
+            ChatKey.CHAT_ADDRESS to newChatRemote.address,
+            ChatKey.CHAT_KEYWORDS to newChatRemote.keywords,
+            ChatKey.CHAT_MAX_MEMBER_COUNT to newChatRemote.maxMemberCount
         )
         chatClient.createChannel(
             channelType = "messaging",
@@ -70,7 +71,7 @@ class NewChatRemoteDataSourceImpl @Inject constructor(
     private fun addFireBaseChat(userId: String, currentTime: String, newChatRemote: NewChatRemote) {
         val fireStoreData = hashMapOf(
             "cid" to "messaging:$userId$currentTime",
-            "keywords" to newChatRemote.keywords,
+            ChatKey.CHAT_KEYWORDS to newChatRemote.keywords,
             "lat" to newChatRemote.lat,
             "lng" to newChatRemote.lng
         )
